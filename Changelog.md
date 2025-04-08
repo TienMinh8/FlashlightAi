@@ -135,3 +135,9 @@
   - Thanh điều chỉnh tốc độ nhấp nháy
   - Thanh điều hướng phía dưới
 - Thêm các strings mới cho UI
+
+### Fixed
+- Sửa lỗi "cannot find symbol" trong MainActivity
+- Cập nhật MainActivity để phù hợp với layout mới
+- Thay thế các tham chiếu đến UI elements không còn tồn tại
+- Cập nhật logic điều khiển UI phù hợp với thiết kế mới
