@@ -143,3 +143,4 @@
 - Cập nhật logic điều khiển UI phù hợp với thiết kế mới
 - Khắc phục lỗi thiếu biến statusText
 - Sửa lỗi liên quan đến SwitchCompat
+- Sửa lỗi import sai đường dẫn (androidx.core.widget.SwitchCompat → androidx.appcompat.widget.SwitchCompat)
