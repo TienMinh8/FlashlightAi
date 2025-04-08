@@ -144,3 +144,5 @@
 - Khắc phục lỗi thiếu biến statusText
 - Sửa lỗi liên quan đến SwitchCompat
 - Sửa lỗi import sai đường dẫn (androidx.core.widget.SwitchCompat → androidx.appcompat.widget.SwitchCompat)
+- Sửa lỗi MissingForegroundServiceTypeException trên Android 14 (API 34) bằng cách thêm thuộc tính foregroundServiceType="camera" vào khai báo service
+- Sửa lỗi SecurityException trên Android 14 (API 34) bằng cách thêm quyền FOREGROUND_SERVICE_CAMERA vào AndroidManifest.xml
