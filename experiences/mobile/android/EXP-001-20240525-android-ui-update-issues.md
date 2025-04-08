@@ -57,7 +57,7 @@ Giải pháp cuối cùng là kết hợp các bước sau:
 
 4. Thêm đúng import cho SwitchCompat:
    ```java
-   import androidx.core.widget.SwitchCompat;
+   import androidx.appcompat.widget.SwitchCompat;
    ```
 
 ## Kinh nghiệm rút ra
@@ -65,6 +65,7 @@ Giải pháp cuối cùng là kết hợp các bước sau:
 - Sử dụng IDE để tìm tất cả các references đến thành phần UI cũ trước khi xóa chúng
 - Phân tách việc cập nhật UI thành các bước nhỏ thay vì thay đổi toàn bộ cùng lúc
 - Sử dụng ViewModel hoặc cấu trúc MVP/MVVM để giảm sự phụ thuộc trực tiếp giữa UI và logic
+- Kiểm tra kỹ đường dẫn import đúng cho các thành phần UI từ thư viện AndroidX
 
 ## Phòng tránh trong tương lai
 - Tạo một bản wireframe đối chiếu giữa UI cũ và mới trước khi bắt đầu thay đổi

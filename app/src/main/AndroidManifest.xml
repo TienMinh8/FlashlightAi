@@ -33,6 +33,13 @@
             </intent-filter>
         </activity>
         
+        <!-- Screen Light Activity -->
+        <activity
+            android:name=".screen.ScreenLightActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.FlashLightAi.FullScreen" />
+        
         <!-- Flashlight Service -->
         <service
             android:name=".service.FlashlightService"
