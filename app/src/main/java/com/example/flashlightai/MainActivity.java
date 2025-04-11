@@ -33,11 +33,22 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.flashlightai.controller.FlashController;
+import com.example.flashlightai.fragment.FlashFragment;
+import com.example.flashlightai.fragment.HomeFragment;
+import com.example.flashlightai.fragment.SettingsFragment;
 import com.example.flashlightai.screen.ScreenLightActivity;
 import com.example.flashlightai.service.FlashlightService;
 import com.example.flashlightai.service.NotificationMonitorService;
+import com.example.flashlightai.textlight.TextLightActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
@@ -86,6 +97,46 @@ public class MainActivity extends AppCompatActivity {
         
         // Start and bind to the service
         startAndBindService();
+        
+        // Xử lý intent khi được mở từ các Activity khác
+        handleNavigationIntent(getIntent());
+    }
+    
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        // Xử lý intent khi Activity đã tồn tại
+        handleNavigationIntent(intent);
+    }
+    
+    /**
+     * Xử lý intent chuyển hướng từ các activity khác
+     */
+    private void handleNavigationIntent(Intent intent) {
+        if (intent != null && intent.hasExtra("navigate_to")) {
+            String navigateTo = intent.getStringExtra("navigate_to");
+            BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+            
+            if (bottomNavigationView != null) {
+                if ("flash".equals(navigateTo)) {
+                    bottomNavigationView.setSelectedItemId(R.id.navigation_flash);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, new FlashFragment())
+                            .commit();
+                } else if ("settings".equals(navigateTo)) {
+                    bottomNavigationView.setSelectedItemId(R.id.navigation_settings);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, new SettingsFragment())
+                            .commit();
+                } else if ("home".equals(navigateTo)) {
+                    bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, new HomeFragment())
+                            .commit();
+                }
+            }
+        }
     }
     
     private void initUI() {
@@ -106,9 +157,10 @@ public class MainActivity extends AppCompatActivity {
         // Settings button (previously help button)
         ImageView settingsButton = findViewById(R.id.settings_button);
         settingsButton.setOnClickListener(v -> {
-            // Open settings
-            Toast.makeText(this, "Settings coming soon", Toast.LENGTH_SHORT).show();
-            // TODO: Open settings dialog/activity
+            // Open settings fragment
+            getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new SettingsFragment())
+                .commit();
         });
         
         // Test Flash Button
@@ -216,25 +268,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         
-        // Bottom navigation
-        LinearLayout navFlash = findViewById(R.id.nav_flash);
-        LinearLayout navHome = findViewById(R.id.nav_home);
-        LinearLayout navSettings = findViewById(R.id.nav_settings);
-        
-        navFlash.setOnClickListener(v -> {
-            // TODO: Switch to flash tab
-            Toast.makeText(this, "Flash tab", Toast.LENGTH_SHORT).show();
-        });
-        
-        navHome.setOnClickListener(v -> {
-            // TODO: Switch to home tab
-            Toast.makeText(this, "Home tab", Toast.LENGTH_SHORT).show();
-        });
-        
-        navSettings.setOnClickListener(v -> {
-            // Open screen light activity
-            Intent intent = new Intent(MainActivity.this, ScreenLightActivity.class);
-            startActivity(intent);
+        // Thiết lập BottomNavigationView
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new HomeFragment())
+                        .commit();
+                return true;
+            } else if (itemId == R.id.navigation_flash) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new FlashFragment())
+                        .commit();
+                return true;
+            } else if (itemId == R.id.navigation_screen) {
+                Intent screenIntent = new Intent(MainActivity.this, ScreenLightActivity.class);
+                startActivity(screenIntent);
+                return true;
+            } else if (itemId == R.id.navigation_text_light) {
+                Intent textLightIntent = new Intent(MainActivity.this, TextLightActivity.class);
+                startActivity(textLightIntent);
+                return true;
+            }
+            return false;
         });
     }
     

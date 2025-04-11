@@ -50,6 +50,12 @@
             android:exported="false"
             android:configChanges="orientation|screenSize" />
         
+        <!-- TextLightActivity -->
+        <activity
+            android:name=".textlight.TextLightActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
+        
         <!-- AppSelectActivity -->
         <activity
             android:name=".AppSelectActivity"

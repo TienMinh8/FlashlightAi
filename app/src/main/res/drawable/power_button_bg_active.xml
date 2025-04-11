@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    
+    <!-- Màu nền khi nút đang hoạt động - sáng hơn -->
+    <solid android:color="#4FC3F7" />
+    
+    <!-- Viền phát sáng -->
+    <stroke
+        android:width="5dp"
+        android:color="#80BBDEFB" />
+    
+    <!-- Đổ bóng mờ tạo hiệu ứng phát sáng -->
+    <padding
+        android:bottom="10dp"
+        android:left="10dp"
+        android:right="10dp"
+        android:top="10dp" />
+    
+    <!-- Gradient cho hiệu ứng phát sáng -->
+    <gradient
+        android:centerColor="#4FC3F7"
+        android:endColor="#29B6F6"
+        android:startColor="#03A9F4"
+        android:type="radial"
+        android:gradientRadius="100dp" />
+    
+</shape> 

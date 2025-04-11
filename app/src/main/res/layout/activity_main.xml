@@ -54,241 +54,135 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Scrollable content area -->
-    <androidx.core.widget.NestedScrollView
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_nav_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+    <!-- Fragment Container -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@+id/top_bar_container"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_nav_container">
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar_container">
         
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- Scrollable content area - adjusted for better scrolling -->
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!-- Power Button and Glow -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/power_card"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="#1A1C2A"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="8dp"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <FrameLayout
-                    android:id="@+id/power_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center">
-
-                    <ImageView
-                        android:id="@+id/glow_effect"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/glow_effect"
-                        android:padding="8dp"
-                        android:src="@drawable/glow_effect" />
-
-                    <ImageButton
-                        android:id="@+id/power_button"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/power_button_bg"
-                        android:contentDescription="@string/power_button"
-                        android:src="@drawable/power_icon"
-                        android:elevation="12dp"
-                        android:stateListAnimator="@null"
-                        android:outlineProvider="background"
-                        android:clipToPadding="false"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center|bottom"
-                        android:layout_marginBottom="24dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="FLASH"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp"
-                        android:shadowColor="#80000000"
-                        android:shadowDx="1"
-                        android:shadowDy="1"
-                        android:shadowRadius="3" />
-                </FrameLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Content Container -->
-            <LinearLayout
-                android:id="@+id/linearLayout"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp">
+            
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/power_card">
+                android:paddingBottom="16dp">
 
-                <!-- Feature Title -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="NOTIFICATIONS"
-                    android:textColor="#4FC3F7"
-                    android:textSize="16sp" />
+                <!-- Power Button and Glow -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/power_card"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="32dp"
+                    app:cardBackgroundColor="#1A1C2A"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="8dp"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <!-- Incoming Calls -->
-                <LinearLayout
-                    android:id="@+id/incoming_calls_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/feature_item_bg"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:contentDescription="Call icon"
-                        android:src="@drawable/icon_call"
-                        app:tint="#FFFFFF" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:fontFamily="sans-serif"
-                        android:text="@string/incoming_calls"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp" />
-
-                    <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/switch_calls"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:thumb="@drawable/switch_thumb"
-                        app:trackTint="#50FFFFFF" />
-
-                </LinearLayout>
-
-                <!-- SMS -->
-                <LinearLayout
-                    android:id="@+id/sms_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/feature_item_bg"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:contentDescription="SMS icon"
-                        android:src="@drawable/icon_sms"
-                        app:tint="#FFFFFF" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:fontFamily="sans-serif"
-                        android:text="@string/sms"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp" />
-
-                    <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/switch_sms"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:thumb="@drawable/switch_thumb"
-                        app:trackTint="#50FFFFFF" />
-                </LinearLayout>
-
-                <!-- App Selection -->
-                <LinearLayout
-                    android:id="@+id/app_selection_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/feature_item_bg"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                    <FrameLayout
+                        android:id="@+id/power_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center">
 
                         <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:contentDescription="App selection icon"
-                            android:src="@drawable/icon_apps"
-                            app:tint="#FFFFFF" />
+                            android:id="@+id/glow_effect"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/glow_effect"
+                            android:padding="8dp"
+                            android:src="@drawable/glow_effect" />
+
+                        <ImageButton
+                            android:id="@+id/power_button"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/power_button_bg"
+                            android:contentDescription="@string/power_button"
+                            android:src="@drawable/power_icon"
+                            android:elevation="12dp"
+                            android:stateListAnimator="@null"
+                            android:outlineProvider="background"
+                            android:clipToPadding="false"
+                            android:padding="8dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:layout_gravity="center|bottom"
+                            android:layout_marginBottom="24dp"
                             android:fontFamily="sans-serif-medium"
-                            android:text="@string/app_selection"
+                            android:text="FLASH"
                             android:textColor="#FFFFFF"
-                            android:textSize="16sp" />
-                    </LinearLayout>
+                            android:textSize="18sp"
+                            android:shadowColor="#80000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="3" />
+                    </FrameLayout>
+                </androidx.cardview.widget.CardView>
 
-                    <TextView
-                        android:id="@+id/btn_select_apps"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="12dp"
-                        android:background="@drawable/action_button_bg"
-                        android:gravity="center"
-                        android:paddingStart="32dp"
-                        android:paddingEnd="32dp"
-                        android:text="@string/select"
-                        android:textColor="#FFFFFF" />
-                </LinearLayout>
-
-                <!-- Flashing Speed -->
+                <!-- Content Container -->
                 <LinearLayout
-                    android:id="@+id/speed_container"
+                    android:id="@+id/feature_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/feature_item_bg"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/power_card">
 
-                    <LinearLayout
+                    <!-- Feature Title -->
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="TÍNH NĂNG"
+                        android:textColor="#4FC3F7"
+                        android:textSize="18sp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Incoming Calls -->
+                    <LinearLayout
+                        android:id="@+id/incoming_calls_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/feature_item_bg"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:padding="16dp">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:contentDescription="Speed icon"
-                            android:src="@drawable/icon_speed"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:contentDescription="Call icon"
+                            android:src="@drawable/icon_call"
                             app:tint="#FFFFFF" />
 
                         <TextView
@@ -297,171 +191,207 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="16dp"
                             android:layout_weight="1"
-                            android:fontFamily="sans-serif-medium"
-                            android:text="@string/flashing_speed"
+                            android:fontFamily="sans-serif"
+                            android:text="@string/incoming_calls"
                             android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textSize="16sp" />
 
-                        <TextView
-                            android:id="@+id/btn_test_flash"
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_calls"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/test_button_bg"
-                            android:fontFamily="sans-serif-medium"
-                            android:paddingStart="12dp"
-                            android:paddingTop="8dp"
-                            android:paddingEnd="12dp"
-                            android:paddingBottom="8dp"
-                            android:text="Test Flash"
-                            android:textAllCaps="false"
-                            android:textColor="#FFFFFF" />
+                            android:layout_gravity="center_vertical"
+                            android:thumb="@drawable/switch_thumb"
+                            app:trackTint="#50FFFFFF" />
+
                     </LinearLayout>
 
-                    <!-- Speed value display with more space -->
-
+                    <!-- SMS -->
                     <LinearLayout
+                        android:id="@+id/sms_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/feature_item_bg"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:contentDescription="SMS icon"
+                            android:src="@drawable/icon_sms"
+                            app:tint="#FFFFFF" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Slow"
-                            android:textColor="#FFFFFF"
-                            android:textSize="14sp" />
-
-                        <SeekBar
-                            android:id="@+id/speed_slider"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="16dp"
                             android:layout_weight="1"
-                            android:max="30"
-                            android:progress="15"
-                            android:progressDrawable="@drawable/seekbar_progress"
-                            android:thumb="@drawable/seekbar_thumb" />
+                            android:fontFamily="sans-serif"
+                            android:text="@string/sms"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp" />
 
-                        <TextView
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_sms"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Fast"
-                            android:textColor="#FFFFFF"
-                            android:textSize="14sp" />
+                            android:layout_gravity="center_vertical"
+                            android:thumb="@drawable/switch_thumb"
+                            app:trackTint="#50FFFFFF" />
+                    </LinearLayout>
 
+                    <!-- App Selection -->
+                    <LinearLayout
+                        android:id="@+id/app_selection_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/feature_item_bg"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:contentDescription="App selection icon"
+                                android:src="@drawable/icon_apps"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-medium"
+                                android:text="@string/app_selection"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp" />
+                            
+                            <TextView
+                                android:id="@+id/btn_select_apps"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:background="@drawable/action_button_bg"
+                                android:gravity="center"
+                                android:paddingStart="24dp"
+                                android:paddingEnd="24dp"
+                                android:text="@string/select"
+                                android:textColor="#FFFFFF" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Flashing Speed -->
+                    <LinearLayout
+                        android:id="@+id/speed_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/feature_item_bg"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:contentDescription="Speed icon"
+                                android:src="@drawable/icon_speed"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="16dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-medium"
+                                android:text="@string/flashing_speed"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/btn_test_flash"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/test_button_bg"
+                                android:fontFamily="sans-serif-medium"
+                                android:paddingStart="12dp"
+                                android:paddingTop="8dp"
+                                android:paddingEnd="12dp"
+                                android:paddingBottom="8dp"
+                                android:text="Test Flash"
+                                android:textAllCaps="false"
+                                android:textColor="#FFFFFF" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Slow"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp" />
+
+                            <SeekBar
+                                android:id="@+id/speed_slider"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:max="30"
+                                android:progress="15"
+                                android:progressDrawable="@drawable/seekbar_progress"
+                                android:thumb="@drawable/seekbar_thumb" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Fast"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+                        
                         <TextView
                             android:id="@+id/tv_speed_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_gravity="center"
                             android:text="275ms"
                             android:textColor="#4FC3F7"
-                            android:textSize="14sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+                    
+                    <!-- Thêm một khoảng cách dưới cùng để tránh nội dung bị thanh điều hướng che khuất -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp" />
+
                 </LinearLayout>
-
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-
-    <!-- Bottom Navigation -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/bottom_nav_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="#1A2E4A"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <LinearLayout
-            android:id="@+id/bottom_nav"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/nav_flash"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:contentDescription="Flash"
-                    android:src="@drawable/icon_bolt"
-                    app:tint="#AAFFFFFF" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="sans-serif"
-                    android:text="Flash"
-                    android:textColor="#AAFFFFFF"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/nav_home"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:contentDescription="Home"
-                    android:src="@drawable/icon_home"
-                    app:tint="#4FC3F7" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/home"
-                    android:textColor="#4FC3F7"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/nav_settings"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:contentDescription="Screen Light"
-                    android:src="@drawable/icon_phone"
-                    app:tint="#AAFFFFFF" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="sans-serif"
-                    android:text="Screen"
-                    android:textColor="#AAFFFFFF"
-                    android:textSize="12sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

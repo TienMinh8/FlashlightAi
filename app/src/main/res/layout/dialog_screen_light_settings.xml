@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Giữ màn hình luôn sáng -->
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_keep_screen_on"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Giữ màn hình luôn sáng"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:checked="true" />
+
+    <!-- Tự động tắt sau thời gian -->
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_auto_off"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tự động tắt sau"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:layout_marginTop="16dp" />
+
+    <!-- Thời gian tự động tắt -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:layout_marginStart="16dp">
+
+        <SeekBar
+            android:id="@+id/seekbar_auto_off_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="30"
+            android:progress="5"
+            android:enabled="false" />
+
+        <TextView
+            android:id="@+id/text_auto_off_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5 phút"
+            android:textSize="14sp"
+            android:layout_marginStart="8dp"
+            android:enabled="false" />
+    </LinearLayout>
+
+    <!-- Chế độ tiết kiệm pin -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chế độ tiết kiệm pin"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+
+    <RadioGroup
+        android:id="@+id/radio_group_power_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp">
+
+        <RadioButton
+            android:id="@+id/radio_power_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bình thường"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/radio_power_eco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tiết kiệm pin (giảm độ sáng)" />
+
+        <RadioButton
+            android:id="@+id/radio_power_auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tự động (điều chỉnh theo pin)" />
+    </RadioGroup>
+
+    <!-- Cảnh báo bảo vệ màn hình -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lưu ý: Sử dụng màn hình sáng trong thời gian dài có thể gây nóng thiết bị."
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout> 
