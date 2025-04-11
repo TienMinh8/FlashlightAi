@@ -122,14 +122,7 @@ public class MainActivity extends BaseActivity {
      */
     private void handleNavigationIntent(Intent intent) {
         if (intent != null) {
-            // Xử lý thông báo thay đổi ngôn ngữ
-            if (intent.getBooleanExtra("language_changed", false)) {
-                // Ngôn ngữ đã thay đổi, cập nhật lại toàn bộ UI
-                recreate();
-                return;
-            }
-            
-            // Xử lý các intent điều hướng khác
+            // Xử lý các intent điều hướng
             if (intent.hasExtra("navigate_to")) {
                 String navigateTo = intent.getStringExtra("navigate_to");
                 BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);

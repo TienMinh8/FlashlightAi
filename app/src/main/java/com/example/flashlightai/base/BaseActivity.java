@@ -6,20 +6,16 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.flashlightai.utils.LocaleHelper;
-
 /**
- * Lớp Activity cơ sở xử lý việc thiết lập ngôn ngữ
+ * Lớp Activity cơ sở
  * Tất cả các Activity khác nên kế thừa từ lớp này
  */
 public abstract class BaseActivity extends AppCompatActivity {
     
     @Override
     protected void attachBaseContext(Context newBase) {
-        // Áp dụng ngôn ngữ đã lưu cho context
-        String language = LocaleHelper.getCurrentLanguage(newBase);
-        Context context = LocaleHelper.setLocale(newBase, language);
-        super.attachBaseContext(context);
+        // Sử dụng context mặc định
+        super.attachBaseContext(newBase);
     }
     
     @Override

@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.flashlightai.utils.LocaleHelper;
 import com.example.flashlightai.utils.PreferenceManager;
 
 /**
@@ -15,10 +14,8 @@ public class FlashLightApp extends Application {
     
     @Override
     protected void attachBaseContext(Context base) {
-        // Áp dụng ngôn ngữ trước khi gán context
-        String language = LocaleHelper.getCurrentLanguage(base);
-        Context context = LocaleHelper.setLocale(base, language);
-        super.attachBaseContext(context);
+        // Đã loại bỏ phần xử lý ngôn ngữ
+        super.attachBaseContext(base);
     }
     
     @Override

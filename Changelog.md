@@ -218,3 +218,43 @@
 - Cập nhật SettingsFragment để thêm xử lý sự kiện cho các nút trong màn hình Settings
 - Thêm chức năng chia sẻ ứng dụng qua mạng xã hội
 - Chuẩn bị nền tảng cho các tính năng đánh giá, chính sách bảo mật và điều khoản sử dụng
+
+## [1.1.0] - 2024-07-xx
+
+### Fixed
+- Sửa lỗi chức năng chọn ngôn ngữ không hoạt động đúng cách
+- Ngôn ngữ bây giờ được duy trì nhất quán trong toàn bộ ứng dụng
+- Chuyển đổi ngôn ngữ không yêu cầu khởi động lại ứng dụng
+
+### Changed
+- Cải thiện cấu trúc code với thiết kế BaseActivity
+- Cập nhật cách áp dụng ngôn ngữ theo cách tiếp cận hiện đại hơn
+- Xử lý ngôn ngữ từ cấp độ ứng dụng với Application class
+
+### Added
+- Thêm lớp LocaleHelper để quản lý ngôn ngữ một cách nhất quán
+- Xử lý tốt hơn cho cấu hình locale thay đổi trong AndroidManifest
+
+### Removed
+- Đã loại bỏ hoàn toàn tính năng đổi ngôn ngữ do gặp nhiều lỗi không khắc phục được
+- Xóa các file liên quan: LanguageActivity.java, activity_language.xml, LocaleHelper.java
+- Đơn giản hóa BaseActivity và loại bỏ mã xử lý ngôn ngữ trong MainActivity
+
+## [1.0.0] - 2023-11-20
+
+### Added
+- Tính năng đèn pin cơ bản với các chế độ: Thường, Nhấp nháy, SOS
+- Hiệu ứng glow khi bật đèn
+- Điều chỉnh tốc độ nhấp nháy
+- Hỗ trợ đa ngôn ngữ
+- Thông báo đèn flash khi có cuộc gọi/SMS
+- Thêm các tính năng: đèn màn hình, đèn văn bản
+
+### Fixed
+- Sửa lỗi tham chiếu đến LocaleHelper còn sót lại sau khi loại bỏ tính năng ngôn ngữ
+- Cập nhật AndroidManifest để loại bỏ các thuộc tính liên quan đến xử lý ngôn ngữ
+- Cập nhật FlashLightApp để không còn sử dụng LocaleHelper
+- Sửa lỗi MissingForegroundServiceTypeException khi khởi động NotificationMonitorService
+- Thêm thuộc tính android:foregroundServiceType="dataSync" cho NotificationMonitorService
+- Thêm quyền FOREGROUND_SERVICE_DATA_SYNC trong AndroidManifest
+- Cải thiện xử lý lỗi khi khởi động foreground service

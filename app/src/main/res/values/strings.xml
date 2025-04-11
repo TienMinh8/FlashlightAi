@@ -150,6 +150,7 @@
     <string name="language_changed">Language changed successfully!</string>
     <string name="confirm">Confirm</string>
     <string name="select_language">Select a language</string>
+    <string name="language_cancel">Language selection cancelled</string>
     
     <!-- New strings -->
     <string name="coming_soon">Coming soon!</string>

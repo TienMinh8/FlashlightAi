@@ -101,7 +101,8 @@
                         android:drawableEnd="@android:drawable/ic_menu_more"
                         android:padding="8dp"
                         android:text="@string/language"
-                        android:textColor="@android:color/white" />
+                        android:textColor="@android:color/white"
+                        android:visibility="gone" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

@@ -19,7 +19,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.flashlightai.LanguageActivity;
 import com.example.flashlightai.R;
 import com.example.flashlightai.utils.PreferenceManager;
 
@@ -57,7 +56,6 @@ public class SettingsFragment extends Fragment {
         
         // App Settings
         SwitchCompat switchDarkMode = view.findViewById(R.id.switch_dark_mode);
-        TextView btnLanguage = view.findViewById(R.id.btn_language);
         
         // About
         TextView btnRate = view.findViewById(R.id.btn_rate);
@@ -85,12 +83,6 @@ public class SettingsFragment extends Fragment {
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             preferenceManager.setBoolean("dark_mode", isChecked);
             // TODO: Áp dụng chế độ tối nếu cần
-        });
-        
-        // Ngôn ngữ
-        btnLanguage.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), LanguageActivity.class);
-            startActivity(intent);
         });
         
         // About

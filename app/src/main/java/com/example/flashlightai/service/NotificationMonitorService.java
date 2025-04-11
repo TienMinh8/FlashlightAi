@@ -83,7 +83,13 @@ public class NotificationMonitorService extends Service {
         createNotificationChannel();
         
         // Chạy service ở chế độ foreground để tránh bị kill
-        startForeground(NOTIFICATION_ID, createNotification());
+        try {
+            Log.d(TAG, "Khởi động foreground service với dataSync type");
+            startForeground(NOTIFICATION_ID, createNotification());
+        } catch (Exception e) {
+            Log.e(TAG, "Lỗi khi khởi động foreground service: " + e.getMessage());
+            e.printStackTrace();
+        }
         
         // Đăng ký PhoneStateListener để theo dõi cuộc gọi
         setupCallMonitoring();
@@ -550,31 +556,47 @@ public class NotificationMonitorService extends Service {
     
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // Bắt đầu hoặc dừng service khi nhận intent
-        if (intent != null && intent.getAction() != null) {
-            switch (intent.getAction()) {
-                case "START_SERVICE":
-                    // Service đã được tạo trong onCreate()
-                    break;
-                case "STOP_SERVICE":
-                    stopSelf();
-                    break;
-                case "UPDATE_CALL_FLASH":
-                    boolean callEnabled = intent.getBooleanExtra("enabled", false);
-                    setCallFlashEnabled(callEnabled);
-                    break;
-                case "UPDATE_SMS_FLASH":
-                    boolean smsEnabled = intent.getBooleanExtra("enabled", false);
-                    setSmsFlashEnabled(smsEnabled);
-                    break;
-                case "UPDATE_APP_NOTIFICATIONS":
-                    boolean appEnabled = intent.getBooleanExtra("enabled", false);
-                    setAppNotificationsEnabled(appEnabled);
-                    break;
+        Log.d(TAG, "onStartCommand");
+        
+        // Kiểm tra xem service đã được khởi động ở chế độ foreground chưa
+        try {
+            startForeground(NOTIFICATION_ID, createNotification());
+            Log.d(TAG, "Khởi động foreground service thành công");
+        } catch (Exception e) {
+            Log.e(TAG, "Lỗi khi khởi động foreground service: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        if (intent != null) {
+            // Kiểm tra xem có thao tác nào cần xử lý từ intent không
+            String action = intent.getAction();
+            
+            if (action != null) {
+                switch (action) {
+                    case "ENABLE_CALL_FLASH":
+                        setCallFlashEnabled(intent.getBooleanExtra("enabled", false));
+                        break;
+                    case "ENABLE_SMS_FLASH":
+                        setSmsFlashEnabled(intent.getBooleanExtra("enabled", false));
+                        break;
+                    case "ENABLE_APP_NOTIFICATIONS":
+                        setAppNotificationsEnabled(intent.getBooleanExtra("enabled", false));
+                        break;
+                    case "UPDATE_SELECTED_APPS":
+                        if (intent.hasExtra("selectedApps")) {
+                            HashSet<String> newSelectedApps = new HashSet<>();
+                            ArrayList<String> appsList = intent.getStringArrayListExtra("selectedApps");
+                            if (appsList != null) {
+                                newSelectedApps.addAll(appsList);
+                                setSelectedApps(newSelectedApps);
+                            }
+                        }
+                        break;
+                }
             }
         }
         
-        // Nếu service bị kill, hệ thống sẽ tạo lại service và truyền intent cuối cùng vào onStartCommand
+        // Đảm bảo service không bị kill
         return START_STICKY;
     }
     

@@ -165,33 +165,85 @@ Tính năng Settings cho phép người dùng điều chỉnh các thiết lập
 ## Tính năng Ngôn Ngữ (Language)
 
 ### Mô tả
+Tính năng Language cho phép người dùng thay đổi ngôn ngữ hiển thị trong ứng dụng. Ứng dụng hỗ trợ 9 ngôn ngữ: Tiếng Anh, Tây Ban Nha, Bồ Đào Nha, Hindi, Nga, Ả Rập, Bengali, Indonesia và Việt Nam.
 
-Tính năng Language cho phép người dùng thay đổi ngôn ngữ hiển thị của ứng dụng. Người dùng có thể chọn từ 9 ngôn ngữ khác nhau:
+### Cách hoạt động
+1. **Cài đặt ban đầu:**
+   - Khi ứng dụng khởi động lần đầu, ngôn ngữ mặc định là tiếng Anh
+   - Nếu đã chọn ngôn ngữ trước đó, ứng dụng sẽ sử dụng ngôn ngữ đã lưu
+   
+2. **Thay đổi ngôn ngữ:**
+   - Mở màn hình Cài đặt (Settings) từ trang chính
+   - Chọn "Ngôn ngữ / Language"
+   - Chọn ngôn ngữ mong muốn từ danh sách
+   - Nhấn nút xác nhận (dấu check ở góc trên bên phải)
+   - Ứng dụng sẽ khởi động lại với ngôn ngữ mới
 
-1. English (Tiếng Anh)
-2. Español (Tiếng Tây Ban Nha) 
-3. Português (Tiếng Bồ Đào Nha)
-4. हिन्दी (Tiếng Hindi)
-5. Русский (Tiếng Nga)
-6. العربية (Tiếng Ả Rập)
-7. বাংলা (Tiếng Bengali)
-8. Bahasa Indonesia (Tiếng Indonesia)
-9. Tiếng Việt
+3. **Cấu trúc kỹ thuật:**
+   - Ngôn ngữ được lưu trong SharedPreferences với khóa "language"
+   - FlashLightApp (Application class) áp dụng ngôn ngữ khi khởi động ứng dụng
+   - BaseActivity xử lý ngôn ngữ cho tất cả các Activity
+   - LocaleHelper quản lý việc cập nhật và áp dụng ngôn ngữ
 
-### Cách sử dụng
+### Các file liên quan
+- `FlashLightApp.java` - Lớp Application quản lý ngôn ngữ cấp ứng dụng
+- `LocaleHelper.java` - Lớp tiện ích xử lý ngôn ngữ
+- `BaseActivity.java` - Lớp cơ sở cho các Activity
+- `LanguageActivity.java` - Màn hình chọn ngôn ngữ
+- `activity_language.xml` - Layout cho màn hình chọn ngôn ngữ
 
-1. Mở ứng dụng FlashlightAi
-2. Nhấn vào biểu tượng Settings (bánh răng) ở góc trên bên phải màn hình
-3. Trong màn hình Settings, tìm và nhấn vào mục "Language" trong phần App Settings
-4. Chọn ngôn ngữ mong muốn bằng cách nhấn vào thẻ ngôn ngữ tương ứng
-   - Mỗi thẻ ngôn ngữ hiển thị lá cờ và tên ngôn ngữ
-   - Chỉ có thể chọn một ngôn ngữ tại một thời điểm
-5. Nhấn nút xác nhận (dấu ✓) ở góc trên bên phải để áp dụng thay đổi
-   - Hoặc nhấn nút quay lại (mũi tên) để hủy thay đổi
+### Xử lý đa ngôn ngữ
+- Các chuỗi văn bản được định nghĩa trong `/res/values/strings.xml`
+- Các ngôn ngữ khác được đặt trong các thư mục tương ứng `/res/values-XX/strings.xml` (XX là mã ngôn ngữ)
+- Mã ngôn ngữ được sử dụng: en, es, pt, hi, ru, ar, bn, id, vi
 
-### Lưu ý
+### Cải tiến
+- Sử dụng attachBaseContext để áp dụng ngôn ngữ từ cấp độ gốc
+- Xử lý thay đổi cấu hình với android:configChanges="locale" trong AndroidManifest
+- Áp dụng mẫu thiết kế BaseActivity để đảm bảo tính nhất quán 
 
-- Khi thay đổi ngôn ngữ, ứng dụng sẽ khởi động lại để áp dụng ngôn ngữ mới
-- Ngôn ngữ đã chọn sẽ được lưu và áp dụng mỗi khi bạn mở lại ứng dụng
-- Một số nội dung có thể không được dịch đầy đủ sang tất cả các ngôn ngữ
-- Nếu bạn gặp vấn đề với bản dịch, có thể quay trở lại tiếng Anh bằng cách chọn English 
+## Các chức năng chính
+
+### Đèn Pin (Flash)
+- Nhấn nút nguồn lớn ở giữa màn hình để bật/tắt đèn pin
+- Điều chỉnh tốc độ nhấp nháy bằng thanh trượt bên dưới
+- Sử dụng nút "Test" để kiểm tra tốc độ nhấp nháy trong 3 giây
+
+### Đèn Màn Hình (Screen Light)
+- Chọn tab "Screen" để sử dụng đèn màn hình
+- Điều chỉnh độ sáng và màu sắc theo ý thích
+- Chọn chế độ nhấp nháy hoặc SOS nếu cần
+
+### Đèn Văn Bản (Text Light)
+- Chọn tab "Text" để hiển thị văn bản trên màn hình
+- Tùy chỉnh kích thước, màu sắc và hiệu ứng cho văn bản
+- Nhập nội dung văn bản bạn muốn hiển thị
+
+## Các tính năng thông báo
+
+### Thông báo cuộc gọi
+- Bật công tắc "Flash on Call" để nhận thông báo đèn pin khi có cuộc gọi đến
+- Cần cấp quyền đọc trạng thái điện thoại khi được yêu cầu
+
+### Thông báo SMS
+- Bật công tắc "Flash on SMS" để nhận thông báo đèn pin khi có tin nhắn SMS
+- Cần cấp quyền đọc tin nhắn khi được yêu cầu
+
+## Thiết lập ứng dụng
+
+### Chế độ tối (Dark Mode)
+- Vào phần Settings, bật/tắt chế độ tối theo ý thích
+
+### Ngôn ngữ (Language)
+- Tính năng đa ngôn ngữ đã bị loại bỏ do các lỗi không khắc phục được
+- Ứng dụng hiện sử dụng ngôn ngữ mặc định của hệ thống
+
+## Khắc phục sự cố
+
+### Không bật được đèn pin
+- Kiểm tra quyền Camera đã được cấp chưa
+- Đảm bảo thiết bị của bạn có đèn flash LED
+
+### Dịch vụ thông báo không hoạt động
+- Kiểm tra quyền thích hợp đã được cấp
+- Đảm bảo ứng dụng không bị khóa trong chế độ tiết kiệm pin 
