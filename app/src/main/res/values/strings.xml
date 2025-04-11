@@ -133,4 +133,8 @@
     <string name="nav_screen">Screen Light</string>
     <string name="nav_text">Text Light</string>
     <string name="nav_settings">Settings</string>
+    <string name="flash_modes">Flash Modes</string>
+    <string name="flash_mode_hold_tip">Hold the power button to change mode</string>
+    <string name="flash_mode_tooltip">Nhấn để bật/tắt đèn. Nhấn giữ để chọn chế độ (Normal, Blink, SOS, Strobe, Disco)</string>
+    <string name="mode_set_to">Mode set to</string>
 </resources>

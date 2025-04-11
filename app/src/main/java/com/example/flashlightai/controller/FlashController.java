@@ -31,6 +31,8 @@ public class FlashController {
     
     private FlashMode currentMode = FlashMode.NORMAL;
     private int blinkFrequency = 500; // in milliseconds
+    private int discoMinDelay = 100; // Thời gian delay tối thiểu
+    private int discoMaxDelay = 500; // Thời gian delay tối đa
     
     public FlashController(Context context) {
         this.context = context;
@@ -65,8 +67,29 @@ public class FlashController {
         if (isFlashOn) {
             turnOffFlash();
         } else {
-            turnOnFlash();
+            // Khi bật đèn, sử dụng chế độ đã chọn
+            switch (currentMode) {
+                case NORMAL:
+                    turnOnFlash();
+                    break;
+                case BLINK:
+                    turnOnFlash();
+                    break;
+                case SOS:
+                    turnOnFlash();
+                    break;
+                case STROBE:
+                    turnOnFlash();
+                    break;
+                case DISCO:
+                    turnOnFlash();
+                    break;
+                default:
+                    turnOnFlash();
+                    break;
+            }
         }
+        Log.d(TAG, "toggleFlash: Flash is now " + (isFlashOn ? "ON" : "OFF") + " in mode " + currentMode);
         return isFlashOn;
     }
     
@@ -74,10 +97,75 @@ public class FlashController {
      * Turn on the flashlight
      */
     public void turnOnFlash() {
+        // Nếu đèn đã bật, không làm gì cả
+        if (isFlashOn) {
+            Log.d(TAG, "Flash is already ON, doing nothing");
+            return;
+        }
+        
         try {
-            if (cameraManager != null && cameraId != null) {
-                cameraManager.setTorchMode(cameraId, true);
-                isFlashOn = true;
+            Log.d(TAG, "Turning ON flash in mode: " + currentMode);
+            
+            // Dừng mọi hiệu ứng đang chạy
+            stopBlinking();
+            
+            // Bật đèn với chế độ thích hợp
+            switch (currentMode) {
+                case NORMAL:
+                    // Chế độ thường, chỉ bật đèn
+                    if (cameraManager != null && cameraId != null) {
+                        cameraManager.setTorchMode(cameraId, true);
+                        isFlashOn = true;
+                        Log.d(TAG, "Normal mode: flash turned ON");
+                    }
+                    break;
+                
+                case BLINK:
+                    // Đảm bảo đèn bật trước khi bắt đầu nhấp nháy
+                    if (cameraManager != null && cameraId != null) {
+                        // Bật đèn trước
+                        cameraManager.setTorchMode(cameraId, true);
+                        isFlashOn = true;
+                        // Sau đó bắt đầu chế độ nhấp nháy
+                        startBlinking(blinkFrequency);
+                        Log.d(TAG, "Blink mode started with frequency: " + blinkFrequency);
+                    }
+                    break;
+                    
+                case SOS:
+                    // Bật chế độ SOS - đảm bảo đèn bật trước
+                    if (cameraManager != null && cameraId != null) {
+                        cameraManager.setTorchMode(cameraId, true);
+                        isFlashOn = true;
+                        // Sau đó bắt đầu chế độ SOS
+                        startSOS();
+                        Log.d(TAG, "SOS mode started");
+                    }
+                    break;
+                    
+                case STROBE:
+                    // Bật chế độ stroboscope
+                    if (cameraManager != null && cameraId != null) {
+                        // Bật đèn trước
+                        cameraManager.setTorchMode(cameraId, true);
+                        isFlashOn = true;
+                        // Sau đó bắt đầu chế độ strobe
+                        startStrobe();
+                        Log.d(TAG, "Strobe mode started");
+                    }
+                    break;
+                    
+                case DISCO:
+                    // Bật chế độ disco
+                    if (cameraManager != null && cameraId != null) {
+                        // Bật đèn trước
+                        cameraManager.setTorchMode(cameraId, true);
+                        isFlashOn = true;
+                        // Sau đó bắt đầu chế độ disco
+                        startDisco();
+                        Log.d(TAG, "Disco mode started");
+                    }
+                    break;
             }
         } catch (CameraAccessException e) {
             Log.e(TAG, "Failed to turn on flash: " + e.getMessage());
@@ -88,6 +176,9 @@ public class FlashController {
      * Turn off the flashlight
      */
     public void turnOffFlash() {
+        // Dừng bất kỳ hiệu ứng nhấp nháy nào đang chạy
+        stopBlinking();
+        
         try {
             if (cameraManager != null && cameraId != null) {
                 cameraManager.setTorchMode(cameraId, false);
@@ -106,26 +197,27 @@ public class FlashController {
         // Stop any current blinking
         stopBlinking();
         
-        this.currentMode = mode;
-        
-        // Start the appropriate mode
-        switch (mode) {
-            case NORMAL:
-                // Just a regular on/off state
-                break;
-            case BLINK:
-                startBlinking(blinkFrequency);
-                break;
-            case SOS:
-                startSOS();
-                break;
-            case STROBE:
-                startStrobe();
-                break;
-            case DISCO:
-                startDisco();
-                break;
+        // Nếu đèn đang bật, tắt đèn trước khi đổi chế độ
+        boolean wasOn = isFlashOn;
+        if (wasOn) {
+            try {
+                if (cameraManager != null && cameraId != null) {
+                    cameraManager.setTorchMode(cameraId, false);
+                    isFlashOn = false;
+                }
+            } catch (CameraAccessException e) {
+                Log.e(TAG, "Failed to turn off flash when changing mode: " + e.getMessage());
+            }
         }
+        
+        // Chỉ cập nhật chế độ, không tự bật đèn
+        this.currentMode = mode;
+        Log.d(TAG, "Flash mode set to: " + mode + " (Flash is " + (isFlashOn ? "ON" : "OFF") + ")");
+        
+        // Không tự động bật lại đèn khi thay đổi chế độ
+        // if (wasOn) {
+        //     turnOnFlash();
+        // }
     }
     
     /**
@@ -145,6 +237,15 @@ public class FlashController {
      * @param frequency time in milliseconds
      */
     private void startBlinking(int frequency) {
+        // Nếu đã có runnable, dừng nó
+        if (flashRunnable != null) {
+            handler.removeCallbacks(flashRunnable);
+        }
+        
+        // Đèn flash đã được bật từ phương thức turnOnFlash(), nên không cần bật lại
+        // Log để gỡ lỗi
+        Log.d(TAG, "Blinking starting with light state: " + (isFlashOn ? "ON" : "OFF") + ", frequency: " + frequency);
+        
         flashRunnable = new Runnable() {
             @Override
             public void run() {
@@ -160,13 +261,18 @@ public class FlashController {
             }
         };
         
-        handler.post(flashRunnable);
+        handler.postDelayed(flashRunnable, frequency);
     }
     
     /**
      * Start SOS mode (... --- ...)
      */
     private void startSOS() {
+        // Nếu đã có runnable, dừng nó
+        if (flashRunnable != null) {
+            handler.removeCallbacks(flashRunnable);
+        }
+        
         final int dotDuration = 200;  // 200ms for a dot
         final int dashDuration = dotDuration * 3;  // 600ms for a dash
         final int symbolGap = dotDuration;  // 200ms between symbols
@@ -189,6 +295,10 @@ public class FlashController {
         };
         
         final int[] patternIndex = {0};
+        
+        // Đèn flash đã được bật từ phương thức turnOnFlash(), không cần bật lại ở đây
+        // Lưu ý: Bây giờ isFlashOn đã được đặt thành true trong turnOnFlash()
+        Log.d(TAG, "SOS mode starting with light state: " + (isFlashOn ? "ON" : "OFF"));
         
         flashRunnable = new Runnable() {
             @Override
@@ -214,13 +324,17 @@ public class FlashController {
             }
         };
         
-        handler.post(flashRunnable);
+        // Bắt đầu mẫu SOS sau một khoảng thời gian ngắn
+        handler.postDelayed(flashRunnable, 100);
     }
     
     /**
      * Start strobe mode (very fast blinking)
      */
     private void startStrobe() {
+        // Log để gỡ lỗi
+        Log.d(TAG, "Strobe mode starting with light state: " + (isFlashOn ? "ON" : "OFF"));
+        
         // Strobe is just very fast blinking
         startBlinking(50); // 50ms for strobe effect
     }
@@ -229,6 +343,13 @@ public class FlashController {
      * Start disco mode (random pattern and speed)
      */
     private void startDisco() {
+        if (flashRunnable != null) {
+            handler.removeCallbacks(flashRunnable);
+        }
+        
+        // Kiểm tra rằng đèn đã được bật từ phương thức turnOnFlash
+        Log.d(TAG, "Disco mode starting with light state: " + (isFlashOn ? "ON" : "OFF"));
+        
         flashRunnable = new Runnable() {
             @Override
             public void run() {
@@ -237,8 +358,8 @@ public class FlashController {
                         isFlashOn = !isFlashOn;
                         cameraManager.setTorchMode(cameraId, isFlashOn);
                         
-                        // Random delay between 100-500ms for disco effect
-                        int randomDelay = 100 + (int)(Math.random() * 400);
+                        // Random delay between discoMinDelay-discoMaxDelay ms for disco effect
+                        int randomDelay = discoMinDelay + (int)(Math.random() * (discoMaxDelay - discoMinDelay));
                         handler.postDelayed(this, randomDelay);
                     }
                 } catch (CameraAccessException e) {
@@ -248,6 +369,27 @@ public class FlashController {
         };
         
         handler.post(flashRunnable);
+    }
+    
+    /**
+     * Set the disco frequency (speed) in milliseconds
+     * @param minDelay minimum delay time in milliseconds
+     * @param maxDelay maximum delay time in milliseconds
+     */
+    public void setDiscoFrequency(int minDelay, int maxDelay) {
+        boolean isDiscoModeRunning = currentMode == FlashMode.DISCO && isFlashOn;
+        
+        // Đảm bảo minDelay luôn nhỏ hơn maxDelay và trong ngưỡng hợp lý
+        this.discoMinDelay = Math.max(50, minDelay);
+        this.discoMaxDelay = Math.max(this.discoMinDelay + 50, maxDelay);
+        
+        Log.d(TAG, "Disco frequency set to: " + this.discoMinDelay + "-" + this.discoMaxDelay + "ms");
+        
+        // Nếu đang ở chế độ disco và đèn flash đang bật, áp dụng ngay tốc độ mới
+        if (isDiscoModeRunning) {
+            stopBlinking();
+            startDisco();
+        }
     }
     
     /**

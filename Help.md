@@ -9,12 +9,14 @@
    - Khi tắt ứng dụng, đèn pin vẫn tiếp tục hoạt động nếu chưa tắt
 
 2. **Chọn Chế Độ Đèn Pin**
-   - Vuốt qua các card tính năng phía dưới để chọn chế độ đèn pin:
+   - **Mới**: Nhấn giữ nút nguồn để hiển thị menu chọn chế độ đèn pin
+   - Chọn một trong các chế độ sau từ menu popup:
      - **Normal**: Đèn sáng liên tục
      - **Blink**: Đèn nhấp nháy theo tần số có thể điều chỉnh
      - **SOS**: Đèn phát tín hiệu cứu nạn SOS theo chuẩn Morse (... --- ...)
      - **Strobe**: Đèn nhấp nháy cực nhanh
      - **Disco**: Đèn nhấp nháy ngẫu nhiên theo kiểu đèn disco
+   - Chế độ hiện tại sẽ hiển thị phía trên nút nguồn
 
 3. **Điều Chỉnh Tần Số Nhấp Nháy**
    - Khi chọn chế độ Blink, thanh trượt điều chỉnh tần số sẽ hiện ra
@@ -120,4 +122,23 @@ Màn hình chính của ứng dụng được thiết kế với giao diện đe
 ## Xử lý sự cố
 - Nếu đèn flash không hoạt động, hãy kiểm tra quyền camera trong cài đặt
 - Nếu không phát hiện cuộc gọi/tin nhắn, kiểm tra các quyền tương ứng
-- Nếu ứng dụng chạy chậm, giảm tốc độ nhấp nháy hoặc tắt một số tính năng không cần thiết 
+- Nếu ứng dụng chạy chậm, giảm tốc độ nhấp nháy hoặc tắt một số tính năng không cần thiết
+
+## Đèn Flash
+
+### Chế độ đèn
+
+1. **Normal**: Đèn flash sáng liên tục.
+2. **Blink**: Đèn flash nhấp nháy theo tần số đã cài đặt.
+3. **SOS**: Đèn flash nhấp nháy theo mẫu SOS quốc tế (... --- ...).
+4. **Strobe**: Đèn flash nhấp nháy với tốc độ rất nhanh.
+5. **Disco**: Đèn flash nhấp nháy ngẫu nhiên, tạo hiệu ứng disco.
+
+**Lưu ý quan trọng**: Khi bạn chuyển đổi giữa các chế độ đèn, đèn flash sẽ không tự động bật. Bạn cần nhấn nút nguồn (Power) để bật đèn flash sau khi đã chọn chế độ mong muốn.
+
+### Cách sử dụng
+
+1. Chọn chế độ đèn bằng cách nhấn và giữ nút nguồn
+2. Chọn chế độ từ menu hiện ra
+3. Nhấn nút nguồn để bật đèn trong chế độ đã chọn
+4. Nhấn nút nguồn lần nữa để tắt đèn 

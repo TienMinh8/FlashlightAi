@@ -187,15 +187,35 @@ public class FlashFragment extends Fragment {
         speedSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int speed = calculateSpeedValue(progress);
-                tvSpeedValue.setText(speed + "ms");
-                
                 if (serviceBound && flashlightService != null && fromUser) {
-                    // Gọi phương thức setBlinkFrequency thay vì setBlinkSpeed
                     try {
-                        flashlightService.setBlinkFrequency(speed);
+                        if (currentMode == MODE_DISCO) {
+                            // Tính toán min và max delay cho chế độ disco dựa trên giá trị speed
+                            int[] discoDelays = calculateDiscoDelays(progress);
+                            flashlightService.setDiscoFrequency(discoDelays[0], discoDelays[1]);
+                            
+                            // Cập nhật hiển thị cho người dùng
+                            tvSpeedValue.setText(discoDelays[0] + "-" + discoDelays[1] + "ms");
+                            
+                            // Cập nhật trạng thái nếu đèn đang bật
+                            if (isFlashOn) {
+                                updateStatusText();
+                            }
+                        } else {
+                            // Chế độ thường hoặc SOS sử dụng tốc độ đơn
+                            int speed = calculateSpeedValue(progress);
+                            flashlightService.setBlinkFrequency(speed);
+                            
+                            // Cập nhật hiển thị cho người dùng
+                            tvSpeedValue.setText(speed + "ms");
+                            
+                            // Cập nhật trạng thái nếu đèn đang bật
+                            if (isFlashOn) {
+                                updateStatusText();
+                            }
+                        }
                     } catch (Exception e) {
-                        // Không có phương thức này hoặc xảy ra lỗi
+                        // Xử lý lỗi nếu cần
                     }
                 }
             }
@@ -213,11 +233,7 @@ public class FlashFragment extends Fragment {
     }
     
     private void updateSpeedValueDisplay() {
-        if (speedSlider != null && tvSpeedValue != null) {
-            int progress = Math.max(1, speedSlider.getProgress());
-            int frequency = 50 + (progress * 15);
-            tvSpeedValue.setText(frequency + "ms");
-        }
+        updateSpeedDisplayForCurrentMode();
     }
     
     private void toggleFlashlight() {
@@ -251,20 +267,29 @@ public class FlashFragment extends Fragment {
                 } else if (mode == MODE_DISCO) {
                     flashMode = FlashController.FlashMode.DISCO;
                 } else {
+                    // Default mode
                     flashMode = FlashController.FlashMode.NORMAL;
                 }
-                
+
                 // Gọi phương thức đúng trong service
                 flashlightService.setFlashMode(flashMode);
+                
+                // Highlight card được chọn 
+                updateModeSelection();
+                
+                // Cập nhật trạng thái
+                updateStatusText();
+                
+                // Cập nhật hiển thị tốc độ theo chế độ mới
+                updateSpeedDisplayForCurrentMode();
             } catch (Exception e) {
                 // Phương thức không tồn tại hoặc có lỗi
             }
-            
-            // Highlight card được chọn 
-            updateModeSelection();
-            
-            // Cập nhật trạng thái
-            updateStatusText();
+        } else {
+            Context context = getContext();
+            if (context != null) {
+                Toast.makeText(context, "Dịch vụ đèn pin chưa sẵn sàng", Toast.LENGTH_SHORT).show();
+            }
         }
     }
     
@@ -326,30 +351,25 @@ public class FlashFragment extends Fragment {
     }
     
     private void updateStatusText() {
-        if (!isAdded()) {
-            return; // Không làm gì nếu fragment không còn gắn với activity
-        }
+        String modeText = "";
         
-        if (!isFlashOn) {
-            flashStatus.setText("Đèn tắt");
-            return;
-        }
-        
-        // Hiển thị trạng thái dựa vào chế độ hiện tại
         switch (currentMode) {
             case MODE_NORMAL:
-                flashStatus.setText("Đèn bật - Chế độ thường");
+                modeText = "Chế độ bình thường";
                 break;
             case MODE_SOS:
-                flashStatus.setText("Đèn SOS");
+                modeText = "Chế độ SOS (... --- ...)";
                 break;
             case MODE_DISCO:
-                flashStatus.setText("Đèn Disco");
+                int[] discoDelays = calculateDiscoDelays(speedSlider.getProgress());
+                modeText = "Chế độ Disco (" + discoDelays[0] + "-" + discoDelays[1] + "ms)";
                 break;
             default:
-                flashStatus.setText("Đèn bật");
-                break;
+                modeText = "Chế độ bình thường";
         }
+        
+        String statusText = isFlashOn ? "Đèn bật - " + modeText : "Đèn tắt";
+        flashStatus.setText(statusText);
     }
     
     private void startAndBindService() {
@@ -440,6 +460,11 @@ public class FlashFragment extends Fragment {
             
             updateFlashUI();
             updateModeSelection();
+            updateSpeedDisplayForCurrentMode();
+        }
+        
+        if (!serviceBound) {
+            startAndBindService();
         }
     }
     
@@ -473,9 +498,49 @@ public class FlashFragment extends Fragment {
         }
     }
 
+    /**
+     * Tính toán min/max delay cho chế độ disco dựa trên giá trị progress của slider
+     * @param progress giá trị progress từ thanh trượt (0-30)
+     * @return mảng int[2] với [0]=minDelay, [1]=maxDelay
+     */
+    private int[] calculateDiscoDelays(int progress) {
+        // Đảo ngược progress (30-progress) vì tốc độ cao = delay thấp
+        int invertedProgress = 30 - progress;
+        
+        // Tính các giá trị min và max delay dựa trên progress
+        // Min delay: 50ms (nhanh) đến 200ms (chậm)
+        int minDelay = 50 + (invertedProgress * 5);
+        
+        // Max delay: 150ms (nhanh) đến 600ms (chậm)
+        int maxDelay = 150 + (invertedProgress * 15);
+        
+        return new int[] {minDelay, maxDelay};
+    }
+
+    /**
+     * Tính toán giá trị tốc độ dựa trên progress
+     * @param progress giá trị từ thanh trượt (0-30)
+     * @return giá trị tốc độ nhấp nháy tính bằng ms
+     */
     private int calculateSpeedValue(int progress) {
         // Chuyển đổi giá trị từ thanh seekbar thành milliseconds
         // Giá trị thấp nhất là 50ms, cao nhất là 500ms
         return 50 + (progress * 15);
+    }
+
+    private void updateSpeedDisplayForCurrentMode() {
+        if (speedSlider != null && tvSpeedValue != null) {
+            int progress = speedSlider.getProgress();
+            
+            if (currentMode == MODE_DISCO) {
+                // Hiển thị định dạng tốc độ cho chế độ disco (hiển thị range)
+                int[] discoDelays = calculateDiscoDelays(progress);
+                tvSpeedValue.setText(discoDelays[0] + "-" + discoDelays[1] + "ms");
+            } else {
+                // Hiển thị định dạng tốc độ cho các chế độ khác
+                int speed = calculateSpeedValue(progress);
+                tvSpeedValue.setText(speed + "ms");
+            }
+        }
     }
 } 

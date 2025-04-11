@@ -40,6 +40,10 @@
 - Thêm mô tả nút nguồn với hiệu ứng phát sáng (đỏ/xanh lục)
 - Thêm chi tiết về bố cục thẻ và grid layout 2x2 cho các tính năng
 - Cập nhật API với các thành phần mới như PowerButton, FeatureCard và FlashSpeedSlider
+- Nâng cấp nút power để hỗ trợ nhiều chế độ đèn flash
+- Thêm chức năng nhấn giữ nút power để hiển thị menu chọn chế độ đèn flash (Normal, Blink, SOS, Strobe, Disco)
+- Hiển thị chế độ đèn flash hiện tại trên giao diện người dùng
+- Thêm tooltip hướng dẫn về tính năng mới khi người dùng mở ứng dụng lần đầu
 
 ### Changed
 
@@ -53,6 +57,8 @@
 - Tích hợp cảnh báo chi phí trong quy trình tạo ảnh DALL-E để tránh chi phí không cần thiết
 - Cải thiện UX của các script DALL-E với giao diện dòng lệnh thân thiện và đầy màu sắc
 - Nâng cấp dalle-workflow.mdc với hướng dẫn chi tiết về tối ưu prompt cho từng loại ảnh
+- Cập nhật tài liệu hướng dẫn trong Help.md để mô tả tính năng mới
+- Cải thiện trải nghiệm người dùng với hiển thị chế độ đèn flash rõ ràng hơn
 
 ### Deprecated
 
@@ -146,3 +152,18 @@
 - Sửa lỗi import sai đường dẫn (androidx.core.widget.SwitchCompat → androidx.appcompat.widget.SwitchCompat)
 - Sửa lỗi MissingForegroundServiceTypeException trên Android 14 (API 34) bằng cách thêm thuộc tính foregroundServiceType="camera" vào khai báo service
 - Sửa lỗi SecurityException trên Android 14 (API 34) bằng cách thêm quyền FOREGROUND_SERVICE_CAMERA vào AndroidManifest.xml
+
+## [1.2.2] - 2024-07-08
+### Thay đổi
+- Khôi phục lại các file layout đã bị xóa: activity_main.xml và fragment_home.xml
+- Cập nhật thanh điều hướng với 3 tab: Home, Flash, Settings
+- Tối ưu lại liên kết giữa HomeFragment và FlashFragment
+- Cập nhật phương thức điều chỉnh tốc độ để áp dụng trực tiếp cho chế độ disco
+- Hiển thị thông tin tốc độ phù hợp theo chế độ đèn flash đang sử dụng
+
+## [1.2.1] - 2024-07-08
+### Thay đổi
+- Chỉnh sửa cách hoạt động của chế độ đèn flash: khi chuyển sang các chế độ SOS và disco, đèn không tự bật mà cần được bật thông qua nút power.
+- Cập nhật FlashController.setFlashMode() để không tự động bật đèn khi thay đổi chế độ.
+- Cập nhật các phương thức để đảm bảo tính nhất quán khi bật đèn với các chế độ khác nhau.
+- Thêm log để dễ dàng gỡ lỗi
