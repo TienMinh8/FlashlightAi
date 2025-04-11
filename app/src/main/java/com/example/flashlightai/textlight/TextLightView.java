@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.View;
 
 /**
- * View hiển thị chữ với các hiệu ứng như chạy, nhấp nháy, đổi màu
+ * View hiển thị chữ với các hiệu ứng như chạy, đổi màu
  */
 public class TextLightView extends View {
     private static final String TAG = "TextLightView";
@@ -21,7 +21,7 @@ public class TextLightView extends View {
     // Text properties
     private String text = "";
     private Paint textPaint;
-    private float textSize = 60f;
+    private float textSize = 100f;
     private int textColor = Color.RED;
     private Typeface typeface = Typeface.DEFAULT_BOLD;
 
@@ -32,15 +32,9 @@ public class TextLightView extends View {
     private ScrollDirection scrollDirection = ScrollDirection.LEFT_TO_RIGHT;
     private boolean isScrolling = false;
 
-    // Blink properties
-    private boolean isBlinking = false;
-    private float blinkFrequency = 500f; // milliseconds
-    private float blinkAlpha = 1f;
-
     // Handler for animations
     private final Handler handler = new Handler(Looper.getMainLooper());
     private Runnable scrollRunnable;
-    private Runnable blinkRunnable;
 
     // Enum for scroll directions
     public enum ScrollDirection {
@@ -87,7 +81,6 @@ public class TextLightView extends View {
         textPaint.setTextAlign(Paint.Align.CENTER);
 
         createScrollRunnable();
-        createBlinkRunnable();
     }
 
     /**
@@ -140,29 +133,6 @@ public class TextLightView extends View {
     }
 
     /**
-     * Create runnable for blinking text
-     */
-    private void createBlinkRunnable() {
-        blinkRunnable = new Runnable() {
-            boolean visible = true;
-
-            @Override
-            public void run() {
-                if (!isBlinking) return;
-
-                visible = !visible;
-                blinkAlpha = visible ? 1f : 0f;
-
-                // Invalidate the view to redraw
-                invalidate();
-
-                // Continue animation
-                handler.postDelayed(this, (long) blinkFrequency);
-            }
-        };
-    }
-
-    /**
      * Calculate the width of text
      */
     private float getTextWidth() {
@@ -176,18 +146,13 @@ public class TextLightView extends View {
 
         if (text == null || text.isEmpty()) return;
 
-        // Set text opacity for blinking
-        int alpha = (int) (255 * blinkAlpha);
-        textPaint.setAlpha(alpha);
-
         // Calculate position based on text align and scroll position
         float x = getWidth() / 2f + scrollX;
-        float y = getHeight() / 2f + scrollY;
-
-        // Adjust y position to center text vertically
-        Rect textBounds = new Rect();
-        textPaint.getTextBounds(text, 0, text.length(), textBounds);
-        y += textBounds.height() / 2f;
+        
+        // Sử dụng Paint.FontMetrics để căn chỉnh theo chiều dọc chính xác hơn
+        Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
+        float textHeight = fontMetrics.bottom - fontMetrics.top;
+        float y = (getHeight() - textHeight) / 2f - fontMetrics.top + scrollY;
 
         // Draw text
         canvas.drawText(text, x, y, textPaint);
@@ -209,26 +174,6 @@ public class TextLightView extends View {
     public void stopScrolling() {
         isScrolling = false;
         handler.removeCallbacks(scrollRunnable);
-    }
-
-    /**
-     * Start blinking animation
-     */
-    public void startBlinking() {
-        if (isBlinking) return;
-
-        isBlinking = true;
-        handler.post(blinkRunnable);
-    }
-
-    /**
-     * Stop blinking animation
-     */
-    public void stopBlinking() {
-        isBlinking = false;
-        handler.removeCallbacks(blinkRunnable);
-        blinkAlpha = 1f;
-        invalidate();
     }
 
     /**
@@ -309,6 +254,7 @@ public class TextLightView extends View {
                 scrollY = getHeight();
             }
         } else if (direction == ScrollDirection.NONE) {
+            // Giữ chữ ở giữa màn hình khi không cuộn
             scrollX = 0;
             scrollY = 0;
             stopScrolling();
@@ -330,61 +276,37 @@ public class TextLightView extends View {
     }
 
     /**
-     * Set blink frequency
-     */
-    public void setBlinkFrequency(float frequency) {
-        this.blinkFrequency = frequency;
-    }
-
-    /**
-     * Set blinking state
-     */
-    public void setBlinking(boolean blinking) {
-        if (blinking && !isBlinking) {
-            startBlinking();
-        } else if (!blinking && isBlinking) {
-            stopBlinking();
-        }
-    }
-
-    /**
-     * Setup with settings
+     * Setup text light with all properties
      */
     public void setupTextLight(String text, float textSize, int textColor, ScrollDirection direction, 
-                              float scrollSpeed, boolean blinking, float blinkFrequency) {
-        // First stop any ongoing animations
+                              float scrollSpeed) {
+        // Stop any existing animations
         stopScrolling();
-        stopBlinking();
         
         // Set text properties
         setText(text);
         setTextSize(textSize);
         setTextColor(textColor);
         
-        // Set scrolling properties
-        this.scrollSpeed = scrollSpeed;
-        this.scrollDirection = direction;
-        
-        // Set blinking properties
-        this.blinkFrequency = blinkFrequency;
-        this.isBlinking = blinking;
+        // Set scroll properties
+        setScrollDirection(direction);
+        setScrollSpeed(scrollSpeed);
         
         // Start animations if needed
         if (direction != ScrollDirection.NONE) {
             startScrolling();
         }
         
-        if (blinking) {
-            startBlinking();
-        }
+        // Force redraw
+        invalidate();
     }
 
     /**
-     * Setup with settings using default blink frequency
+     * Overload method for compatibility
      */
     public void setupTextLight(String text, int textSize, int textColor, ScrollDirection direction, 
-                             int scrollSpeed, boolean blinking) {
-        setupTextLight(text, textSize, textColor, direction, scrollSpeed, blinking, 500f);
+                             int scrollSpeed, boolean unused) {
+        setupTextLight(text, textSize, textColor, direction, scrollSpeed);
     }
 
     @Override
@@ -393,7 +315,6 @@ public class TextLightView extends View {
         
         // Clean up animations
         stopScrolling();
-        stopBlinking();
         handler.removeCallbacksAndMessages(null);
     }
 
@@ -402,13 +323,12 @@ public class TextLightView extends View {
      */
     public void stop() {
         stopScrolling();
-        stopBlinking();
     }
     
     /**
      * Check if any animation is running
      */
     public boolean isRunning() {
-        return isScrolling || isBlinking;
+        return isScrolling;
     }
 } 

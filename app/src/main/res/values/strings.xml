@@ -114,7 +114,8 @@
     <string name="start_text">Start Text</string>
     <string name="stop_text">Stop Text</string>
     <string name="set_text_wallpaper">Set as Wallpaper</string>
-    <string name="text_light_input_hint">I LOVE YOU</string>
+    <string name="full_background">Full Background</string>
+    <string name="text_light_input_hint">Nhập văn bản để hiển thị...</string>
     <string name="text_font">Font</string>
     <string name="font_normal">Normal</string>
     <string name="font_bold">Bold</string>
@@ -123,7 +124,6 @@
     <string name="no_scroll">No Scroll</string>
     <string name="text_scroll_direction">Direction</string>
     <string name="text_scroll_speed">Speed</string>
-    <string name="blink_effect">Blink</string>
     <string name="fullscreen">Fullscreen</string>
     <string name="exit_fullscreen">Exit Fullscreen</string>
     

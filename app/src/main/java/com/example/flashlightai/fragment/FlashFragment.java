@@ -106,19 +106,28 @@ public class FlashFragment extends Fragment {
         modeNormal.setOnClickListener(v -> {
             setFlashMode(MODE_NORMAL);
             updateModeSelection(modeNormal);
-            Toast.makeText(getContext(), "Chế độ thường", Toast.LENGTH_SHORT).show();
+            Context context = getContext();
+            if (context != null) {
+                Toast.makeText(context, "Chế độ thường", Toast.LENGTH_SHORT).show();
+            }
         });
 
         modeSos.setOnClickListener(v -> {
             setFlashMode(MODE_SOS);
             updateModeSelection(modeSos);
-            Toast.makeText(getContext(), "Chế độ SOS", Toast.LENGTH_SHORT).show();
+            Context context = getContext();
+            if (context != null) {
+                Toast.makeText(context, "Chế độ SOS", Toast.LENGTH_SHORT).show();
+            }
         });
 
         modeDisco.setOnClickListener(v -> {
             setFlashMode(MODE_DISCO);
             updateModeSelection(modeDisco);
-            Toast.makeText(getContext(), "Chế độ Disco", Toast.LENGTH_SHORT).show();
+            Context context = getContext();
+            if (context != null) {
+                Toast.makeText(context, "Chế độ Disco", Toast.LENGTH_SHORT).show();
+            }
         });
 
         // Morse code buttons
@@ -142,16 +151,21 @@ public class FlashFragment extends Fragment {
         // Send Morse button
         sendMorseButton.setOnClickListener(v -> {
             String morse = morseOutput.getText().toString();
+            Context context = getContext();
             if (!morse.isEmpty()) {
                 if (serviceBound && flashlightService != null) {
                     // Gọi phương thức gửi mã Morse nếu service hỗ trợ
                     if (morseCodeUtil != null) {
                         morseCodeUtil.playMorseCode(morseInput.getText().toString(), 1.0f);
-                        Toast.makeText(getContext(), "Đang gửi mã Morse", Toast.LENGTH_SHORT).show();
+                        if (context != null) {
+                            Toast.makeText(context, "Đang gửi mã Morse", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             } else {
-                Toast.makeText(getContext(), "Vui lòng nhập văn bản", Toast.LENGTH_SHORT).show();
+                if (context != null) {
+                    Toast.makeText(context, "Vui lòng nhập văn bản", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -161,7 +175,10 @@ public class FlashFragment extends Fragment {
                 // Gọi phương thức gửi SOS nếu service hỗ trợ
                 if (morseCodeUtil != null) {
                     morseCodeUtil.playSOS(1.0f);
-                    Toast.makeText(getContext(), "Đang gửi tín hiệu SOS", Toast.LENGTH_SHORT).show();
+                    Context context = getContext();
+                    if (context != null) {
+                        Toast.makeText(context, "Đang gửi tín hiệu SOS", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -213,7 +230,10 @@ public class FlashFragment extends Fragment {
             }
             updateFlashUI();
         } else {
-            Toast.makeText(getContext(), "Đèn pin không khả dụng", Toast.LENGTH_SHORT).show();
+            Context context = getContext();
+            if (context != null) {
+                Toast.makeText(context, "Đèn pin không khả dụng", Toast.LENGTH_SHORT).show();
+            }
         }
     }
     
@@ -249,6 +269,10 @@ public class FlashFragment extends Fragment {
     }
     
     private void updateModeSelection(CardView selectedCard) {
+        if (!isAdded()) {
+            return; // Không làm gì nếu fragment không còn gắn với activity
+        }
+        
         // Reset tất cả về màu mặc định
         modeNormal.setCardBackgroundColor(getResources().getColor(R.color.mode_card_background));
         modeSos.setCardBackgroundColor(getResources().getColor(R.color.mode_card_background));
@@ -259,6 +283,10 @@ public class FlashFragment extends Fragment {
     }
     
     private void updateModeSelection() {
+        if (!isAdded()) {
+            return; // Không làm gì nếu fragment không còn gắn với activity
+        }
+        
         // Reset tất cả về màu mặc định
         modeNormal.setCardBackgroundColor(getResources().getColor(R.color.mode_card_background));
         modeSos.setCardBackgroundColor(getResources().getColor(R.color.mode_card_background));
@@ -279,6 +307,10 @@ public class FlashFragment extends Fragment {
     }
     
     private void updateFlashUI() {
+        if (!isAdded()) {
+            return; // Không làm gì nếu fragment không còn gắn với activity
+        }
+        
         if (isFlashOn) {
             // Hiệu ứng khi đèn bật
             glowEffect.setAlpha(1.0f);
@@ -294,6 +326,10 @@ public class FlashFragment extends Fragment {
     }
     
     private void updateStatusText() {
+        if (!isAdded()) {
+            return; // Không làm gì nếu fragment không còn gắn với activity
+        }
+        
         if (!isFlashOn) {
             flashStatus.setText("Đèn tắt");
             return;
@@ -317,12 +353,21 @@ public class FlashFragment extends Fragment {
     }
     
     private void startAndBindService() {
+        if (!isAdded()) {
+            return; // Không làm gì nếu fragment không còn gắn với activity
+        }
+        
+        Context context = getContext();
+        if (context == null) {
+            return; // Không làm gì nếu không có context
+        }
+        
         // Khởi động service
-        Intent intent = new Intent(requireContext(), FlashlightService.class);
-        requireContext().startService(intent);
+        Intent intent = new Intent(context, FlashlightService.class);
+        context.startService(intent);
         
         // Bind service
-        requireContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
     
     private final ServiceConnection serviceConnection = new ServiceConnection() {
@@ -371,6 +416,10 @@ public class FlashFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (!isAdded()) {
+            return; // Không làm gì nếu fragment không còn gắn với activity
+        }
+        
         if (serviceBound && flashlightService != null) {
             // Cập nhật UI theo trạng thái hiện tại của đèn
             try {
@@ -411,8 +460,15 @@ public class FlashFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         // Unbind service khi fragment bị destroy
-        if (serviceBound) {
-            requireContext().unbindService(serviceConnection);
+        if (serviceBound && isAdded()) {  // Kiểm tra fragment có được gắn vào context không
+            try {
+                Context context = getContext();
+                if (context != null) {
+                    context.unbindService(serviceConnection);
+                }
+            } catch (IllegalStateException e) {
+                // Fragment đã không còn attach vào context
+            }
             serviceBound = false;
         }
     }

@@ -6,11 +6,6 @@
         android:title="@string/flash" />
 
     <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/icon_home"
-        android:title="@string/home" />
-
-    <item
         android:id="@+id/navigation_screen"
         android:icon="@drawable/icon_screen"
         android:title="@string/screen_light" />

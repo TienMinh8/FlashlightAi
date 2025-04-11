@@ -484,15 +484,7 @@ public class ScreenLightActivity extends AppCompatActivity {
             // Thiết lập listener cho các mục
             bottomNav.setOnItemSelectedListener(item -> {
                 int itemId = item.getItemId();
-                if (itemId == R.id.navigation_home) {
-                    // Về trang chủ
-                    Intent intent = new Intent(this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                    finish();
-                    return true;
-                } else if (itemId == R.id.navigation_flash) {
+                if (itemId == R.id.navigation_flash) {
                     // Về trang đèn flash
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -507,15 +499,6 @@ public class ScreenLightActivity extends AppCompatActivity {
                 } else if (itemId == R.id.navigation_text_light) {
                     // Chuyển đến trang Text Light
                     Intent intent = new Intent(this, TextLightActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                    finish();
-                    return true;
-                } else if (itemId == R.id.navigation_settings) {
-                    // Về trang cài đặt
-                    Intent intent = new Intent(this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.putExtra("navigate_to", "settings");
                     startActivity(intent);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     finish();

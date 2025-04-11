@@ -54,6 +54,7 @@
         <activity
             android:name=".textlight.TextLightActivity"
             android:exported="false"
+            android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|screenSize" />
         
         <!-- AppSelectActivity -->
