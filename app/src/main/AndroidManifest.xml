@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Quyền sử dụng camera (cho đèn flash) -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature android:name="android.hardware.camera.flash" android:required="true" />
+    
+    <!-- Quyền theo dõi cuộc gọi và tin nhắn -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    
+    <!-- Quyền chạy foreground service - cần quyền đặc biệt cho Android 14+ -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" android:minSdkVersion="33" />
+    
+    <!-- Loại bỏ nếu không sử dụng -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
+    <application
+        android:name=".FlashLightApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.FlashLightAi"
+        tools:targetApi="31">
+        
+        <!-- MainActivity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- ScreenLightActivity -->
+        <activity
+            android:name=".screen.ScreenLightActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
+        
+        <!-- TextLightActivity -->
+        <activity
+            android:name=".textlight.TextLightActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
+        
+        <!-- AppSelectActivity -->
+        <activity
+            android:name=".AppSelectActivity"
+            android:exported="false"
+            android:label="@string/app_selection" />
+        
+        <!-- Dịch vụ đèn pin -->
+        <service
+            android:name=".service.FlashlightService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="camera" />
+        
+        <!-- Dịch vụ theo dõi thông báo -->
+        <service
+            android:name=".service.NotificationMonitorService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+        
+        <!-- Dịch vụ theo dõi thông báo (cần quyền đặc biệt, bật để sử dụng tính năng thông báo ứng dụng) -->
+        <service
+            android:name=".service.NotificationService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+        
+        <!-- Receiver cho tin nhắn SMS -->
+        <receiver android:name=".receiver.SmsReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+        
+    </application>
+
+</manifest>

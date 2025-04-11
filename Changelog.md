@@ -35,6 +35,11 @@
 - Bổ sung tham số để bỏ qua cảnh báo chi phí và lưu prompt đi kèm với ảnh đã tạo
 - Cập nhật script analyze_image.js để tối ưu hóa cho việc phân tích và tạo prompt cho ảnh vector
 - Cải thiện script vectorize_image.js với xử lý màu sắc thông minh hơn và hỗ trợ nhiều định dạng đầu vào
+- Cập nhật mô tả giao diện người dùng theo UI mẫu (ui_thamkhao.png)
+- Bổ sung chi tiết về thiết kế tổng thể, phối màu và các thành phần UI
+- Thêm mô tả nút nguồn với hiệu ứng phát sáng (đỏ/xanh lục)
+- Thêm chi tiết về bố cục thẻ và grid layout 2x2 cho các tính năng
+- Cập nhật API với các thành phần mới như PowerButton, FeatureCard và FlashSpeedSlider
 
 ### Changed
 
@@ -86,3 +91,58 @@
 ### Deprecated
 
 - Quy trình làm việc cũ không sử dụng cấu trúc "6 Docs"
+
+## 2024-04-08 - Triển khai chức năng đèn pin cốt lõi
+
+### Yêu cầu:
+- Triển khai chức năng đèn pin cốt lõi theo hướng dẫn trong Instruction.md
+
+### Thực hiện:
+- Tạo lớp `FlashController` để quản lý các chức năng đèn flash với các chế độ: 
+  - Normal (bật/tắt)
+  - Blink (nhấp nháy tùy chỉnh tần số)
+  - SOS (tín hiệu Morse)
+  - Strobe (nhấp nháy nhanh)
+  - Disco (nhấp nháy ngẫu nhiên)
+- Tạo `FlashlightService` để giữ đèn hoạt động khi ứng dụng ở chế độ nền
+- Thiết kế giao diện người dùng với:
+  - Nút nguồn lớn ở chính giữa với hiệu ứng phát sáng
+  - Card tính năng cho các chế độ đèn khác nhau
+  - Thanh trượt điều chỉnh tần số nhấp nháy
+  - Giao diện nền tối mặc định
+- Cập nhật AndroidManifest để đăng ký service và yêu cầu quyền cần thiết
+- Tổ chức code theo các thành phần riêng biệt:
+  - Controller: Quản lý đèn flash
+  - Service: Duy trì hoạt động ở chế độ nền
+  - UI: Giao diện người dùng trực quan
+
+### Tính năng đã triển khai:
+- Bật/tắt đèn flash cơ bản
+- Chế độ nhấp nháy với tần số tùy chỉnh
+- Chế độ SOS theo chuẩn Morse
+- Chế độ stroboscope
+- Chế độ nhấp nháy disco
+- Hoạt động ngay cả khi app ở chế độ background
+
+## [0.3.0] - 2023-11-XX
+### Added
+- Cập nhật giao diện với thiết kế mới hoàn chỉnh
+- Thêm các biểu tượng vector: call, sms, flash, apps, home, settings, help, menu, speed, bolt
+- Tạo layout mới cho MainActivity với cấu trúc rõ ràng:
+  - Top Bar với menu và help
+  - Nút nguồn chính ở giữa màn hình
+  - Lưới tính năng 2x2 (Cuộc gọi, SMS, Kiểu nhấp nháy, Chọn ứng dụng)
+  - Thanh điều chỉnh tốc độ nhấp nháy
+  - Thanh điều hướng phía dưới
+- Thêm các strings mới cho UI
+
+### Fixed
+- Sửa lỗi "cannot find symbol" trong MainActivity
+- Cập nhật MainActivity để phù hợp với layout mới
+- Thay thế các tham chiếu đến UI elements không còn tồn tại
+- Cập nhật logic điều khiển UI phù hợp với thiết kế mới
+- Khắc phục lỗi thiếu biến statusText
+- Sửa lỗi liên quan đến SwitchCompat
+- Sửa lỗi import sai đường dẫn (androidx.core.widget.SwitchCompat → androidx.appcompat.widget.SwitchCompat)
+- Sửa lỗi MissingForegroundServiceTypeException trên Android 14 (API 34) bằng cách thêm thuộc tính foregroundServiceType="camera" vào khai báo service
+- Sửa lỗi SecurityException trên Android 14 (API 34) bằng cách thêm quyền FOREGROUND_SERVICE_CAMERA vào AndroidManifest.xml

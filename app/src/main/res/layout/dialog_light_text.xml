@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Nhập văn bản -->
+    <EditText
+        android:id="@+id/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập văn bản cần hiển thị"
+        android:textSize="16sp"
+        android:inputType="textMultiLine"
+        android:minLines="3"
+        android:gravity="top|start"
+        android:padding="12dp"
+        android:background="@android:drawable/editbox_background" />
+
+    <!-- Nút xóa văn bản -->
+    <Button
+        android:id="@+id/btn_clear_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Xóa văn bản"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+    <!-- Kích thước văn bản -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kích thước văn bản"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+
+    <SeekBar
+        android:id="@+id/seekbar_text_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="60" />
+
+    <!-- Màu văn bản -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Màu văn bản"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btn_text_color"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Chọn màu văn bản"
+        android:backgroundTint="@android:color/white"
+        android:textColor="@android:color/black" />
+
+    <!-- Hiệu ứng văn bản -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hiệu ứng văn bản"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btn_text_effect"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Phát sáng"
+        android:layout_marginTop="4dp" />
+
+    <!-- Cuộn văn bản -->
+    <CheckBox
+        android:id="@+id/checkbox_auto_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tự động cuộn văn bản"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout> 
