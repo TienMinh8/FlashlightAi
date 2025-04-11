@@ -44,4 +44,7 @@
     <color name="blue">#2196F3</color>
     <color name="yellow">#FFEB3B</color>
     <color name="purple">#9C27B0</color>
+    
+    <!-- Rating Star Color -->
+    <color name="rating_star_yellow">#FFD700</color>  <!-- Gold color for rating stars -->
 </resources>

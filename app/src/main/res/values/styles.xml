@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Style cho RatingBar màu vàng -->
+    <style name="YellowRatingBar" parent="Widget.AppCompat.RatingBar">
+        <item name="colorControlNormal">#A9A9A9</item>  <!-- Màu xám cho sao chưa chọn -->
+        <item name="colorControlActivated">@color/rating_star_yellow</item>  <!-- Màu vàng cho sao đã chọn -->
+        <item name="android:progressTint">@color/rating_star_yellow</item>
+        <item name="android:progressBackgroundTint">#A9A9A9</item>
+    </style>
+    
+    <!-- Theme cho RatingBar màu vàng -->
+    <style name="Theme.RatingBar.Gold" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorAccent">@color/rating_star_yellow</item>
+        <item name="android:colorAccent">@color/rating_star_yellow</item>
+    </style>
+</resources> 

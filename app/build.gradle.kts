@@ -36,6 +36,7 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.activity:activity:1.8.2")
+    implementation("androidx.core:core:1.12.0")
     
     // Navigation Component
     implementation("androidx.navigation:navigation-fragment:2.7.6")

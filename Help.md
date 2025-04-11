@@ -120,4 +120,78 @@ Màn hình chính của ứng dụng được thiết kế với giao diện đe
 ## Xử lý sự cố
 - Nếu đèn flash không hoạt động, hãy kiểm tra quyền camera trong cài đặt
 - Nếu không phát hiện cuộc gọi/tin nhắn, kiểm tra các quyền tương ứng
-- Nếu ứng dụng chạy chậm, giảm tốc độ nhấp nháy hoặc tắt một số tính năng không cần thiết 
+- Nếu ứng dụng chạy chậm, giảm tốc độ nhấp nháy hoặc tắt một số tính năng không cần thiết
+
+## Tính năng Settings (Cài đặt)
+
+### Mô tả
+
+Tính năng Settings cho phép người dùng điều chỉnh các thiết lập của ứng dụng đèn pin thông minh. Người dùng có thể truy cập màn hình Settings bằng cách nhấn vào nút Settings (biểu tượng bánh răng) ở góc trên bên phải màn hình.
+
+### Các tùy chọn có sẵn
+
+1. **Notification Settings (Cài đặt thông báo)**
+   - **Call Flash Notification**: Bật/tắt đèn flash khi có cuộc gọi đến
+   - **SMS Flash Notification**: Bật/tắt đèn flash khi có tin nhắn SMS mới
+
+2. **App Settings (Cài đặt ứng dụng)**
+   - **Dark Mode**: Bật/tắt chế độ tối cho ứng dụng
+   - **Language**: Chọn ngôn ngữ ứng dụng (mở màn hình lựa chọn ngôn ngữ)
+
+3. **About (Thông tin)**
+   - **Rate this app**: Đánh giá ứng dụng trên CH Play
+   - **Share**: Chia sẻ ứng dụng với bạn bè qua các ứng dụng mạng xã hội, email, tin nhắn...
+   - **Privacy Policy**: Xem chính sách bảo mật
+   - **Terms of Use**: Xem điều khoản sử dụng
+
+### Cách sử dụng
+
+1. Mở ứng dụng FlashlightAi
+2. Nhấn vào biểu tượng Settings (bánh răng) ở góc trên bên phải màn hình
+3. Điều chỉnh các tùy chọn theo ý muốn:
+   - Kéo các công tắc để bật/tắt các tính năng như Call Flash Notification, SMS Flash Notification, Dark Mode
+   - Nhấn vào "Language" để mở màn hình lựa chọn ngôn ngữ
+   - Nhấn vào các mục trong phần About như Rate, Share, Privacy Policy, Terms of Use để thực hiện các hành động tương ứng
+4. Quay lại màn hình chính bằng cách nhấn nút Back ở góc trên bên trái màn hình
+
+### Lưu ý
+
+- Các thiết lập sẽ được lưu giữ ngay cả khi đóng ứng dụng
+- Khi chọn "Share" trong phần About, bạn có thể chia sẻ ứng dụng thông qua nhiều ứng dụng khác nhau như Facebook, Twitter, Email, Tin nhắn...
+- Một số tính năng như Rate, Privacy Policy và Terms of Use đang trong quá trình phát triển và sẽ được cập nhật trong các phiên bản tới
+- Khi thay đổi ngôn ngữ, ứng dụng sẽ khởi động lại để áp dụng thay đổi
+- Một số tính năng như thông báo đèn flash cho cuộc gọi và SMS có thể yêu cầu cấp quyền bổ sung
+
+## Tính năng Ngôn Ngữ (Language)
+
+### Mô tả
+
+Tính năng Language cho phép người dùng thay đổi ngôn ngữ hiển thị của ứng dụng. Người dùng có thể chọn từ 9 ngôn ngữ khác nhau:
+
+1. English (Tiếng Anh)
+2. Español (Tiếng Tây Ban Nha) 
+3. Português (Tiếng Bồ Đào Nha)
+4. हिन्दी (Tiếng Hindi)
+5. Русский (Tiếng Nga)
+6. العربية (Tiếng Ả Rập)
+7. বাংলা (Tiếng Bengali)
+8. Bahasa Indonesia (Tiếng Indonesia)
+9. Tiếng Việt
+
+### Cách sử dụng
+
+1. Mở ứng dụng FlashlightAi
+2. Nhấn vào biểu tượng Settings (bánh răng) ở góc trên bên phải màn hình
+3. Trong màn hình Settings, tìm và nhấn vào mục "Language" trong phần App Settings
+4. Chọn ngôn ngữ mong muốn bằng cách nhấn vào thẻ ngôn ngữ tương ứng
+   - Mỗi thẻ ngôn ngữ hiển thị lá cờ và tên ngôn ngữ
+   - Chỉ có thể chọn một ngôn ngữ tại một thời điểm
+5. Nhấn nút xác nhận (dấu ✓) ở góc trên bên phải để áp dụng thay đổi
+   - Hoặc nhấn nút quay lại (mũi tên) để hủy thay đổi
+
+### Lưu ý
+
+- Khi thay đổi ngôn ngữ, ứng dụng sẽ khởi động lại để áp dụng ngôn ngữ mới
+- Ngôn ngữ đã chọn sẽ được lưu và áp dụng mỗi khi bạn mở lại ứng dụng
+- Một số nội dung có thể không được dịch đầy đủ sang tất cả các ngôn ngữ
+- Nếu bạn gặp vấn đề với bản dịch, có thể quay trở lại tiếng Anh bằng cách chọn English 

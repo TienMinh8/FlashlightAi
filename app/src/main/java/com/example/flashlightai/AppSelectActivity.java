@@ -18,11 +18,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.flashlightai.adapter.AppAdapter;
+import com.example.flashlightai.base.BaseActivity;
 import com.example.flashlightai.model.AppItem;
 import com.example.flashlightai.service.NotificationMonitorService;
 
@@ -36,7 +36,7 @@ import java.util.Set;
 /**
  * Activity để người dùng chọn ứng dụng nhận thông báo đèn flash
  */
-public class AppSelectActivity extends AppCompatActivity {
+public class AppSelectActivity extends BaseActivity {
     private static final String TAG = "AppSelectActivity";
     private static final String ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners";
     

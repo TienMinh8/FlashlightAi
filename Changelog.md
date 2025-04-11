@@ -53,6 +53,10 @@
 - Tích hợp cảnh báo chi phí trong quy trình tạo ảnh DALL-E để tránh chi phí không cần thiết
 - Cải thiện UX của các script DALL-E với giao diện dòng lệnh thân thiện và đầy màu sắc
 - Nâng cấp dalle-workflow.mdc với hướng dẫn chi tiết về tối ưu prompt cho từng loại ảnh
+- Chuyển tính năng Settings từ fragment trong bottom navigation thành một activity riêng biệt
+- Cập nhật nút Settings trên thanh điều hướng để mở SettingsActivity
+- Đơn giản hóa menu điều hướng phía dưới, chỉ giữ lại các tính năng chính
+- Làm nhỏ gọn lại hộp thoại đánh giá với thiết kế đơn giản và nút tùy chỉnh
 
 ### Deprecated
 
@@ -64,7 +68,7 @@
 
 - Bổ sung quy trình nâng cấp APK từ project Android nguồn
 - Hỗ trợ build APK trực tiếp từ project Android với key debug
-- Cải tiến quy trình tích hợp package từ APK nguồn sang APK đích
+- Cậi tiến quy trình tích hợp package từ APK nguồn sang APK đích
 - Tài liệu hướng dẫn cho quy trình tích hợp mới
 
 ### Changed
@@ -146,3 +150,71 @@
 - Sửa lỗi import sai đường dẫn (androidx.core.widget.SwitchCompat → androidx.appcompat.widget.SwitchCompat)
 - Sửa lỗi MissingForegroundServiceTypeException trên Android 14 (API 34) bằng cách thêm thuộc tính foregroundServiceType="camera" vào khai báo service
 - Sửa lỗi SecurityException trên Android 14 (API 34) bằng cách thêm quyền FOREGROUND_SERVICE_CAMERA vào AndroidManifest.xml
+- Sửa lỗi "attribute android:clipPath not found" bằng cách thay đổi cách triển khai ngôi sao đánh giá
+- Cải thiện khả năng tương thích của RatingBar trên các phiên bản Android cũ
+- Sửa lỗi màu sắc ngôi sao đánh giá không hiển thị màu vàng như mong muốn
+- Sửa lỗi "cannot find symbol import android.graphics.ColorStateList" bằng cách sử dụng đúng package android.content.res.ColorStateList
+
+## [1.1.0] - 2023-XX-XX
+
+### Added
+- Tính năng Settings (Cài đặt) cho ứng dụng, bao gồm:
+  - Quản lý thông báo đèn flash cho cuộc gọi và SMS
+  - Tùy chọn Dark Mode (Chế độ tối)
+  - Thay đổi ngôn ngữ (Tiếng Anh/Tiếng Việt)
+  - Các tùy chọn về ứng dụng (đánh giá, chia sẻ, chính sách bảo mật, điều khoản sử dụng)
+- Thêm activity Settings riêng biệt với giao diện đồng nhất
+- Tích hợp Settings với các màn hình Screen Light và Text Light
+
+### Changed
+- Cải thiện điều hướng giữa các màn hình trong ứng dụng
+- Lưu trữ thiết lập người dùng bằng SharedPreferences
+
+### Fixed
+- Sửa lỗi khi chuyển đổi giữa các tab
+
+## [1.0.0] - 2023-XX-XX
+
+### Initial Release
+- Tính năng đèn pin cơ bản
+- Tính năng nhấp nháy và đèn SOS
+- Thông báo đèn flash cho cuộc gọi và SMS
+- Tính năng Screen Light (Đèn màn hình)
+- Tính năng Text Light (Hiển thị văn bản)
+
+## [Chưa phát hành]
+
+### Thêm mới
+- Hộp thoại đánh giá thông minh khi người dùng chọn "Rate this app"
+  - Cho phép đánh giá từ 1-5 sao và gửi góp ý
+  - Tự động chuyển đến Google Play chỉ khi đánh giá từ 4-5 sao
+  - Lưu lại phản hồi người dùng trong SharedPreferences
+  - Hiển thị ngôi sao màu vàng thay vì màu mặc định
+- Tính năng đa ngôn ngữ nâng cao với giao diện chọn ngôn ngữ riêng biệt
+  - Thay thế hình ảnh cờ vector với hình ảnh webp thực tế từ thư mục upload
+  - Cập nhật danh sách ngôn ngữ được hỗ trợ với 9 ngôn ngữ thực tế: Anh, Tây Ban Nha, Bồ Đào Nha, Hindi, Nga, Ả Rập, Bengali, Indonesia và Việt Nam
+  - Tạo LanguageActivity với giao diện chọn ngôn ngữ trực quan
+  - Hỗ trợ đa ngôn ngữ với tính năng lưu trữ cài đặt ngôn ngữ
+  - Tự động áp dụng ngôn ngữ đã chọn khi khởi động ứng dụng
+  - Cải tiến giao diện chọn ngôn ngữ với cấu trúc RadioGroup đảm bảo chỉ chọn được một ngôn ngữ
+  - Thêm nút xác nhận (dấu ✓) và nút quay lại cho màn hình chọn ngôn ngữ
+  - Tạo file strings.xml cho tiếng Việt và tiếng Tây Ban Nha để hỗ trợ đa ngôn ngữ
+
+### Thay đổi
+- Chuyển tính năng Settings từ fragment trong bottom navigation thành một activity riêng biệt
+- Cập nhật nút Settings trên thanh điều hướng để mở SettingsActivity
+- Đơn giản hóa menu điều hướng phía dưới, chỉ giữ lại các tính năng chính
+- Làm nhỏ gọn lại hộp thoại đánh giá với thiết kế đơn giản và nút tùy chỉnh
+- Nâng cấp cơ chế thay đổi ngôn ngữ từ tùy chọn đơn giản thành màn hình chọn ngôn ngữ riêng biệt
+- Cải thiện cơ chế chọn ngôn ngữ để yêu cầu xác nhận trước khi áp dụng thay đổi
+- Thay đổi danh sách ngôn ngữ được hỗ trợ từ 11 xuống còn 9 ngôn ngữ, bỏ các ngôn ngữ Korean, Japanese, German, French và Italian, thêm ngôn ngữ Russian, Arabic và Bengali
+
+### Fixed
+- Sửa lỗi "attribute android:clipPath not found" bằng cách thay đổi cách triển khai ngôi sao đánh giá
+- Cải thiện khả năng tương thích của RatingBar trên các phiên bản Android cũ
+- Sửa lỗi màu sắc ngôi sao đánh giá không hiển thị màu vàng như mong muốn
+- Sửa lỗi "cannot find symbol import android.graphics.ColorStateList" bằng cách sử dụng đúng package android.content.res.ColorStateList
+- Sửa lỗi không thể chọn các chức năng Language và các tính năng trong phần About
+- Cập nhật SettingsFragment để thêm xử lý sự kiện cho các nút trong màn hình Settings
+- Thêm chức năng chia sẻ ứng dụng qua mạng xã hội
+- Chuẩn bị nền tảng cho các tính năng đánh giá, chính sách bảo mật và điều khoản sử dụng

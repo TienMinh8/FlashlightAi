@@ -40,6 +40,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.flashlightai.base.BaseActivity;
 import com.example.flashlightai.controller.FlashController;
 import com.example.flashlightai.fragment.FlashFragment;
 import com.example.flashlightai.fragment.SettingsFragment;
@@ -47,9 +48,10 @@ import com.example.flashlightai.screen.ScreenLightActivity;
 import com.example.flashlightai.service.FlashlightService;
 import com.example.flashlightai.service.NotificationMonitorService;
 import com.example.flashlightai.textlight.TextLightActivity;
+import com.example.flashlightai.utils.PreferenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private static final int READ_PHONE_STATE_PERMISSION_REQUEST_CODE = 101;
     private static final int RECEIVE_SMS_PERMISSION_REQUEST_CODE = 102;
@@ -76,9 +78,15 @@ public class MainActivity extends AppCompatActivity {
     private boolean isTestingFlash = false;
     private Handler testHandler = new Handler();
     private Runnable testRunnable;
+    
+    // Preference Manager
+    private PreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Khởi tạo PreferenceManager
+        preferenceManager = new PreferenceManager(this);
+        
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -113,20 +121,31 @@ public class MainActivity extends AppCompatActivity {
      * Xử lý intent chuyển hướng từ các activity khác
      */
     private void handleNavigationIntent(Intent intent) {
-        if (intent != null && intent.hasExtra("navigate_to")) {
-            String navigateTo = intent.getStringExtra("navigate_to");
-            BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        if (intent != null) {
+            // Xử lý thông báo thay đổi ngôn ngữ
+            if (intent.getBooleanExtra("language_changed", false)) {
+                // Ngôn ngữ đã thay đổi, cập nhật lại toàn bộ UI
+                recreate();
+                return;
+            }
             
-            if (bottomNavigationView != null) {
-                if ("flash".equals(navigateTo)) {
-                    bottomNavigationView.setSelectedItemId(R.id.navigation_flash);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, new FlashFragment())
-                            .commit();
-                } else if ("settings".equals(navigateTo)) {
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, new SettingsFragment())
-                            .commit();
+            // Xử lý các intent điều hướng khác
+            if (intent.hasExtra("navigate_to")) {
+                String navigateTo = intent.getStringExtra("navigate_to");
+                BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+                
+                if (bottomNavigationView != null) {
+                    if ("flash".equals(navigateTo)) {
+                        bottomNavigationView.setSelectedItemId(R.id.navigation_flash);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, new FlashFragment())
+                                .commit();
+                    } else if ("settings".equals(navigateTo)) {
+                        // Thay vì thay thế fragment, mở SettingsActivity
+                        Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                        startActivity(settingsIntent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    }
                 }
             }
         }
@@ -150,10 +169,10 @@ public class MainActivity extends AppCompatActivity {
         // Settings button (previously help button)
         ImageView settingsButton = findViewById(R.id.settings_button);
         settingsButton.setOnClickListener(v -> {
-            // Open settings fragment
-            getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new SettingsFragment())
-                .commit();
+            // Mở SettingsActivity thay vì thay thế fragment
+            Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         });
         
         // Test Flash Button
@@ -262,35 +281,7 @@ public class MainActivity extends AppCompatActivity {
         });
         
         // Thiết lập BottomNavigationView
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.navigation_flash) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new FlashFragment())
-                        .commit();
-                return true;
-            } else if (itemId == R.id.navigation_screen) {
-                Intent screenIntent = new Intent(MainActivity.this, ScreenLightActivity.class);
-                startActivity(screenIntent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                return true;
-            } else if (itemId == R.id.navigation_text_light) {
-                Intent textLightIntent = new Intent(MainActivity.this, TextLightActivity.class);
-                startActivity(textLightIntent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                return true;
-            }
-            return false;
-        });
-        
-        // Mặc định load FlashFragment
-        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new FlashFragment())
-                    .commit();
-            bottomNavigationView.setSelectedItemId(R.id.navigation_flash);
-        }
+        setupBottomNavigation();
     }
     
     @Override
@@ -671,6 +662,39 @@ public class MainActivity extends AppCompatActivity {
         if (notificationServiceBound) {
             unbindService(notificationServiceConnection);
             notificationServiceBound = false;
+        }
+    }
+
+    private void setupBottomNavigation() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_flash) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new FlashFragment())
+                        .commit();
+                return true;
+            } else if (itemId == R.id.navigation_screen) {
+                Intent screenIntent = new Intent(MainActivity.this, ScreenLightActivity.class);
+                startActivity(screenIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                return true;
+            } else if (itemId == R.id.navigation_text_light) {
+                Intent textLightIntent = new Intent(MainActivity.this, TextLightActivity.class);
+                startActivity(textLightIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                return true;
+            }
+            return false;
+        });
+        
+        // Mặc định load FlashFragment
+        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new FlashFragment())
+                    .commit();
+            bottomNavigationView.setSelectedItemId(R.id.navigation_flash);
         }
     }
 }

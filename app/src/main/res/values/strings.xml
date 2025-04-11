@@ -133,4 +133,26 @@
     <string name="nav_screen">Screen Light</string>
     <string name="nav_text">Text Light</string>
     <string name="nav_settings">Settings</string>
+    
+    <!-- Rate App Dialog -->
+    <string name="rate_dialog_title">Đánh giá ứng dụng</string>
+    <string name="rate_dialog_message">Hãy đánh giá trải nghiệm của bạn với ứng dụng!</string>
+    <string name="feedback_hint">Chia sẻ ý kiến của bạn...</string>
+    <string name="feedback_prompt">Góp ý để chúng tôi cải thiện ứng dụng:</string>
+    <string name="rate_dialog_info">Đánh giá 4-5 sao sẽ được chuyển đến CH Play</string>
+    <string name="rate_dialog_submit">Gửi</string>
+    <string name="rate_dialog_cancel">Hủy</string>
+    <string name="rate_thanks_high">Cảm ơn bạn đã đánh giá!</string>
+    <string name="rate_thanks_low">Cảm ơn phản hồi của bạn! Chúng tôi sẽ cải thiện ứng dụng.</string>
+    <string name="rate_no_rating">Vui lòng đánh giá ứng dụng</string>
+    
+    <!-- Language Settings -->
+    <string name="language_changed">Language changed successfully!</string>
+    <string name="confirm">Confirm</string>
+    <string name="select_language">Select a language</string>
+    
+    <!-- New strings -->
+    <string name="coming_soon">Coming soon!</string>
+    <string name="share_via">Share via</string>
+    <string name="share_message">Check out this amazing flashlight app!</string>
 </resources>

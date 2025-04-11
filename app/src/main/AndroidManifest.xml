@@ -37,6 +37,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:configChanges="locale"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,23 +45,38 @@
             </intent-filter>
         </activity>
         
+        <!-- SettingsActivity -->
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:configChanges="locale"
+            android:screenOrientation="portrait" />
+        
+        <!-- LanguageActivity -->
+        <activity
+            android:name=".LanguageActivity"
+            android:exported="false"
+            android:configChanges="locale"
+            android:screenOrientation="portrait" />
+        
         <!-- ScreenLightActivity -->
         <activity
             android:name=".screen.ScreenLightActivity"
             android:exported="false"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize|locale" />
         
         <!-- TextLightActivity -->
         <activity
             android:name=".textlight.TextLightActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize|locale" />
         
         <!-- AppSelectActivity -->
         <activity
             android:name=".AppSelectActivity"
             android:exported="false"
+            android:configChanges="locale"
             android:label="@string/app_selection" />
         
         <!-- Dịch vụ đèn pin -->
