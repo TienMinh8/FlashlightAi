@@ -57,8 +57,10 @@
 - Tích hợp cảnh báo chi phí trong quy trình tạo ảnh DALL-E để tránh chi phí không cần thiết
 - Cải thiện UX của các script DALL-E với giao diện dòng lệnh thân thiện và đầy màu sắc
 - Nâng cấp dalle-workflow.mdc với hướng dẫn chi tiết về tối ưu prompt cho từng loại ảnh
-- Cập nhật tài liệu hướng dẫn trong Help.md để mô tả tính năng mới
-- Cải thiện trải nghiệm người dùng với hiển thị chế độ đèn flash rõ ràng hơn
+- Chuyển tính năng Settings từ fragment trong bottom navigation thành một activity riêng biệt
+- Cập nhật nút Settings trên thanh điều hướng để mở SettingsActivity
+- Đơn giản hóa menu điều hướng phía dưới, chỉ giữ lại các tính năng chính
+- Làm nhỏ gọn lại hộp thoại đánh giá với thiết kế đơn giản và nút tùy chỉnh
 
 ### Deprecated
 
@@ -70,7 +72,7 @@
 
 - Bổ sung quy trình nâng cấp APK từ project Android nguồn
 - Hỗ trợ build APK trực tiếp từ project Android với key debug
-- Cải tiến quy trình tích hợp package từ APK nguồn sang APK đích
+- Cậi tiến quy trình tích hợp package từ APK nguồn sang APK đích
 - Tài liệu hướng dẫn cho quy trình tích hợp mới
 
 ### Changed

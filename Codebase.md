@@ -7,6 +7,10 @@
 
 ### Activities
 - **MainActivity**: Activity chính của ứng dụng hiển thị giao diện điều khiển đèn pin.
+- **SettingsActivity**: Activity riêng biệt chứa các thiết lập ứng dụng
+  - onCreate(): Khởi tạo activity và nạp SettingsFragment
+  - onBackPressed(), finish(): Xử lý hiệu ứng animation khi quay lại
+  - layout: activity_settings.xml với FrameLayout để chứa fragment
 
 ### Controllers
 - **FlashController**: Quản lý trực tiếp đèn flash của thiết bị với các phương thức:
@@ -98,4 +102,83 @@ com.example.flashlightai
 
 ## Controllers & Logic
 
-// ... existing code or additional sections ...
+## SettingsFragment
+
+- Module/Package: com.example.flashlightai.fragment
+- **SettingsFragment**: Quản lý thiết lập ứng dụng
+  - onCreateView(), onViewCreated(): Tạo và cấu hình view của fragment
+  - initViews(): Khởi tạo các thành phần UI
+  - setupInitialState(): Thiết lập trạng thái ban đầu từ preferences
+  - setupEventListeners(): Thiết lập các sự kiện cho các thành phần UI
+  - showLanguageDialog(): Hiển thị dialog chọn ngôn ngữ
+  - rateApp(), shareApp(), openPrivacyPolicy(), openTermsOfUse(): Các chức năng About
+
+## PreferenceManager
+
+- Module/Package: com.example.flashlightai.utils
+- PreferenceManager (Quản lý thiết lập người dùng)
+  - setString(), getString(): Lưu trữ và lấy giá trị chuỗi
+  - setInt(), getInt(): Lưu trữ và lấy giá trị số nguyên
+  - setBoolean(), getBoolean(): Lưu trữ và lấy giá trị boolean
+  - setFloat(), getFloat(): Lưu trữ và lấy giá trị số thực
+  - setLong(), getLong(): Lưu trữ và lấy giá trị số nguyên dài
+  - remove(), clear(): Xóa một thiết lập hoặc tất cả thiết lập
+
+## MainActivity
+
+- Module/Package: com.example.flashlightai
+- MainActivity (Giao diện chính của ứng dụng)
+  - setupBottomNavigation(): Cấu hình thanh điều hướng dưới cùng, hỗ trợ tab Settings
+  - handleNavigationIntent(): Xử lý điều hướng từ các màn hình khác
+
+## Tổng quan về cấu trúc codebase
+
+### LanguageActivity
+
+**Package**: com.example.flashlightai
+
+**Chức năng chính**: Cho phép người dùng chọn và thay đổi ngôn ngữ của ứng dụng
+
+**Các thành phần chính**:
+- Quản lý UI hiển thị 9 ngôn ngữ được hỗ trợ với các thẻ thông tin
+- Xử lý sự kiện chọn ngôn ngữ thông qua RadioGroup
+- Lưu trữ ngôn ngữ đã chọn vào SharedPreferences
+- Áp dụng thay đổi ngôn ngữ cho toàn bộ ứng dụng
+- Khởi động lại MainActivity khi ngôn ngữ được thay đổi
+
+**Phương thức chính**:
+- setLocale(Context, String): Thay đổi ngôn ngữ của ứng dụng
+- applyLanguage(Context, PreferenceManager): Áp dụng ngôn ngữ đã lưu
+- confirmLanguageSelection(): Xác nhận và áp dụng ngôn ngữ đã chọn
+- updateSelectedLanguage(String): Cập nhật UI dựa trên ngôn ngữ hiện tại
+
+### SettingsFragment
+
+**Package**: com.example.flashlightai.fragment
+
+**Chức năng chính**: Hiển thị và quản lý các cài đặt của ứng dụng
+
+**Các thành phần chính**:
+- Quản lý các tùy chọn và cài đặt: thông báo, ngôn ngữ, chế độ tối
+- Xử lý các tùy chọn trong phần About: đánh giá, chia sẻ, chính sách bảo mật, điều khoản
+- Lưu trữ và áp dụng các thiết lập của người dùng
+
+**Phương thức chính**:
+- showRatingDialog(): Hiển thị hộp thoại đánh giá ứng dụng
+- shareApp(): Chia sẻ ứng dụng qua các nền tảng khác
+- showPrivacyPolicy(): Mở trang chính sách riêng tư
+- showTermsOfUse(): Mở trang điều khoản sử dụng
+
+### PreferenceManager
+
+**Package**: com.example.flashlightai.utils
+
+**Chức năng chính**: Quản lý các thiết lập và cài đặt người dùng
+
+**Phương thức chính**:
+- setString(String, String): Lưu giá trị chuỗi
+- getString(String, String): Lấy giá trị chuỗi
+- setBoolean(String, boolean): Lưu giá trị boolean
+- getBoolean(String, boolean): Lấy giá trị boolean
+- setFloat(String, float): Lưu giá trị float
+- getFloat(String, float): Lấy giá trị float

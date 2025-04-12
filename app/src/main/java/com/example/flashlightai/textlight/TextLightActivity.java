@@ -27,6 +27,8 @@ import android.widget.Toast;
 import android.widget.Switch;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.cardview.widget.CardView;
@@ -38,18 +40,20 @@ import com.example.flashlightai.MainActivity;
 import com.example.flashlightai.screen.ScreenLightActivity;
 import com.example.flashlightai.textlight.TextLightView.ScrollDirection;
 import com.example.flashlightai.utils.PreferenceManager;
+import com.example.flashlightai.SettingsActivity;
 import com.google.android.material.slider.Slider;
-import com.example.flashlightai.customviews.ColorSliderView;
-import com.example.flashlightai.customviews.ColorSliderView.OnColorSelectedListener;
-import com.example.flashlightai.customviews.ColorSliderView.OnColorChangingListener;
+
+import com.example.flashlightai.base.BaseActivity;
+
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Locale;
 
 /**
  * Activity for Text Light display feature
  */
-public class TextLightActivity extends AppCompatActivity {
+public class TextLightActivity extends BaseActivity {
     private static final String TAG = "TextLightActivity";
 
     // UI Components
@@ -515,6 +519,17 @@ public class TextLightActivity extends AppCompatActivity {
                 }
                 return false;
             });
+            
+            // Thêm nút Settings vào top bar nếu có
+            ImageButton btnSettings = findViewById(R.id.btn_settings);
+            if (btnSettings != null) {
+                btnSettings.setOnClickListener(v -> {
+                    // Mở SettingsActivity
+                    Intent intent = new Intent(this, SettingsActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                });
+            }
         }
     }
 

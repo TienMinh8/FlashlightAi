@@ -138,8 +138,83 @@
     <string name="nav_screen">Screen Light</string>
     <string name="nav_text">Text Light</string>
     <string name="nav_settings">Settings</string>
-    <string name="flash_modes">Flash Modes</string>
-    <string name="flash_mode_hold_tip">Hold the power button to change mode</string>
-    <string name="flash_mode_tooltip">Nhấn để bật/tắt đèn. Nhấn giữ để chọn chế độ (Normal, Blink, SOS, Strobe, Disco)</string>
-    <string name="mode_set_to">Mode set to</string>
+
+    
+    <!-- Rate App Dialog -->
+    <string name="rate_dialog_title">Đánh giá ứng dụng</string>
+    <string name="rate_dialog_message">Hãy đánh giá trải nghiệm của bạn với ứng dụng!</string>
+    <string name="feedback_hint">Chia sẻ ý kiến của bạn...</string>
+    <string name="feedback_prompt">Góp ý để chúng tôi cải thiện ứng dụng:</string>
+    <string name="rate_dialog_info">Đánh giá 4-5 sao sẽ được chuyển đến CH Play</string>
+    <string name="rate_dialog_submit">Gửi</string>
+    <string name="rate_dialog_cancel">Hủy</string>
+    <string name="rate_thanks_high">Cảm ơn bạn đã đánh giá!</string>
+    <string name="rate_thanks_low">Cảm ơn phản hồi của bạn! Chúng tôi sẽ cải thiện ứng dụng.</string>
+    <string name="rate_no_rating">Vui lòng đánh giá ứng dụng</string>
+    
+    <!-- Language Settings -->
+    <string name="language_changed">Language changed successfully!</string>
+    <string name="language_changed_restart">Language changed! Restarting application...</string>
+    <string name="confirm">Confirm</string>
+    <string name="select_language">Select Language</string>
+    <string name="language_cancel">Language selection cancelled</string>
+    <string name="continue_btn">Continue</string>
+    <string name="select_your_language">Please select your preferred language</string>
+    <string name="language_selected">Selected: %s</string>
+    <string name="language_confirm_title">Confirm Language</string>
+    <string name="language_confirm_message">Are you sure you want to change the language to %s?</string>
+    <string name="language_confirm_yes">Yes, Change</string>
+    <string name="language_confirm_no">Cancel</string>
+    <string name="cancel">Cancel</string>
+    
+    <!-- New strings -->
+    <string name="coming_soon">Coming soon!</string>
+    <string name="share_via">Share via</string>
+    <string name="share_message">Check out this amazing flashlight app!</string>
+    <string name="notification">Notification</string>
+    <string name="flashlight">Flashlight</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_language_selection">Select Language</string>
+    <string name="app_intro">Smart Flashlight with many features</string>
+    <string name="loading">Loading...</string>
+    <string name="search">Search</string>
+    <string name="welcome">Welcome</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="finish">Finish</string>
+    <string name="skip">Skip</string>
+    
+    <!-- Flash Fragment Sections -->
+    <string name="flash_modes">FLASH MODES</string>
+    <string name="flash_settings">FLASH SETTINGS</string>
+    <string name="normal_mode">Normal mode</string>
+    <string name="sos_mode">SOS mode</string>
+    <string name="disco_mode">Disco mode</string>
+    <string name="sending_morse_code">Sending Morse code</string>
+    <string name="please_enter_text">Please enter text</string>
+    <string name="sending_sos_signal">Sending SOS signal</string>
+    
+    <!-- Ngôn ngữ -->
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_portuguese">Português</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_indonesia">Bahasa Indonesia</string>
+    <string name="language_india">हिन्दी</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_bangladesh">বাংলা</string>
+    <string name="slow">Slow</string>
+    <string name="fast">Fast</string>
+    <string name="input_text">Input Text</string>
+    <string name="request_permissions">Yêu cầu quyền truy cập</string>
+    <string name="request_permissions_desc">Cấp quyền truy cập tin nhắn và cuộc gọi để sử dụng các tính năng thông báo đèn flash.</string>
+    <string name="permissions">Quyền truy cập</string>
+    <string name="camera_permission">Quyền camera (đèn flash)</string>
+    <string name="phone_permission">Quyền điện thoại (cuộc gọi)</string>
+    <string name="sms_permission">Quyền SMS (tin nhắn)</string>
+    <string name="permission_required">Cần cấp quyền</string>
+    <string name="permission_description">Ứng dụng cần các quyền này để hoạt động</string>
+    <string name="go_to_settings">Đi đến cài đặt</string>
 </resources>

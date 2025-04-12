@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Thiết lập style cho văn bản trong Bottom Navigation -->
-    <style name="BottomNavigationTextAppearance" parent="TextAppearance.AppCompat.Caption">
-        <item name="android:textSize">10sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:letterSpacing">0.01</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
+    <!-- Style cho RatingBar màu vàng -->
+    <style name="YellowRatingBar" parent="Widget.AppCompat.RatingBar">
+        <item name="colorControlNormal">#A9A9A9</item>  <!-- Màu xám cho sao chưa chọn -->
+        <item name="colorControlActivated">@color/rating_star_yellow</item>  <!-- Màu vàng cho sao đã chọn -->
+        <item name="android:progressTint">@color/rating_star_yellow</item>
+        <item name="android:progressBackgroundTint">#A9A9A9</item>
+    </style>
+    
+    <!-- Theme cho RatingBar màu vàng -->
+    <style name="Theme.RatingBar.Gold" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorAccent">@color/rating_star_yellow</item>
+        <item name="android:colorAccent">@color/rating_star_yellow</item>
     </style>
 </resources> 

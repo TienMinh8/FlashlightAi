@@ -26,10 +26,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.core.content.ContextCompat;
 
 import com.example.flashlightai.R;
 import com.example.flashlightai.MainActivity;
 import com.example.flashlightai.textlight.TextLightActivity;
+import com.example.flashlightai.SettingsActivity;
+import com.example.flashlightai.base.BaseActivity;
+import com.google.android.material.slider.Slider;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +41,7 @@ import java.util.List;
 /**
  * Activity để hiển thị màn hình phát sáng
  */
-public class ScreenLightActivity extends AppCompatActivity {
+public class ScreenLightActivity extends BaseActivity {
     private static final String TAG = "ScreenLightActivity";
 
     // Views
@@ -540,6 +544,17 @@ public class ScreenLightActivity extends AppCompatActivity {
                 }
                 return false;
             });
+            
+            // Thêm nút Settings vào top bar nếu có
+            ImageButton btnSettings = findViewById(R.id.btn_settings);
+            if (btnSettings != null) {
+                btnSettings.setOnClickListener(v -> {
+                    // Mở SettingsActivity
+                    Intent intent = new Intent(this, SettingsActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                });
+            }
         }
     }
 } 

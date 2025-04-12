@@ -124,19 +124,31 @@ public class FlashFragment extends Fragment {
         modeNormal.setOnClickListener(v -> {
             setFlashMode(MODE_NORMAL);
             updateModeSelection(modeNormal);
-            showToast("Chế độ thường");
+
+            Context context = getContext();
+            if (context != null) {
+                Toast.makeText(context, R.string.normal_mode, Toast.LENGTH_SHORT).show();
+            }
         });
 
         modeSos.setOnClickListener(v -> {
             setFlashMode(MODE_SOS);
             updateModeSelection(modeSos);
-            showToast("Chế độ SOS");
+
+            Context context = getContext();
+            if (context != null) {
+                Toast.makeText(context, R.string.sos_mode, Toast.LENGTH_SHORT).show();
+            }
         });
 
         modeDisco.setOnClickListener(v -> {
             setFlashMode(MODE_DISCO);
             updateModeSelection(modeDisco);
-            showToast("Chế độ Disco");
+
+            Context context = getContext();
+            if (context != null) {
+                Toast.makeText(context, R.string.disco_mode, Toast.LENGTH_SHORT).show();
+            }
         });
 
         // Morse text change listener
@@ -160,20 +172,37 @@ public class FlashFragment extends Fragment {
         sendMorseButton.setOnClickListener(v -> {
             String morse = morseOutput.getText().toString();
             if (!morse.isEmpty()) {
-                if (serviceBound && flashlightService != null && morseCodeUtil != null) {
-                    morseCodeUtil.playMorseCode(morseInput.getText().toString(), 1.0f);
-                    showToast("Đang gửi mã Morse");
+
+                if (serviceBound && flashlightService != null) {
+                    // Gọi phương thức gửi mã Morse nếu service hỗ trợ
+                    if (morseCodeUtil != null) {
+                        morseCodeUtil.playMorseCode(morseInput.getText().toString(), 1.0f);
+                        if (context != null) {
+                            Toast.makeText(context, R.string.sending_morse_code, Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
             } else {
-                showToast("Vui lòng nhập văn bản");
+                if (context != null) {
+                    Toast.makeText(context, R.string.please_enter_text, Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
         // SOS button
         sosButton.setOnClickListener(v -> {
-            if (serviceBound && flashlightService != null && morseCodeUtil != null) {
-                morseCodeUtil.playSOS(1.0f);
-                showToast("Đang gửi tín hiệu SOS");
+
+            if (serviceBound && flashlightService != null) {
+                // Gọi phương thức gửi SOS nếu service hỗ trợ
+                if (morseCodeUtil != null) {
+                    morseCodeUtil.playSOS(1.0f);
+                    Context context = getContext();
+                    if (context != null) {
+                        Toast.makeText(context, R.string.sending_sos_signal, Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
         });
 

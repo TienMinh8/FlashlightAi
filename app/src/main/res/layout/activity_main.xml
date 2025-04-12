@@ -409,6 +409,23 @@
                         android:layout_height="24dp" />
 
                 </LinearLayout>
+
+                <!-- Request Permissions Button -->
+                <Button
+                    android:id="@+id/btn_request_permissions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/btn_primary"
+                    android:padding="12dp"
+                    android:text="@string/request_permissions"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </FrameLayout>

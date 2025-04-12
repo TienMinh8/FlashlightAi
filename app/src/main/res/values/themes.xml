@@ -3,6 +3,7 @@
     <style name="Base.Theme.FlashLightAi" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="ratingBarStyle">@style/YellowRatingBar</item>
     </style>
 
     <style name="Theme.FlashLightAi" parent="Base.Theme.FlashLightAi" />
