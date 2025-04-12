@@ -112,6 +112,16 @@ public class MainActivity extends AppCompatActivity {
         // Start and bind to the service
         startAndBindService();
         
+        // Thiết lập bottom navigation
+        setupBottomNavigation();
+        
+        // Mặc định hiển thị FlashFragment làm trang chủ
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new FlashFragment())
+                .commit();
+        }
+        
         // Xử lý intent khi được mở từ các Activity khác
         handleNavigationIntent(getIntent());
         
@@ -128,6 +138,39 @@ public class MainActivity extends AppCompatActivity {
     }
     
     /**
+     * Thiết lập điều hướng cho Bottom Navigation
+     */
+    private void setupBottomNavigation() {
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        if (bottomNav != null) {
+            // Đặt mục Flash được chọn mặc định
+            bottomNav.setSelectedItemId(R.id.navigation_flash);
+            
+            // Thiết lập listener cho bottom navigation
+            bottomNav.setOnItemSelectedListener(item -> {
+                int itemId = item.getItemId();
+                if (itemId == R.id.navigation_flash) {
+                    getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new FlashFragment())
+                        .commit();
+                    return true;
+                } else if (itemId == R.id.navigation_screen) {
+                    Intent intent = new Intent(this, ScreenLightActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    return false; // Không thay đổi item được chọn trong bottom nav
+                } else if (itemId == R.id.navigation_text_light) {
+                    Intent intent = new Intent(this, TextLightActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    return false; // Không thay đổi item được chọn trong bottom nav
+                }
+                return false;
+            });
+        }
+    }
+    
+    /**
      * Xử lý intent được gửi đến khi đã ở trong ứng dụng
      */
     private void handleNavigationIntent(Intent intent) {
@@ -140,18 +183,12 @@ public class MainActivity extends AppCompatActivity {
         
         if (bottomNavigationView != null) {
             String navigateTo = intent.getStringExtra("navigate_to");
-            if ("home".equals(navigateTo)) {
-                bottomNavigationView.setSelectedItemId(R.id.navigation_home);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new HomeFragment())
-                        .commit();
-            } else if ("flash".equals(navigateTo)) {
+            if ("flash".equals(navigateTo)) {
                 bottomNavigationView.setSelectedItemId(R.id.navigation_flash);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, new FlashFragment())
                         .commit();
             } else if ("settings".equals(navigateTo)) {
-                bottomNavigationView.setSelectedItemId(R.id.navigation_settings);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, new SettingsFragment())
                         .commit();

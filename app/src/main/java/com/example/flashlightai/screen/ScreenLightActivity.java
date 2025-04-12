@@ -48,6 +48,8 @@ public class ScreenLightActivity extends AppCompatActivity {
     private ImageButton btnColor;
     private ImageButton btnEffect;
     private SeekBar brightnessSeekBar;
+    private TextView colorPreview;
+    private com.example.flashlightai.customviews.ColorSliderView colorSlider;
 
     // Trạng thái
     private boolean controlsVisible = true;
@@ -107,9 +109,14 @@ public class ScreenLightActivity extends AppCompatActivity {
         btnColor = findViewById(R.id.btn_color);
         btnEffect = findViewById(R.id.btn_effect);
         brightnessSeekBar = findViewById(R.id.brightness_seekbar);
+        colorPreview = findViewById(R.id.color_preview);
+        colorSlider = findViewById(R.id.color_slider);
         
         // Cài đặt giá trị ban đầu cho brightness seekbar
         brightnessSeekBar.setProgress(100); // 100%
+        
+        // Cài đặt màu ban đầu cho color slider
+        updateColorPreview(currentColor);
     }
     
     /**
@@ -119,8 +126,52 @@ public class ScreenLightActivity extends AppCompatActivity {
         // Nút đóng - kết thúc activity
         btnClose.setOnClickListener(v -> finish());
         
-        // Nút chọn màu
-        btnColor.setOnClickListener(v -> showColorPicker());
+        // Nút chọn màu (giờ đã có color slider nên nút này thay đổi vai trò)
+        btnColor.setOnClickListener(v -> {
+            // Hiện/ẩn phần ColorSlider
+            View colorSelection = findViewById(R.id.color_selection);
+            if (colorSelection != null) {
+                boolean isVisible = colorSelection.getVisibility() == View.VISIBLE;
+                colorSelection.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+                
+                // Cập nhật icon của nút
+                btnColor.setImageResource(isVisible ? 
+                    android.R.drawable.ic_menu_edit : 
+                    android.R.drawable.ic_menu_close_clear_cancel);
+            }
+        });
+        
+        // Sự kiện cho ColorSlider - thay thế cho ColorPickerDialog
+        colorSlider.setOnColorChangingListener(color -> {
+            // Cập nhật màu khi người dùng đang kéo
+            currentColor = color;
+            updateColorPreview(color);
+            
+            // Cập nhật màu cho ScreenLightView
+            if (screenLightView != null) {
+                float brightness = brightnessSeekBar.getProgress() / 100f;
+                int displayColor = adjustColorBrightness(color, brightness);
+                screenLightView.setColor(displayColor);
+            }
+        });
+        
+        colorSlider.setOnColorSelectedListener(color -> {
+            // Cập nhật màu khi người dùng chọn xong
+            currentColor = color;
+            updateColorPreview(color);
+            
+            // Cập nhật màu cho ScreenLightView
+            if (screenLightView != null) {
+                float brightness = brightnessSeekBar.getProgress() / 100f;
+                int displayColor = adjustColorBrightness(color, brightness);
+                screenLightView.setColor(displayColor);
+                
+                // Thông báo cho controller
+                if (screenLightController != null) {
+                    screenLightController.setScreenColor(displayColor);
+                }
+            }
+        });
         
         // Nút chọn hiệu ứng
         btnEffect.setOnClickListener(v -> showEffectPicker());
@@ -248,39 +299,47 @@ public class ScreenLightActivity extends AppCompatActivity {
      * Hiển thị color picker
      */
     private void showColorPicker() {
-        // Tạo color picker
-        ColorPicker colorPicker = new ColorPicker(this);
-        colorPicker.setSelectedColor(currentColor);
-        colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
-            @Override
-            public void onColorSelected(int color) {
-                currentColor = color;
-                
-                // Chỉ áp dụng màu cho màn hình, không đổi màu nút
-                // btnColor.setBackgroundColor(color); - Loại bỏ dòng này
-                
-                // Áp dụng màu cho màn hình
-                if (currentEffect == LightEffectsManager.EffectType.SOLID) {
-                    // Nếu đang ở chế độ đơn sắc, cập nhật màu ngay
-                    LightEffectsManager.EffectConfig config = new LightEffectsManager.EffectConfig();
-                    config.put("color", color);
-                    screenLightView.updateEffectConfig(config);
-                } else {
-                    // Nếu đang ở chế độ khác, chuyển về SOLID
-                    LightEffectsManager.EffectConfig config = new LightEffectsManager.EffectConfig();
-                    config.put("color", color);
-                    screenLightView.startLightEffect(LightEffectsManager.EffectType.SOLID, config);
-                    currentEffect = LightEffectsManager.EffectType.SOLID;
-                }
-                
-                // Thiết lập màu cho toàn màn hình
-                screenLightView.setBackgroundColor(color);
-                screenLightController.setScreenColor(color);
+        // Ẩn/hiện phần chọn màu
+        View colorSelection = findViewById(R.id.color_selection);
+        if (colorSelection != null) {
+            boolean isVisible = colorSelection.getVisibility() == View.VISIBLE;
+            colorSelection.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+            
+            // Cập nhật icon của nút
+            if (btnColor != null) {
+                btnColor.setImageResource(isVisible ? 
+                    android.R.drawable.ic_menu_edit : 
+                    android.R.drawable.ic_menu_close_clear_cancel);
             }
-        });
+        }
+    }
+    
+    /**
+     * Cập nhật hiển thị màu
+     */
+    private void updateColorPreview(int color) {
+        // Cập nhật màu nền cho color preview
+        if (colorPreview != null) {
+            colorPreview.setBackgroundColor(color);
+            
+            // Đảm bảo chữ "A" luôn hiển thị với màu tương phản
+            boolean isDark = isColorDark(color);
+            int textColor = isDark ? Color.WHITE : Color.BLACK;
+            colorPreview.setTextColor(textColor);
+        }
         
-        // Hiển thị dialog
-        colorPicker.showColorPickerDialog();
+        // Cập nhật màu cho color slider
+        if (colorSlider != null) {
+            colorSlider.setSelectedColor(color);
+        }
+    }
+    
+    /**
+     * Kiểm tra xem màu có tối không
+     */
+    private boolean isColorDark(int color) {
+        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
+        return darkness >= 0.5;
     }
     
     /**

@@ -71,7 +71,7 @@ public class TextLightActivity extends AppCompatActivity {
     private boolean isRunning = false;
     private boolean isFullscreen = false;
     private PreferenceManager preferenceManager;
-    private int scrollSpeed = 50;
+    private int scrollSpeed = 10;
     private int textSize = 100;
     private TextLightView.ScrollDirection scrollDirection = TextLightView.ScrollDirection.RIGHT_TO_LEFT;
     private TextView colorPreview;
@@ -130,11 +130,8 @@ public class TextLightActivity extends AppCompatActivity {
         speedSeekBar = findViewById(R.id.scroll_speed_seekbar);
         sizeSeekBar = findViewById(R.id.text_size_seekbar);
         
-        // Giới hạn giá trị tối đa của seekbar size là 150
-        sizeSeekBar.setMax(150);
-        
-        tvSpeedValue = findViewById(R.id.tv_speed_value);
-        tvSizeValue = findViewById(R.id.tv_size_value);
+        // Giới hạn giá trị tối đa của seekbar size là 200
+        sizeSeekBar.setMax(200);
         
         settingsPanel = findViewById(R.id.settings_panel);
 
@@ -143,10 +140,10 @@ public class TextLightActivity extends AppCompatActivity {
         colorSlider = findViewById(R.id.color_slider);
 
         // Thiết lập giá trị mặc định
-        speedSeekBar.setProgress(50);
-        sizeSeekBar.setProgress(100);
-        updateSpeedText(50);
-        updateSizeText(100);
+        speedSeekBar.setProgress(10);
+        sizeSeekBar.setProgress(160);
+        updateSpeedText(10);
+        updateSizeText(160);
         
         // Thêm touch listener cho layout chính để ẩn bàn phím khi người dùng chạm vào ngoài EditText
         View rootView = findViewById(android.R.id.content);
@@ -212,7 +209,7 @@ public class TextLightActivity extends AppCompatActivity {
         // Listener cho seekbar size
         sizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             // Giới hạn kích thước tối đa cùng với max của seekbar
-            private final int MAX_TEXT_SIZE = 150;
+            private final int MAX_TEXT_SIZE = 200;
             
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -347,9 +344,9 @@ public class TextLightActivity extends AppCompatActivity {
     private void restoreLastSettings() {
         // Lấy cài đặt từ lần sử dụng trước đó
         String lastText = preferenceManager.getString("text_light_text", "");
-        float speedValue = preferenceManager.getFloat("text_light_speed", 50f);
+        float speedValue = preferenceManager.getFloat("text_light_speed", 10f);
         int lastSpeed = (int)speedValue;
-        int lastSize = preferenceManager.getInt("text_light_size", 100);
+        int lastSize = preferenceManager.getInt("text_light_size", 160);
         int lastColor = preferenceManager.getInt("text_light_color", Color.WHITE);
         
         // Thiết lập các giá trị
@@ -384,8 +381,6 @@ public class TextLightActivity extends AppCompatActivity {
             
             // Cập nhật nút
             btnStart.setText(R.string.exit_fullscreen);
-            
-            Toast.makeText(this, "Nhấn vào màn hình để thoát chế độ toàn màn hình", Toast.LENGTH_SHORT).show();
             
             // Thêm listener để bắt touch event và thoát full screen
             textLightView.setOnClickListener(v -> toggleFullscreen());
@@ -476,9 +471,10 @@ public class TextLightActivity extends AppCompatActivity {
         scrollDirection = TextLightView.ScrollDirection.RIGHT_TO_LEFT;
         
         // Cập nhật TextLightView với tham số mới
+        // Nhân kích thước với 3 để kích thước 1 = 3px
         textLightView.setupTextLight(
             text,
-            textSize, 
+            textSize * 3, 
             currentTextColor,
             scrollDirection,
             scrollSpeed
@@ -666,7 +662,7 @@ public class TextLightActivity extends AppCompatActivity {
             etInputText.setText(text);
         }
         
-        // Sử dụng kích thước đã lưu
+        // Sử dụng kích thước với hệ số nhân 3 để kích thước 1 = 3px
         int enhancedTextSize = textSize * 3;
         
         // Khởi động chữ chạy

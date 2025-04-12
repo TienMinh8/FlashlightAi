@@ -21,6 +21,7 @@
     
     <!-- Mode Card Colors -->
     <color name="mode_card_background">#1A2E4A</color>
+    <color name="mode_card_normal">#1A2E4A</color>
     <color name="mode_card_selected">#0D47A1</color>
     
     <!-- Status Colors -->
@@ -44,4 +45,12 @@
     <color name="blue">#2196F3</color>
     <color name="yellow">#FFEB3B</color>
     <color name="purple">#9C27B0</color>
+    
+    <!-- Transparent Colors -->
+    <color name="transparent">#00000000</color>
+    <color name="black_10">#33000000</color>
+    <color name="white_10">#33FFFFFF</color>
+    <color name="white_20">#4DFFFFFF</color>
+    <color name="white_30">#66FFFFFF</color>
+    <color name="white_40">#80FFFFFF</color>
 </resources>

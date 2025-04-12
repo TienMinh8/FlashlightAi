@@ -110,6 +110,11 @@
     <string name="flash_off">Flash Off</string>
     <string name="permission_denied">Permission denied. The flashlight will not work.</string>
     
+    <!-- Flash Status Messages -->
+    <string name="mode_normal_active">Normal mode active: %d ms</string>
+    <string name="mode_sos_active">SOS signal mode active</string>
+    <string name="mode_disco_active">Disco mode active: %1$d-%2$d ms</string>
+    
     <!-- Text Light Activity -->
     <string name="start_text">Start Text</string>
     <string name="stop_text">Stop Text</string>

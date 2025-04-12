@@ -21,7 +21,7 @@ public class TextLightView extends View {
     // Text properties
     private String text = "";
     private Paint textPaint;
-    private float textSize = 100f;
+    private float textSize = 160f;
     private int textColor = Color.RED;
     private Typeface typeface = Typeface.DEFAULT_BOLD;
 
