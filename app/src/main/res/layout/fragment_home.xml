@@ -28,6 +28,7 @@
 
                 <!-- Power Button Group with Glow Effect -->
                 <FrameLayout
+                    android:id="@+id/card_flash"
                     android:layout_width="148dp"
                     android:layout_height="148dp"
                     android:layout_marginTop="16dp"
@@ -72,7 +73,7 @@
 
                 <!-- Call Notification -->
                 <LinearLayout
-                    android:id="@+id/call_notification_container"
+                    android:id="@+id/card_notifications"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/feature_item_bg"
@@ -147,7 +148,7 @@
 
                 <!-- App Selection -->
                 <LinearLayout
-                    android:id="@+id/app_selection_container"
+                    android:id="@+id/card_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -194,7 +195,7 @@
 
                 <!-- Flashing Speed -->
                 <LinearLayout
-                    android:id="@+id/speed_container"
+                    android:id="@+id/card_screen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

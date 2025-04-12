@@ -15,12 +15,15 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +48,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.flashlightai.base.BaseActivity;
 import com.example.flashlightai.controller.FlashController;
 import com.example.flashlightai.fragment.FlashFragment;
+import com.example.flashlightai.fragment.HomeFragment;
 import com.example.flashlightai.fragment.SettingsFragment;
 import com.example.flashlightai.screen.ScreenLightActivity;
 import com.example.flashlightai.service.FlashlightService;
@@ -53,10 +57,14 @@ import com.example.flashlightai.textlight.TextLightActivity;
 import com.example.flashlightai.utils.PreferenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+
 public class MainActivity extends BaseActivity {
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private static final int READ_PHONE_STATE_PERMISSION_REQUEST_CODE = 101;
     private static final int RECEIVE_SMS_PERMISSION_REQUEST_CODE = 102;
+    
+    private static final String PREF_NAME = "FlashlightPrefs";
+    private static final String KEY_FIRST_RUN = "firstRun";
     
     // UI Elements
     private ImageButton powerButton;
@@ -66,6 +74,7 @@ public class MainActivity extends BaseActivity {
     private TextView btnSelectApps;
     private TextView statusText;
     private TextView tvSpeedValue;
+    private TextView flashModeText;
     
     // Service
     private FlashlightService flashlightService;
@@ -92,9 +101,14 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        
+        // Thiết lập chế độ ẩn thanh điều hướng, giữ màn hình luôn sáng
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        setFullScreenMode();
+        
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0); // Xóa padding bottom
             return insets;
         });
         
@@ -107,8 +121,21 @@ public class MainActivity extends BaseActivity {
         // Start and bind to the service
         startAndBindService();
         
+        // Thiết lập bottom navigation
+        setupBottomNavigation();
+        
+        // Mặc định hiển thị FlashFragment làm trang chủ
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new FlashFragment())
+                .commit();
+        }
+        
         // Xử lý intent khi được mở từ các Activity khác
         handleNavigationIntent(getIntent());
+        
+        // Show tooltip for first-time users
+        showFlashModeTooltipIfNeeded();
     }
     
     @Override
@@ -120,28 +147,60 @@ public class MainActivity extends BaseActivity {
     }
     
     /**
-     * Xử lý intent chuyển hướng từ các activity khác
+     * Thiết lập điều hướng cho Bottom Navigation
+     */
+    private void setupBottomNavigation() {
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        if (bottomNav != null) {
+            // Đặt mục Flash được chọn mặc định
+            bottomNav.setSelectedItemId(R.id.navigation_flash);
+            
+            // Thiết lập listener cho bottom navigation
+            bottomNav.setOnItemSelectedListener(item -> {
+                int itemId = item.getItemId();
+                if (itemId == R.id.navigation_flash) {
+                    getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new FlashFragment())
+                        .commit();
+                    return true;
+                } else if (itemId == R.id.navigation_screen) {
+                    Intent intent = new Intent(this, ScreenLightActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    return false; // Không thay đổi item được chọn trong bottom nav
+                } else if (itemId == R.id.navigation_text_light) {
+                    Intent intent = new Intent(this, TextLightActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    return false; // Không thay đổi item được chọn trong bottom nav
+                }
+                return false;
+            });
+        }
+    }
+    
+    /**
+     * Xử lý intent được gửi đến khi đã ở trong ứng dụng
      */
     private void handleNavigationIntent(Intent intent) {
-        if (intent != null) {
-            // Xử lý các intent điều hướng
-            if (intent.hasExtra("navigate_to")) {
-                String navigateTo = intent.getStringExtra("navigate_to");
-                BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-                
-                if (bottomNavigationView != null) {
-                    if ("flash".equals(navigateTo)) {
-                        bottomNavigationView.setSelectedItemId(R.id.navigation_flash);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container, new FlashFragment())
-                                .commit();
-                    } else if ("settings".equals(navigateTo)) {
-                        // Thay vì thay thế fragment, mở SettingsActivity
-                        Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
-                        startActivity(settingsIntent);
-                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                    }
-                }
+        // Kiểm tra intent
+        if (intent == null || !intent.hasExtra("navigate_to")) {
+            return;
+        }
+        
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        
+        if (bottomNavigationView != null) {
+            String navigateTo = intent.getStringExtra("navigate_to");
+            if ("flash".equals(navigateTo)) {
+                bottomNavigationView.setSelectedItemId(R.id.navigation_flash);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new FlashFragment())
+                        .commit();
+            } else if ("settings".equals(navigateTo)) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new SettingsFragment())
+                        .commit();
             }
         }
     }
@@ -154,12 +213,19 @@ public class MainActivity extends BaseActivity {
         // Update references to new UI elements
         btnSelectApps = findViewById(R.id.btn_select_apps);
         speedSlider = findViewById(R.id.speed_slider);
+        flashModeText = findViewById(R.id.flash_mode_text);
         
         // Tạo text view tạm thời để hiển thị trạng thái
         statusText = new TextView(this);
         
         // Set up click listeners
         powerButton.setOnClickListener(v -> toggleFlash());
+        
+        // Set up long click listener cho power button
+        powerButton.setOnLongClickListener(v -> {
+            showFlashModePopup();
+            return true; // Consume the long click event
+        });
         
         // Settings button (previously help button)
         ImageView settingsButton = findViewById(R.id.settings_button);
@@ -318,6 +384,7 @@ public class MainActivity extends BaseActivity {
                 // Mở trực tiếp cài đặt ứng dụng để người dùng cấp quyền thủ công
                 openAppSettings();
             });
+
         }
         
         // Thiết lập BottomNavigationView
@@ -555,11 +622,25 @@ public class MainActivity extends BaseActivity {
             // Tạo hiệu ứng nhấn nút
             animatePowerButtonClick();
             
-            // Toggle flash state
-            flashlightService.toggleFlash();
+            // Toggle flash và lấy trạng thái mới
+            boolean newState = flashlightService.toggleFlash();
             
-            // Update UI
-            isFlashOn = !isFlashOn;
+            // Hiển thị phản hồi về trạng thái mới
+            String statusMsg;
+            if (newState) {
+                statusMsg = getString(R.string.flash_on);
+                if (currentMode != FlashController.FlashMode.NORMAL) {
+                    statusMsg += " - " + getFlashModeText(currentMode);
+                }
+            } else {
+                statusMsg = getString(R.string.flash_off);
+            }
+            
+            // Hiển thị thông báo ngắn về trạng thái mới
+            Toast.makeText(this, statusMsg, Toast.LENGTH_SHORT).show();
+            
+            // Cập nhật trạng thái và UI
+            isFlashOn = newState;
             updateFlashUI();
         }
     }
@@ -596,21 +677,110 @@ public class MainActivity extends BaseActivity {
     
     private void setFlashMode(FlashController.FlashMode mode) {
         if (serviceBound) {
+            // Ghi nhớ chế độ mới
             currentMode = mode;
-            flashlightService.setFlashMode(mode);
-            updateUIForCurrentMode();
             
-            // Turn on flash if it's not already on
-            if (!isFlashOn) {
-                isFlashOn = true;
-                updateFlashUI();
-            }
+            // Thiết lập chế độ mới nhưng không tự bật đèn
+            flashlightService.setFlashMode(mode);
+            
+            // Lấy trạng thái đèn hiện tại từ service sau khi đặt chế độ
+            isFlashOn = flashlightService.isFlashOn();
+            
+            // Hiển thị thông báo chế độ mới đã được thiết lập
+            Toast.makeText(this, getString(R.string.mode_set_to) + " " + getFlashModeText(mode), 
+                          Toast.LENGTH_SHORT).show();
+            
+            // Cập nhật UI
+            updateUIForCurrentMode();
+            updateFlashUI();
         }
     }
     
+    /**
+     * Hiển thị popup menu để chọn chế độ đèn flash
+     */
+    private void showFlashModePopup() {
+        // Inflate the popup layout
+        View popupView = getLayoutInflater().inflate(R.layout.flash_mode_popup, null);
+        
+        // Create popup window
+        PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                true // focusable
+        );
+        
+        // Set elevation for popup (for Android 5.0+)
+        popupWindow.setElevation(10);
+        
+        // Set click listeners for mode buttons
+        popupView.findViewById(R.id.btn_mode_normal).setOnClickListener(v -> {
+            setFlashMode(FlashController.FlashMode.NORMAL);
+            popupWindow.dismiss();
+        });
+        
+        popupView.findViewById(R.id.btn_mode_blink).setOnClickListener(v -> {
+            setFlashMode(FlashController.FlashMode.BLINK);
+            popupWindow.dismiss();
+        });
+        
+        popupView.findViewById(R.id.btn_mode_sos).setOnClickListener(v -> {
+            setFlashMode(FlashController.FlashMode.SOS);
+            popupWindow.dismiss();
+        });
+        
+        popupView.findViewById(R.id.btn_mode_strobe).setOnClickListener(v -> {
+            setFlashMode(FlashController.FlashMode.STROBE);
+            popupWindow.dismiss();
+        });
+        
+        popupView.findViewById(R.id.btn_mode_disco).setOnClickListener(v -> {
+            setFlashMode(FlashController.FlashMode.DISCO);
+            popupWindow.dismiss();
+        });
+        
+        // Show at center of power button
+        popupWindow.showAtLocation(powerButton, Gravity.CENTER, 0, 0);
+        
+        // Show a brief toast with instructions for future use
+        Toast.makeText(this, R.string.flash_mode_hold_tip, Toast.LENGTH_SHORT).show();
+    }
+    
+    /**
+     * Update UI for current mode
+     */
     private void updateUIForCurrentMode() {
-        // Implementation no longer needed since we've changed the UI design
-        // Will be replaced with the new UI update logic for flash modes
+        // Select the appropriate text based on current mode
+        String modeText;
+        switch (currentMode) {
+            case NORMAL:
+                modeText = getString(R.string.normal);
+                break;
+            case BLINK:
+                modeText = getString(R.string.blink);
+                break;
+            case SOS:
+                modeText = getString(R.string.sos);
+                break;
+            case STROBE:
+                modeText = getString(R.string.strobe);
+                break;
+            case DISCO:
+                modeText = getString(R.string.disco);
+                break;
+            default:
+                modeText = getString(R.string.normal);
+                break;
+        }
+        
+        // Update the flash mode text view
+        if (flashModeText != null) {
+            flashModeText.setText(modeText);
+        }
+        
+        // Show the current mode in a toast
+        Toast.makeText(this, modeText, Toast.LENGTH_SHORT).show();
     }
     
     private void updateFlashUI() {
@@ -628,6 +798,12 @@ public class MainActivity extends BaseActivity {
             rotateAnimator.setDuration(400);
             rotateAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
             rotateAnimator.start();
+            
+            // Show the flash mode text
+            if (flashModeText != null) {
+                flashModeText.setText(getFlashModeText(currentMode));
+                flashModeText.setVisibility(View.VISIBLE);
+            }
         } else {
             // Update UI for flash off
             powerButton.setBackgroundResource(R.drawable.power_button_bg);
@@ -643,6 +819,11 @@ public class MainActivity extends BaseActivity {
                 }
             });
             fadeOut.start();
+            
+            // Hide the flash mode text
+            if (flashModeText != null) {
+                flashModeText.setVisibility(View.INVISIBLE);
+            }
         }
     }
     

@@ -52,7 +52,6 @@ public class FlashFragment extends Fragment {
     private TextView morseOutput;
     private Button sendMorseButton;
     private Button sosButton;
-    private boolean isMorseVisible = false;
 
     // Service
     private FlashlightService flashlightService;
@@ -71,29 +70,48 @@ public class FlashFragment extends Fragment {
         startAndBindService();
         return rootView;
     }
+    
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        
+        // Khởi động với trạng thái mặc định
+        updateSpeedDisplayForCurrentMode();
+        updateModeSelection();
+    }
 
     private void initViews(View view) {
-        // Khởi tạo các thành phần UI
-        powerButton = view.findViewById(R.id.power_button);
-        glowEffect = view.findViewById(R.id.glow_effect);
-        speedSlider = view.findViewById(R.id.speed_slider);
-        tvSpeedValue = view.findViewById(R.id.tv_speed_value);
-        flashStatus = view.findViewById(R.id.flash_status);
-        
-        // Card chế độ
-        modeNormal = view.findViewById(R.id.mode_normal);
-        modeSos = view.findViewById(R.id.mode_sos);
-        modeDisco = view.findViewById(R.id.mode_disco);
-        
-        // Morse code views
-        morseContainer = view.findViewById(R.id.morse_container);
-        morseInput = view.findViewById(R.id.et_morse_input);
-        morseOutput = view.findViewById(R.id.tv_morse_output);
-        sendMorseButton = view.findViewById(R.id.btn_send_morse);
-        sosButton = view.findViewById(R.id.btn_sos);
-        
-        // Thiết lập listeners
-        setupListeners();
+        try {
+            // Khởi tạo các thành phần UI
+            powerButton = view.findViewById(R.id.power_button);
+            glowEffect = view.findViewById(R.id.glow_effect);
+            speedSlider = view.findViewById(R.id.speed_slider);
+            tvSpeedValue = view.findViewById(R.id.tv_speed_value);
+            flashStatus = view.findViewById(R.id.flash_status);
+            
+            // Card chế độ
+            modeNormal = view.findViewById(R.id.mode_normal);
+            modeSos = view.findViewById(R.id.mode_sos);
+            modeDisco = view.findViewById(R.id.mode_disco);
+            
+            // Morse code views
+            morseContainer = view.findViewById(R.id.morse_container);
+            morseInput = view.findViewById(R.id.et_morse_input);
+            morseOutput = view.findViewById(R.id.tv_morse_output);
+            sendMorseButton = view.findViewById(R.id.btn_send_morse);
+            sosButton = view.findViewById(R.id.btn_sos);
+            
+            // Thiết lập listeners
+            setupListeners();
+            
+            // Khởi tạo trạng thái
+            updateModeSelection(modeNormal);
+        } catch (Exception e) {
+            Context context = getContext();
+            if (context != null) {
+                Toast.makeText(context, "Lỗi khởi tạo giao diện: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
     
     private void setupListeners() {
@@ -106,6 +124,7 @@ public class FlashFragment extends Fragment {
         modeNormal.setOnClickListener(v -> {
             setFlashMode(MODE_NORMAL);
             updateModeSelection(modeNormal);
+
             Context context = getContext();
             if (context != null) {
                 Toast.makeText(context, R.string.normal_mode, Toast.LENGTH_SHORT).show();
@@ -115,6 +134,7 @@ public class FlashFragment extends Fragment {
         modeSos.setOnClickListener(v -> {
             setFlashMode(MODE_SOS);
             updateModeSelection(modeSos);
+
             Context context = getContext();
             if (context != null) {
                 Toast.makeText(context, R.string.sos_mode, Toast.LENGTH_SHORT).show();
@@ -124,13 +144,13 @@ public class FlashFragment extends Fragment {
         modeDisco.setOnClickListener(v -> {
             setFlashMode(MODE_DISCO);
             updateModeSelection(modeDisco);
+
             Context context = getContext();
             if (context != null) {
                 Toast.makeText(context, R.string.disco_mode, Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Morse code buttons
         // Morse text change listener
         morseInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -151,8 +171,8 @@ public class FlashFragment extends Fragment {
         // Send Morse button
         sendMorseButton.setOnClickListener(v -> {
             String morse = morseOutput.getText().toString();
-            Context context = getContext();
             if (!morse.isEmpty()) {
+
                 if (serviceBound && flashlightService != null) {
                     // Gọi phương thức gửi mã Morse nếu service hỗ trợ
                     if (morseCodeUtil != null) {
@@ -166,11 +186,13 @@ public class FlashFragment extends Fragment {
                 if (context != null) {
                     Toast.makeText(context, R.string.please_enter_text, Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
         // SOS button
         sosButton.setOnClickListener(v -> {
+
             if (serviceBound && flashlightService != null) {
                 // Gọi phương thức gửi SOS nếu service hỗ trợ
                 if (morseCodeUtil != null) {
@@ -180,6 +202,7 @@ public class FlashFragment extends Fragment {
                         Toast.makeText(context, R.string.sending_sos_signal, Toast.LENGTH_SHORT).show();
                     }
                 }
+
             }
         });
 
@@ -187,15 +210,35 @@ public class FlashFragment extends Fragment {
         speedSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int speed = calculateSpeedValue(progress);
-                tvSpeedValue.setText(speed + "ms");
-                
                 if (serviceBound && flashlightService != null && fromUser) {
-                    // Gọi phương thức setBlinkFrequency thay vì setBlinkSpeed
                     try {
-                        flashlightService.setBlinkFrequency(speed);
+                        if (currentMode == MODE_DISCO) {
+                            // Tính toán min và max delay cho chế độ disco
+                            int[] discoDelays = calculateDiscoDelays(progress);
+                            flashlightService.setDiscoFrequency(discoDelays[0], discoDelays[1]);
+                            
+                            // Cập nhật hiển thị
+                            tvSpeedValue.setText(discoDelays[0] + "-" + discoDelays[1] + "ms");
+                            
+                            // Cập nhật trạng thái
+                            if (isFlashOn) {
+                                updateStatusText();
+                            }
+                        } else {
+                            // Chế độ thường hoặc SOS
+                            int speed = calculateSpeedValue(progress);
+                            flashlightService.setBlinkFrequency(speed);
+                            
+                            // Cập nhật hiển thị
+                            tvSpeedValue.setText(speed + "ms");
+                            
+                            // Cập nhật trạng thái
+                            if (isFlashOn) {
+                                updateStatusText();
+                            }
+                        }
                     } catch (Exception e) {
-                        // Không có phương thức này hoặc xảy ra lỗi
+                        showToast("Lỗi cập nhật tốc độ: " + e.getMessage());
                     }
                 }
             }
@@ -208,207 +251,210 @@ public class FlashFragment extends Fragment {
         });
     }
     
-    private void toggleMorseContainer() {
-        // Hiển thị container (không cần thiết nữa vì phần Morse luôn hiển thị trong ScrollView)
+    private void showToast(String message) {
+        Context context = getContext();
+        if (context != null) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        }
     }
     
     private void updateSpeedValueDisplay() {
-        if (speedSlider != null && tvSpeedValue != null) {
-            int progress = Math.max(1, speedSlider.getProgress());
-            int frequency = 50 + (progress * 15);
-            tvSpeedValue.setText(frequency + "ms");
-        }
+        updateSpeedDisplayForCurrentMode();
     }
     
     private void toggleFlashlight() {
         if (flashlightService != null) {
             try {
                 isFlashOn = flashlightService.toggleFlash();
+                updateFlashUI();
             } catch (Exception e) {
-                // Phương thức không tồn tại hoặc có lỗi
-                isFlashOn = !isFlashOn;
+                showToast("Lỗi bật/tắt đèn pin: " + e.getMessage());
             }
-            updateFlashUI();
         } else {
-            Context context = getContext();
-            if (context != null) {
-                Toast.makeText(context, "Đèn pin không khả dụng", Toast.LENGTH_SHORT).show();
-            }
+            showToast("Dịch vụ đèn pin chưa sẵn sàng, vui lòng thử lại");
+            startAndBindService();
         }
     }
     
     private void setFlashMode(int mode) {
         if (serviceBound && flashlightService != null) {
-            // Cập nhật mode
-            currentMode = mode;
             try {
-                // Chuyển đổi int mode sang FlashMode
+                currentMode = mode;
+                
+                // Chuyển đổi từ mode của fragment sang mode của FlashController
                 FlashController.FlashMode flashMode;
-                if (mode == MODE_NORMAL) {
-                    flashMode = FlashController.FlashMode.NORMAL;
-                } else if (mode == MODE_SOS) {
-                    flashMode = FlashController.FlashMode.SOS;
-                } else if (mode == MODE_DISCO) {
-                    flashMode = FlashController.FlashMode.DISCO;
-                } else {
-                    flashMode = FlashController.FlashMode.NORMAL;
+                switch (mode) {
+                    case MODE_SOS:
+                        flashMode = FlashController.FlashMode.SOS;
+                        break;
+                    case MODE_DISCO:
+                        flashMode = FlashController.FlashMode.DISCO;
+                        break;
+                    case MODE_NORMAL:
+                    default:
+                        flashMode = FlashController.FlashMode.NORMAL;
+                        break;
                 }
                 
-                // Gọi phương thức đúng trong service
+                // Cập nhật chế độ trong service
                 flashlightService.setFlashMode(flashMode);
+                
+                // Cập nhật hiển thị tốc độ và trạng thái
+                updateSpeedDisplayForCurrentMode();
+                
+                // Cập nhật trạng thái nếu đèn đang bật
+                if (isFlashOn) {
+                    updateStatusText();
+                }
             } catch (Exception e) {
-                // Phương thức không tồn tại hoặc có lỗi
+                showToast("Lỗi đổi chế độ: " + e.getMessage());
             }
-            
-            // Highlight card được chọn 
-            updateModeSelection();
-            
-            // Cập nhật trạng thái
-            updateStatusText();
+        } else {
+            showToast("Dịch vụ đèn pin chưa sẵn sàng, vui lòng thử lại");
+            startAndBindService();
         }
     }
     
     private void updateModeSelection(CardView selectedCard) {
-        if (!isAdded()) {
-            return; // Không làm gì nếu fragment không còn gắn với activity
+        // Đặt tất cả card về trạng thái không được chọn
+        if (modeNormal != null) modeNormal.setCardBackgroundColor(getResources().getColor(R.color.mode_card_normal));
+        if (modeSos != null) modeSos.setCardBackgroundColor(getResources().getColor(R.color.mode_card_normal));
+        if (modeDisco != null) modeDisco.setCardBackgroundColor(getResources().getColor(R.color.mode_card_normal));
+        
+        // Đặt card được chọn
+        if (selectedCard != null) {
+            selectedCard.setCardBackgroundColor(getResources().getColor(R.color.mode_card_selected));
         }
-        
-        // Reset tất cả về màu mặc định
-        modeNormal.setCardBackgroundColor(getResources().getColor(R.color.mode_card_background));
-        modeSos.setCardBackgroundColor(getResources().getColor(R.color.mode_card_background));
-        modeDisco.setCardBackgroundColor(getResources().getColor(R.color.mode_card_background));
-        
-        // Highlight card được chọn
-        selectedCard.setCardBackgroundColor(getResources().getColor(R.color.mode_card_selected));
     }
     
     private void updateModeSelection() {
-        if (!isAdded()) {
-            return; // Không làm gì nếu fragment không còn gắn với activity
-        }
-        
-        // Reset tất cả về màu mặc định
-        modeNormal.setCardBackgroundColor(getResources().getColor(R.color.mode_card_background));
-        modeSos.setCardBackgroundColor(getResources().getColor(R.color.mode_card_background));
-        modeDisco.setCardBackgroundColor(getResources().getColor(R.color.mode_card_background));
-        
-        // Highlight card được chọn
+        // Cập nhật hiển thị card được chọn dựa trên chế độ hiện tại
         switch (currentMode) {
-            case MODE_NORMAL:
-                modeNormal.setCardBackgroundColor(getResources().getColor(R.color.mode_card_selected));
-                break;
             case MODE_SOS:
-                modeSos.setCardBackgroundColor(getResources().getColor(R.color.mode_card_selected));
+                updateModeSelection(modeSos);
                 break;
             case MODE_DISCO:
-                modeDisco.setCardBackgroundColor(getResources().getColor(R.color.mode_card_selected));
+                updateModeSelection(modeDisco);
+                break;
+            case MODE_NORMAL:
+            default:
+                updateModeSelection(modeNormal);
                 break;
         }
     }
     
     private void updateFlashUI() {
-        if (!isAdded()) {
-            return; // Không làm gì nếu fragment không còn gắn với activity
-        }
-        
         if (isFlashOn) {
-            // Hiệu ứng khi đèn bật
-            glowEffect.setAlpha(1.0f);
-            powerButton.setImageResource(R.drawable.power_on_icon);
+            // Đèn đang bật
+            if (glowEffect != null) {
+                glowEffect.setVisibility(View.VISIBLE);
+            }
+            
+            if (powerButton != null) {
+                powerButton.setImageResource(R.drawable.power_on_icon);
+            }
+            
+            // Hiển thị trạng thái
+            updateStatusText();
         } else {
-            // Hiệu ứng khi đèn tắt
-            glowEffect.setAlpha(0.0f);
-            powerButton.setImageResource(R.drawable.power_icon);
+            // Đèn đang tắt
+            if (glowEffect != null) {
+                glowEffect.setVisibility(View.INVISIBLE);
+            }
+            
+            if (powerButton != null) {
+                powerButton.setImageResource(R.drawable.power_off_icon);
+            }
+            
+            // Xóa trạng thái
+            if (flashStatus != null) {
+                flashStatus.setText(R.string.flash_off);
+            }
         }
-        
-        // Cập nhật trạng thái
-        updateStatusText();
     }
     
     private void updateStatusText() {
-        if (!isAdded()) {
-            return; // Không làm gì nếu fragment không còn gắn với activity
-        }
-        
-        if (!isFlashOn) {
-            flashStatus.setText("Đèn tắt");
-            return;
-        }
-        
-        // Hiển thị trạng thái dựa vào chế độ hiện tại
-        switch (currentMode) {
-            case MODE_NORMAL:
-                flashStatus.setText("Đèn bật - Chế độ thường");
-                break;
-            case MODE_SOS:
-                flashStatus.setText("Đèn SOS");
-                break;
-            case MODE_DISCO:
-                flashStatus.setText("Đèn Disco");
-                break;
-            default:
-                flashStatus.setText("Đèn bật");
-                break;
+        if (flashStatus != null) {
+            String statusText;
+            switch (currentMode) {
+                case MODE_SOS:
+                    statusText = getString(R.string.mode_sos_active);
+                    break;
+                case MODE_DISCO:
+                    int[] delays = calculateDiscoDelays(speedSlider.getProgress());
+                    statusText = getString(R.string.mode_disco_active, delays[0], delays[1]);
+                    break;
+                case MODE_NORMAL:
+                default:
+                    int speed = calculateSpeedValue(speedSlider.getProgress());
+                    statusText = getString(R.string.mode_normal_active, speed);
+                    break;
+            }
+            flashStatus.setText(statusText);
         }
     }
     
     private void startAndBindService() {
-        if (!isAdded()) {
-            return; // Không làm gì nếu fragment không còn gắn với activity
+        try {
+            // Khởi tạo và kết nối đến service
+            Context context = getContext();
+            if (context != null) {
+                Intent serviceIntent = new Intent(context, FlashlightService.class);
+                context.startService(serviceIntent);
+                context.bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+            }
+        } catch (Exception e) {
+            showToast("Lỗi kết nối đến dịch vụ đèn pin: " + e.getMessage());
         }
-        
-        Context context = getContext();
-        if (context == null) {
-            return; // Không làm gì nếu không có context
-        }
-        
-        // Khởi động service
-        Intent intent = new Intent(context, FlashlightService.class);
-        context.startService(intent);
-        
-        // Bind service
-        context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
     
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            FlashlightService.LocalBinder binder = (FlashlightService.LocalBinder) service;
-            flashlightService = binder.getService();
-            serviceBound = true;
-            
-            // Đồng bộ UI với trạng thái hiện tại của service
             try {
-                isFlashOn = flashlightService.isFlashOn();
-            } catch (Exception e) {
-                isFlashOn = false;
-            }
-            
-            // Lấy mode hiện tại từ service nếu có
-            try {
-                FlashController.FlashMode serviceMode = flashlightService.getCurrentMode();
-                if (serviceMode == FlashController.FlashMode.NORMAL) {
-                    currentMode = MODE_NORMAL;
-                } else if (serviceMode == FlashController.FlashMode.SOS) {
-                    currentMode = MODE_SOS;
-                } else if (serviceMode == FlashController.FlashMode.DISCO) {
-                    currentMode = MODE_DISCO;
+                FlashlightService.LocalBinder binder = (FlashlightService.LocalBinder) service;
+                flashlightService = binder.getService();
+                serviceBound = true;
+                
+                // Đồng bộ trạng thái với service
+                if (flashlightService != null) {
+                    // Khởi tạo Morse util
+                    morseCodeUtil = new MorseCodeUtil(flashlightService);
+                    
+                    // Lấy trạng thái hiện tại từ service
+                    isFlashOn = flashlightService.isFlashOn();
+                    
+                    // Lấy chế độ hiện tại từ service
+                    FlashController.FlashMode serviceMode = flashlightService.getCurrentMode();
+                    if (serviceMode != null) {
+                        // Chuyển đổi từ FlashController.FlashMode sang mode của fragment
+                        switch (serviceMode) {
+                            case SOS:
+                                currentMode = MODE_SOS;
+                                break;
+                            case DISCO:
+                                currentMode = MODE_DISCO;
+                                break;
+                            case NORMAL:
+                            default:
+                                currentMode = MODE_NORMAL;
+                                break;
+                        }
+                    }
+                    
+                    // Cập nhật UI để phản ánh trạng thái hiện tại
+                    updateModeSelection();
+                    updateFlashUI();
+                    updateSpeedValueDisplay();
                 }
             } catch (Exception e) {
-                // Mode không thay đổi
-            }
-            
-            updateFlashUI();
-            updateModeSelection();
-            
-            // Khởi tạo MorseCodeUtil
-            if (flashlightService != null) {
-                morseCodeUtil = new MorseCodeUtil(flashlightService);
+                showToast("Lỗi kết nối đến dịch vụ: " + e.getMessage());
             }
         }
         
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            flashlightService = null;
             serviceBound = false;
         }
     };
@@ -416,66 +462,126 @@ public class FlashFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!isAdded()) {
-            return; // Không làm gì nếu fragment không còn gắn với activity
-        }
-        
-        if (serviceBound && flashlightService != null) {
-            // Cập nhật UI theo trạng thái hiện tại của đèn
-            try {
-                isFlashOn = flashlightService.isFlashOn();
-                
-                // Lấy mode hiện tại từ service nếu có
-                FlashController.FlashMode serviceMode = flashlightService.getCurrentMode();
-                if (serviceMode == FlashController.FlashMode.NORMAL) {
-                    currentMode = MODE_NORMAL;
-                } else if (serviceMode == FlashController.FlashMode.SOS) {
-                    currentMode = MODE_SOS;
-                } else if (serviceMode == FlashController.FlashMode.DISCO) {
-                    currentMode = MODE_DISCO;
-                }
-            } catch (Exception e) {
-                // Không có phương thức hoặc xảy ra lỗi
+        try {
+            // Kết nối lại với service nếu cần
+            if (!serviceBound && flashlightService == null) {
+                startAndBindService();
             }
             
-            updateFlashUI();
-            updateModeSelection();
+            // Lấy trạng thái hiện tại
+            if (serviceBound && flashlightService != null) {
+                isFlashOn = flashlightService.isFlashOn();
+                FlashController.FlashMode mode = flashlightService.getCurrentMode();
+                
+                // Đồng bộ chế độ
+                if (mode != null) {
+                    switch (mode) {
+                        case SOS:
+                            currentMode = MODE_SOS;
+                            break;
+                        case DISCO:
+                            currentMode = MODE_DISCO;
+                            break;
+                        case NORMAL:
+                        default:
+                            currentMode = MODE_NORMAL;
+                            break;
+                    }
+                }
+                
+                // Cập nhật UI
+                updateModeSelection();
+                updateFlashUI();
+                updateSpeedDisplayForCurrentMode();
+            }
+        } catch (Exception e) {
+            showToast("Lỗi khi khôi phục trạng thái: " + e.getMessage());
         }
     }
     
     @Override
     public void onPause() {
         super.onPause();
-        
-        // Dừng đèn flash nếu đang chạy chế độ đặc biệt
-        if (serviceBound && flashlightService != null) {
-            // Có thể gọi phương thức stopSpecialMode nếu service có
-            if (morseCodeUtil != null && morseCodeUtil.isPlaying()) {
-                morseCodeUtil.stopMorseCode();
-            }
+        try {
+            // Không cần tắt đèn flash khi chuyển qua fragment khác
+            // Chỉ giải phóng tài nguyên nếu cần
+            
+            // Giữ flashlightService và serviceBound không thay đổi
+            // để khi quay lại có thể sử dụng lại trạng thái
+        } catch (Exception e) {
+            // Ghi log nếu cần
         }
     }
     
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Unbind service khi fragment bị destroy
-        if (serviceBound && isAdded()) {  // Kiểm tra fragment có được gắn vào context không
-            try {
-                Context context = getContext();
-                if (context != null) {
-                    context.unbindService(serviceConnection);
-                }
-            } catch (IllegalStateException e) {
-                // Fragment đã không còn attach vào context
+        try {
+            // Hủy kết nối đến service nếu đang kết nối
+            Context context = getContext();
+            if (serviceBound && context != null) {
+                context.unbindService(serviceConnection);
+                serviceBound = false;
             }
-            serviceBound = false;
+            
+            // Xóa tham chiếu đến các view
+            rootView = null;
+            powerButton = null;
+            glowEffect = null;
+            speedSlider = null;
+            tvSpeedValue = null;
+            flashStatus = null;
+            modeNormal = null;
+            modeSos = null;
+            modeDisco = null;
+            morseContainer = null;
+            morseInput = null;
+            morseOutput = null;
+            sendMorseButton = null;
+            sosButton = null;
+        } catch (Exception e) {
+            // Ghi log nếu cần
         }
     }
-
+    
+    private int[] calculateDiscoDelays(int progress) {
+        // Giá trị mặc định
+        int minDelay = 100;
+        int maxDelay = 500;
+        
+        // Tùy chỉnh dựa trên progress
+        if (progress <= 10) {
+            // Chậm
+            minDelay = 300;
+            maxDelay = 700;
+        } else if (progress <= 20) {
+            // Trung bình
+            minDelay = 150;
+            maxDelay = 450;
+        } else {
+            // Nhanh
+            minDelay = 50;
+            maxDelay = 250;
+        }
+        
+        return new int[]{minDelay, maxDelay};
+    }
+    
     private int calculateSpeedValue(int progress) {
-        // Chuyển đổi giá trị từ thanh seekbar thành milliseconds
-        // Giá trị thấp nhất là 50ms, cao nhất là 500ms
-        return 50 + (progress * 15);
+        // Từ 0-30 thành 500-50ms (sử dụng ánh xạ tuyến tính)
+        return 500 - ((progress * 450) / 30);
+    }
+    
+    private void updateSpeedDisplayForCurrentMode() {
+        if (speedSlider != null && tvSpeedValue != null) {
+            int progress = speedSlider.getProgress();
+            if (currentMode == MODE_DISCO) {
+                int[] delays = calculateDiscoDelays(progress);
+                tvSpeedValue.setText(delays[0] + "-" + delays[1] + "ms");
+            } else {
+                int speed = calculateSpeedValue(progress);
+                tvSpeedValue.setText(speed + "ms");
+            }
+        }
     }
 } 

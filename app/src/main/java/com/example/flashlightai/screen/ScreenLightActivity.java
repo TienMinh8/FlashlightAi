@@ -49,10 +49,11 @@ public class ScreenLightActivity extends BaseActivity {
     private ScreenLightController screenLightController;
     private View controlPanel;
     private ImageButton btnClose;
-    private ImageButton btnSettings;
     private ImageButton btnColor;
     private ImageButton btnEffect;
     private SeekBar brightnessSeekBar;
+    private TextView colorPreview;
+    private com.example.flashlightai.customviews.ColorSliderView colorSlider;
 
     // Trạng thái
     private boolean controlsVisible = true;
@@ -71,13 +72,7 @@ public class ScreenLightActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         
         // Sử dụng full screen
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN);
+        setFullScreenMode();
         
         setContentView(R.layout.activity_screen_light);
         
@@ -100,19 +95,32 @@ public class ScreenLightActivity extends BaseActivity {
     }
     
     /**
+     * Thiết lập chế độ full screen
+     */
+    private void setFullScreenMode() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+    }
+    
+    /**
      * Khởi tạo các views
      */
     private void initViews() {
         screenLightView = findViewById(R.id.screen_light_view);
         controlPanel = findViewById(R.id.control_panel);
         btnClose = findViewById(R.id.btn_close);
-        btnSettings = findViewById(R.id.btn_settings);
         btnColor = findViewById(R.id.btn_color);
         btnEffect = findViewById(R.id.btn_effect);
         brightnessSeekBar = findViewById(R.id.brightness_seekbar);
+        colorPreview = findViewById(R.id.color_preview);
+        colorSlider = findViewById(R.id.color_slider);
         
         // Cài đặt giá trị ban đầu cho brightness seekbar
         brightnessSeekBar.setProgress(100); // 100%
+        
+        // Cài đặt màu ban đầu cho color slider
+        updateColorPreview(currentColor);
     }
     
     /**
@@ -122,11 +130,52 @@ public class ScreenLightActivity extends BaseActivity {
         // Nút đóng - kết thúc activity
         btnClose.setOnClickListener(v -> finish());
         
-        // Nút cài đặt
-        btnSettings.setOnClickListener(v -> showSettingsDialog());
+        // Nút chọn màu (giờ đã có color slider nên nút này thay đổi vai trò)
+        btnColor.setOnClickListener(v -> {
+            // Hiện/ẩn phần ColorSlider
+            View colorSelection = findViewById(R.id.color_selection);
+            if (colorSelection != null) {
+                boolean isVisible = colorSelection.getVisibility() == View.VISIBLE;
+                colorSelection.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+                
+                // Cập nhật icon của nút
+                btnColor.setImageResource(isVisible ? 
+                    android.R.drawable.ic_menu_edit : 
+                    android.R.drawable.ic_menu_close_clear_cancel);
+            }
+        });
         
-        // Nút chọn màu
-        btnColor.setOnClickListener(v -> showColorPicker());
+        // Sự kiện cho ColorSlider - thay thế cho ColorPickerDialog
+        colorSlider.setOnColorChangingListener(color -> {
+            // Cập nhật màu khi người dùng đang kéo
+            currentColor = color;
+            updateColorPreview(color);
+            
+            // Cập nhật màu cho ScreenLightView
+            if (screenLightView != null) {
+                float brightness = brightnessSeekBar.getProgress() / 100f;
+                int displayColor = adjustColorBrightness(color, brightness);
+                screenLightView.setColor(displayColor);
+            }
+        });
+        
+        colorSlider.setOnColorSelectedListener(color -> {
+            // Cập nhật màu khi người dùng chọn xong
+            currentColor = color;
+            updateColorPreview(color);
+            
+            // Cập nhật màu cho ScreenLightView
+            if (screenLightView != null) {
+                float brightness = brightnessSeekBar.getProgress() / 100f;
+                int displayColor = adjustColorBrightness(color, brightness);
+                screenLightView.setColor(displayColor);
+                
+                // Thông báo cho controller
+                if (screenLightController != null) {
+                    screenLightController.setScreenColor(displayColor);
+                }
+            }
+        });
         
         // Nút chọn hiệu ứng
         btnEffect.setOnClickListener(v -> showEffectPicker());
@@ -143,6 +192,32 @@ public class ScreenLightActivity extends BaseActivity {
                         // Cập nhật brightness
                         if (screenLightController != null) {
                             screenLightController.setBrightness(safeBrightnessValue);
+                        }
+                        
+                        // Trực tiếp điều chỉnh độ sáng của màn hình
+                        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+                        layoutParams.screenBrightness = safeBrightnessValue / 100f;
+                        getWindow().setAttributes(layoutParams);
+                        
+                        // Cập nhật màu sắc của ScreenLightView dựa trên độ sáng 
+                        // nhưng chỉ khi đang ở chế độ SOLID
+                        if (screenLightView != null) {
+                            float brightness = safeBrightnessValue / 100f;
+                            
+                            // Kiểm tra xem có đang chạy hiệu ứng nào không
+                            LightEffectsManager.EffectType currentEffectType = screenLightView.getCurrentEffectType();
+                            
+                            if (currentEffectType == LightEffectsManager.EffectType.SOLID) {
+                                // Nếu đang ở chế độ đơn sắc, cập nhật màu trực tiếp
+                                int color = adjustColorBrightness(currentColor, brightness);
+                                screenLightView.setColor(color);
+                            } else if (currentEffectType != null) {
+                                // Nếu đang ở chế độ hiệu ứng khác, cập nhật brightness cho hiệu ứng
+                                LightEffectsManager.EffectConfig config = new LightEffectsManager.EffectConfig();
+                                config.put("brightness", brightness);
+                                config.put("color", adjustColorBrightness(currentColor, brightness));
+                                screenLightView.updateEffectConfig(config);
+                            }
                         }
                     } catch (Exception e) {
                         // Ghi log lỗi nhưng không làm crash app
@@ -169,6 +244,19 @@ public class ScreenLightActivity extends BaseActivity {
         
         // Tap để ẩn/hiện controls
         screenLightView.setOnClickListener(v -> toggleControlsVisibility());
+    }
+    
+    /**
+     * Điều chỉnh độ sáng của màu sắc
+     */
+    private int adjustColorBrightness(int color, float brightness) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        
+        // Điều chỉnh độ sáng (V trong HSV)
+        hsv[2] = Math.max(0.1f, brightness); // Đảm bảo không quá tối
+        
+        return Color.HSVToColor(hsv);
     }
     
     /**
@@ -207,118 +295,55 @@ public class ScreenLightActivity extends BaseActivity {
         
         // Nếu panel bị ẩn, bật lại full screen
         if (!controlsVisible) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN);
+            setFullScreenMode();
         }
-    }
-    
-    /**
-     * Hiển thị dialog cài đặt
-     */
-    private void showSettingsDialog() {
-        View settingsView = getLayoutInflater().inflate(R.layout.dialog_screen_light_settings, null);
-        
-        // Lấy các views từ dialog
-        final SwitchCompat switchKeepScreenOn = settingsView.findViewById(R.id.switch_keep_screen_on);
-        final SwitchCompat switchAutoOff = settingsView.findViewById(R.id.switch_auto_off);
-        final SeekBar seekBarAutoOffTime = settingsView.findViewById(R.id.seekbar_auto_off_time);
-        final TextView textAutoOffValue = settingsView.findViewById(R.id.text_auto_off_value);
-        
-        // TODO: Lấy giá trị từ preferences
-        switchKeepScreenOn.setChecked(true);
-        switchAutoOff.setChecked(false);
-        seekBarAutoOffTime.setProgress(5); // 5 phút
-        textAutoOffValue.setText("5 phút");
-        
-        // Cài đặt listeners
-        switchAutoOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            seekBarAutoOffTime.setEnabled(isChecked);
-            textAutoOffValue.setEnabled(isChecked);
-        });
-        
-        seekBarAutoOffTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // Giá trị tối thiểu là 1 phút
-                int minutes = Math.max(1, progress);
-                textAutoOffValue.setText(minutes + " phút");
-            }
-            
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // Do nothing
-            }
-            
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // Do nothing
-            }
-        });
-        
-        // Hiển thị dialog
-        new AlertDialog.Builder(this)
-                .setTitle("Cài đặt")
-                .setView(settingsView)
-                .setPositiveButton("Lưu", (dialog, which) -> {
-                    // TODO: Lưu cài đặt vào preferences
-                    boolean keepScreenOn = switchKeepScreenOn.isChecked();
-                    boolean autoOff = switchAutoOff.isChecked();
-                    int autoOffTime = Math.max(1, seekBarAutoOffTime.getProgress());
-                    
-                    // Áp dụng cài đặt
-                    screenLightController.setKeepScreenOn(keepScreenOn);
-                    
-                    if (autoOff) {
-                        // TODO: Bắt đầu timer để tự động tắt
-                        Toast.makeText(this, "Sẽ tự động tắt sau " + autoOffTime + " phút", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton("Hủy", null)
-                .show();
     }
     
     /**
      * Hiển thị color picker
      */
     private void showColorPicker() {
-        // Tạo color picker
-        ColorPicker colorPicker = new ColorPicker(this);
-        colorPicker.setSelectedColor(currentColor);
-        colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
-            @Override
-            public void onColorSelected(int color) {
-                currentColor = color;
-                
-                // Chỉ áp dụng màu cho màn hình, không đổi màu nút
-                // btnColor.setBackgroundColor(color); - Loại bỏ dòng này
-                
-                // Áp dụng màu cho màn hình
-                if (currentEffect == LightEffectsManager.EffectType.SOLID) {
-                    // Nếu đang ở chế độ đơn sắc, cập nhật màu ngay
-                    LightEffectsManager.EffectConfig config = new LightEffectsManager.EffectConfig();
-                    config.put("color", color);
-                    screenLightView.updateEffectConfig(config);
-                } else {
-                    // Nếu đang ở chế độ khác, chuyển về SOLID
-                    LightEffectsManager.EffectConfig config = new LightEffectsManager.EffectConfig();
-                    config.put("color", color);
-                    screenLightView.startLightEffect(LightEffectsManager.EffectType.SOLID, config);
-                    currentEffect = LightEffectsManager.EffectType.SOLID;
-                }
-                
-                // Thiết lập màu cho toàn màn hình
-                screenLightView.setBackgroundColor(color);
-                screenLightController.setScreenColor(color);
+        // Ẩn/hiện phần chọn màu
+        View colorSelection = findViewById(R.id.color_selection);
+        if (colorSelection != null) {
+            boolean isVisible = colorSelection.getVisibility() == View.VISIBLE;
+            colorSelection.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+            
+            // Cập nhật icon của nút
+            if (btnColor != null) {
+                btnColor.setImageResource(isVisible ? 
+                    android.R.drawable.ic_menu_edit : 
+                    android.R.drawable.ic_menu_close_clear_cancel);
             }
-        });
+        }
+    }
+    
+    /**
+     * Cập nhật hiển thị màu
+     */
+    private void updateColorPreview(int color) {
+        // Cập nhật màu nền cho color preview
+        if (colorPreview != null) {
+            colorPreview.setBackgroundColor(color);
+            
+            // Đảm bảo chữ "A" luôn hiển thị với màu tương phản
+            boolean isDark = isColorDark(color);
+            int textColor = isDark ? Color.WHITE : Color.BLACK;
+            colorPreview.setTextColor(textColor);
+        }
         
-        // Hiển thị dialog
-        colorPicker.showColorPickerDialog();
+        // Cập nhật màu cho color slider
+        if (colorSlider != null) {
+            colorSlider.setSelectedColor(color);
+        }
+    }
+    
+    /**
+     * Kiểm tra xem màu có tối không
+     */
+    private boolean isColorDark(int color) {
+        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
+        return darkness >= 0.5;
     }
     
     /**
@@ -423,6 +448,15 @@ public class ScreenLightActivity extends BaseActivity {
         }
         
         Log.d(TAG, "ScreenLightActivity destroyed");
+    }
+    
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        // Khi cửa sổ có focus, đảm bảo trạng thái full screen được duy trì
+        if (hasFocus) {
+            setFullScreenMode();
+        }
     }
     
     /**

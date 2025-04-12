@@ -231,6 +231,24 @@ public class ScreenLightView extends View {
         return textSize > 20 ? (textSize - 20) * 100 / 80 : 0;
     }
     
+    /**
+     * Thay đổi màu nền của view
+     * @param color Mã màu
+     */
+    public void setColor(int color) {
+        this.backgroundColor = color;
+        setBackgroundColor(color);
+        invalidate();
+    }
+    
+    /**
+     * Lấy màu nền hiện tại
+     * @return Mã màu
+     */
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+    
     @Override
     protected Parcelable onSaveInstanceState() {
         // Lưu trạng thái của view

@@ -21,7 +21,7 @@ public class TextLightView extends View {
     // Text properties
     private String text = "";
     private Paint textPaint;
-    private float textSize = 100f;
+    private float textSize = 160f;
     private int textColor = Color.RED;
     private Typeface typeface = Typeface.DEFAULT_BOLD;
 
@@ -96,12 +96,16 @@ public class TextLightView extends View {
                 switch (scrollDirection) {
                     case LEFT_TO_RIGHT:
                         scrollX += scrollSpeed;
-                        if (scrollX > getWidth() + getTextWidth()) {
-                            scrollX = -getTextWidth();
+                        // Khi chữ đầu tiên vừa đi hết màn hình, thay vì reset về vị trí ban đầu,
+                        // chỉ reset khi đi hết toàn bộ văn bản
+                        if (scrollX > getTextWidth()) {
+                            scrollX = -getWidth();
                         }
                         break;
                     case RIGHT_TO_LEFT:
                         scrollX -= scrollSpeed;
+                        // Khi chữ đầu tiên vừa đi hết màn hình, thay vì reset về vị trí ban đầu,
+                        // chỉ reset khi đi hết toàn bộ văn bản
                         if (scrollX < -getTextWidth()) {
                             scrollX = getWidth();
                         }
@@ -146,16 +150,65 @@ public class TextLightView extends View {
 
         if (text == null || text.isEmpty()) return;
 
-        // Calculate position based on text align and scroll position
-        float x = getWidth() / 2f + scrollX;
-        
-        // Sử dụng Paint.FontMetrics để căn chỉnh theo chiều dọc chính xác hơn
-        Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
-        float textHeight = fontMetrics.bottom - fontMetrics.top;
-        float y = (getHeight() - textHeight) / 2f - fontMetrics.top + scrollY;
+        float textWidth = getTextWidth();
 
-        // Draw text
-        canvas.drawText(text, x, y, textPaint);
+        // Đối với cuộn ngang (LEFT_TO_RIGHT hoặc RIGHT_TO_LEFT), vẽ 3 bản sao của chữ
+        // để tạo hiệu ứng liên tục không bị gián đoạn
+        if (scrollDirection == ScrollDirection.LEFT_TO_RIGHT || 
+            scrollDirection == ScrollDirection.RIGHT_TO_LEFT) {
+            
+            // Sử dụng Paint.FontMetrics để căn chỉnh theo chiều dọc chính xác
+            Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
+            float textHeight = fontMetrics.bottom - fontMetrics.top;
+            float y = (getHeight() - textHeight) / 2f - fontMetrics.top + scrollY;
+            
+            // Vẽ chữ tại vị trí hiện tại
+            canvas.drawText(text, getWidth() / 2f + scrollX, y, textPaint);
+            
+            // Vẽ một bản sao phía trước để tạo hiệu ứng liên tục
+            if (scrollDirection == ScrollDirection.RIGHT_TO_LEFT) {
+                canvas.drawText(text, getWidth() / 2f + scrollX + getWidth() + textWidth, y, textPaint);
+            } else { // LEFT_TO_RIGHT
+                canvas.drawText(text, getWidth() / 2f + scrollX - getWidth() - textWidth, y, textPaint);
+            }
+            
+            // Vẽ một bản sao phía sau để tạo hiệu ứng liên tục
+            if (scrollDirection == ScrollDirection.RIGHT_TO_LEFT) {
+                canvas.drawText(text, getWidth() / 2f + scrollX - getWidth() - textWidth, y, textPaint);
+            } else { // LEFT_TO_RIGHT
+                canvas.drawText(text, getWidth() / 2f + scrollX + getWidth() + textWidth, y, textPaint);
+            }
+        } 
+        // Đối với cuộn dọc (TOP_TO_BOTTOM hoặc BOTTOM_TO_TOP), vẽ tương tự
+        else if (scrollDirection == ScrollDirection.TOP_TO_BOTTOM || 
+                 scrollDirection == ScrollDirection.BOTTOM_TO_TOP) {
+            
+            Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
+            float textHeight = fontMetrics.bottom - fontMetrics.top;
+            float x = getWidth() / 2f + scrollX;
+            float y = (getHeight() - textHeight) / 2f - fontMetrics.top + scrollY;
+            
+            // Vẽ chữ tại vị trí hiện tại
+            canvas.drawText(text, x, y, textPaint);
+            
+            // Vẽ bản sao phía trên và phía dưới
+            if (scrollDirection == ScrollDirection.TOP_TO_BOTTOM) {
+                canvas.drawText(text, x, y - getHeight() - textHeight, textPaint);
+                canvas.drawText(text, x, y + getHeight() + textHeight, textPaint);
+            } else { // BOTTOM_TO_TOP
+                canvas.drawText(text, x, y + getHeight() + textHeight, textPaint);
+                canvas.drawText(text, x, y - getHeight() - textHeight, textPaint);
+            }
+        }
+        // Cho các trường hợp khác, chỉ vẽ 1 lần
+        else {
+            Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
+            float textHeight = fontMetrics.bottom - fontMetrics.top;
+            float x = getWidth() / 2f + scrollX;
+            float y = (getHeight() - textHeight) / 2f - fontMetrics.top + scrollY;
+            
+            canvas.drawText(text, x, y, textPaint);
+        }
     }
 
     /**

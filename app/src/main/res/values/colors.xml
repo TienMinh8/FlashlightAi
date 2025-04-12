@@ -21,6 +21,7 @@
     
     <!-- Mode Card Colors -->
     <color name="mode_card_background">#1A2E4A</color>
+    <color name="mode_card_normal">#1A2E4A</color>
     <color name="mode_card_selected">#0D47A1</color>
     
     <!-- Status Colors -->
@@ -45,6 +46,8 @@
     <color name="yellow">#FFEB3B</color>
     <color name="purple">#9C27B0</color>
     
+
     <!-- Rating Star Color -->
     <color name="rating_star_yellow">#FFD700</color>  <!-- Gold color for rating stars -->
+
 </resources>

@@ -254,10 +254,9 @@ public class LightEffectsManager {
      */
     private void startRainbowEffect() {
         int duration = currentConfig.getInt("duration", 5000);
-        final float saturation = currentConfig.getFloat("saturation", 1.0f);
+        float saturation = currentConfig.getFloat("saturation", 1.0f);
         final float brightness = currentConfig.getFloat("brightness", 1.0f);
         
-        // Tạo animator để chuyển qua các màu sắc HSV
         ValueAnimator rainbowAnimator = ValueAnimator.ofFloat(0f, 360f);
         rainbowAnimator.setDuration(duration);
         rainbowAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -268,8 +267,10 @@ public class LightEffectsManager {
             
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                hsv[0] = (float) animation.getAnimatedValue();
-                targetView.setBackgroundColor(Color.HSVToColor(hsv));
+                hsv[0] = (float) animation.getAnimatedValue(); // Hue
+                hsv[2] = currentConfig.getFloat("brightness", brightness); 
+                int color = Color.HSVToColor(hsv);
+                targetView.setBackgroundColor(color);
             }
         });
         
@@ -284,18 +285,13 @@ public class LightEffectsManager {
         final int interval = currentConfig.getInt("interval", 300);
         final float brightness = currentConfig.getFloat("brightness", 1.0f);
         
-        // Tạo runnable để thay đổi màu ngẫu nhiên
-        final Runnable discoRunnable = new Runnable() {
+        Runnable discoRunnable = new Runnable() {
             @Override
             public void run() {
-                if (!isEffectRunning) return;
-                
-                // Tạo màu ngẫu nhiên với độ sáng được chỉ định
-                float[] hsv = {
-                        random.nextFloat() * 360, // Hue
-                        0.8f + random.nextFloat() * 0.2f, // Saturation
-                        brightness // Brightness
-                };
+                float[] hsv = new float[3];
+                hsv[0] = random.nextFloat() * 360f; // Hue ngẫu nhiên
+                hsv[1] = 0.8f + random.nextFloat() * 0.2f; // Saturation cao
+                hsv[2] = currentConfig.getFloat("brightness", brightness);
                 
                 int randomColor = Color.HSVToColor(hsv);
                 targetView.setBackgroundColor(randomColor);
@@ -314,13 +310,62 @@ public class LightEffectsManager {
     public void updateEffectConfig(EffectConfig config) {
         if (!isEffectRunning) return;
         
-        // Lưu cấu hình mới
-        currentConfig = config;
-        
-        // Khởi động lại hiệu ứng với cấu hình mới
-        startEffect(currentEffect, currentConfig);
+        // Lưu các tham số cần thiết từ config mới (giữ lại các tham số cũ)
+        if (config.getAllParams().containsKey("color")) {
+            currentConfig.put("color", config.getInt("color", Color.WHITE));
+        }
+        if (config.getAllParams().containsKey("brightness")) {
+            currentConfig.put("brightness", config.getFloat("brightness", 1.0f));
+            
+            // Cập nhật độ sáng cho hiệu ứng đang chạy mà không khởi động lại
+            applyBrightnessToCurrentEffect(config.getFloat("brightness", 1.0f));
+        }
         
         Log.d(TAG, "Updated effect config for: " + currentEffect.name());
+    }
+    
+    /**
+     * Áp dụng độ sáng cho hiệu ứng đang chạy mà không khởi động lại
+     * @param brightness Độ sáng (0.0f - 1.0f)
+     */
+    private void applyBrightnessToCurrentEffect(float brightness) {
+        switch (currentEffect) {
+            case SOLID:
+                // Điều chỉnh độ sáng cho màu đơn sắc
+                int color = currentConfig.getInt("color", Color.WHITE);
+                int adjustedColor = adjustColorBrightness(color, brightness);
+                targetView.setBackgroundColor(adjustedColor);
+                break;
+                
+            case PULSE:
+            case STROBE:
+            case WAVE:
+                // Các hiệu ứng này sẽ sử dụng brightness trong animator
+                // Animator đang chạy sẽ tiếp tục với brightness mới trong lần lặp tiếp theo
+                break;
+                
+            case RAINBOW:
+            case DISCO:
+                // Các hiệu ứng này đã cập nhật cấu hình và sẽ sử dụng 
+                // brightness mới trong lần lặp tiếp theo
+                break;
+        }
+    }
+    
+    /**
+     * Điều chỉnh độ sáng của màu
+     * @param color Màu gốc
+     * @param brightness Độ sáng (0.0f - 1.0f)
+     * @return Màu sau khi điều chỉnh độ sáng
+     */
+    private int adjustColorBrightness(int color, float brightness) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        
+        // Điều chỉnh độ sáng (V trong HSV)
+        hsv[2] = Math.max(0.1f, Math.min(1.0f, brightness));
+        
+        return Color.HSVToColor(hsv);
     }
     
     /**

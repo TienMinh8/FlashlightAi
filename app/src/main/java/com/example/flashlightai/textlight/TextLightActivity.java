@@ -42,7 +42,9 @@ import com.example.flashlightai.textlight.TextLightView.ScrollDirection;
 import com.example.flashlightai.utils.PreferenceManager;
 import com.example.flashlightai.SettingsActivity;
 import com.google.android.material.slider.Slider;
+
 import com.example.flashlightai.base.BaseActivity;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,10 +75,11 @@ public class TextLightActivity extends BaseActivity {
     private boolean isRunning = false;
     private boolean isFullscreen = false;
     private PreferenceManager preferenceManager;
-    private int scrollSpeed = 50;
+    private int scrollSpeed = 10;
     private int textSize = 100;
-    private TextLightView.ScrollDirection scrollDirection = TextLightView.ScrollDirection.LEFT_TO_RIGHT;
-    private boolean isFullBackground = false;
+    private TextLightView.ScrollDirection scrollDirection = TextLightView.ScrollDirection.RIGHT_TO_LEFT;
+    private TextView colorPreview;
+    private ColorSliderView colorSlider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +99,9 @@ public class TextLightActivity extends BaseActivity {
 
         // Khôi phục cài đặt từ lần cuối
         restoreLastSettings();
+        
+        // Hiển thị và chạy text ngay khi màn hình được tạo
+        startTextLightAutomatically();
     }
 
     /**
@@ -104,47 +110,44 @@ public class TextLightActivity extends BaseActivity {
     private void setFullScreenMode() {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN);
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+    }
+
+    /**
+     * Khôi phục trạng thái hiển thị bình thường của UI
+     */
+    private void restoreNormalScreenMode() {
+        // Hiện lại thanh trạng thái và thanh điều hướng
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
     }
 
     private void initViews() {
         textLightView = findViewById(R.id.text_light_view);
         etInputText = findViewById(R.id.input_text);
         btnStart = findViewById(R.id.start_button);
-        btnWallpaper = findViewById(R.id.set_wallpaper_button);
-        // Xóa tham chiếu đến RadioGroup direction vì đã loại bỏ khỏi layout
-        // rgDirection = findViewById(R.id.scroll_direction_group);
         
-        // Đặt hướng mặc định là LEFT_TO_RIGHT
-        scrollDirection = TextLightView.ScrollDirection.LEFT_TO_RIGHT;
+        // Đặt hướng mặc định là RIGHT_TO_LEFT thay vì LEFT_TO_RIGHT
+        scrollDirection = TextLightView.ScrollDirection.RIGHT_TO_LEFT;
         
         // Thay thế slider bằng seekbar từ layout
         speedSeekBar = findViewById(R.id.scroll_speed_seekbar);
         sizeSeekBar = findViewById(R.id.text_size_seekbar);
         
-        // Giới hạn giá trị tối đa của seekbar size là 150
-        sizeSeekBar.setMax(150);
-        
-        tvSpeedValue = findViewById(R.id.tv_speed_value);
-        tvSizeValue = findViewById(R.id.tv_size_value);
+        // Giới hạn giá trị tối đa của seekbar size là 200
+        sizeSeekBar.setMax(200);
         
         settingsPanel = findViewById(R.id.settings_panel);
 
-        btnColorRed = findViewById(R.id.color_red);
-        btnColorGreen = findViewById(R.id.color_green);
-        btnColorBlue = findViewById(R.id.color_blue);
-        btnColorWhite = findViewById(R.id.color_white);
-        btnColorYellow = findViewById(R.id.color_yellow);
+        // Thay thế các nút màu bằng ColorSliderView
+        colorPreview = findViewById(R.id.color_preview);
+        colorSlider = findViewById(R.id.color_slider);
 
         // Thiết lập giá trị mặc định
-        speedSeekBar.setProgress(50);
-        sizeSeekBar.setProgress(100);
-        updateSpeedText(50);
-        updateSizeText(100);
+        speedSeekBar.setProgress(10);
+        sizeSeekBar.setProgress(160);
+        updateSpeedText(10);
+        updateSizeText(160);
         
         // Thêm touch listener cho layout chính để ẩn bàn phím khi người dùng chạm vào ngoài EditText
         View rootView = findViewById(android.R.id.content);
@@ -210,7 +213,7 @@ public class TextLightActivity extends BaseActivity {
         // Listener cho seekbar size
         sizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             // Giới hạn kích thước tối đa cùng với max của seekbar
-            private final int MAX_TEXT_SIZE = 150;
+            private final int MAX_TEXT_SIZE = 200;
             
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -241,11 +244,8 @@ public class TextLightActivity extends BaseActivity {
     }
 
     private void setupListeners() {
-        btnStart.setOnClickListener(v -> startTextLight());
-        
-        btnWallpaper.setOnClickListener(v -> {
-            toggleFullBackground();
-        });
+        // Nút Start giờ sẽ là nút Fullscreen
+        btnStart.setOnClickListener(v -> toggleFullScreenLandscape());
         
         // Xử lý nút back
         ImageButton btnBack = findViewById(R.id.btn_back);
@@ -286,89 +286,42 @@ public class TextLightActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {}
         });
         
-        // Thiết lập listeners cho các nút màu
-        setupColorButtons();
+        // Thiết lập các listener cho ColorSlider
+        // 1. Listener khi người dùng đang kéo thanh màu (cập nhật màu ngay lập tức)
+        colorSlider.setOnColorChangingListener(color -> {
+            currentTextColor = color;
+            updateColorPreview(color);
+            
+            // Cập nhật màu chữ ngay lập tức
+            if (isRunning) {
+                textLightView.setTextColor(color);
+            }
+        });
+        
+        // 2. Listener khi người dùng chọn xong màu (thả tay khỏi thanh màu)
+        colorSlider.setOnColorSelectedListener(color -> {
+            currentTextColor = color;
+            updateColorPreview(color);
+            
+            if (isRunning) {
+                updateTextLight();
+            }
+        });
     }
 
-    private void setupColorButtons() {
-        View.OnClickListener colorClickListener = v -> {
-            int color = 0;
-            
-            if (v.getId() == R.id.color_red) {
-                color = ContextCompat.getColor(this, R.color.red);
-            } else if (v.getId() == R.id.color_green) {
-                color = ContextCompat.getColor(this, R.color.green);
-            } else if (v.getId() == R.id.color_blue) {
-                color = ContextCompat.getColor(this, R.color.blue);
-            } else if (v.getId() == R.id.color_white) {
-                color = ContextCompat.getColor(this, R.color.white);
-            } else if (v.getId() == R.id.color_yellow) {
-                color = ContextCompat.getColor(this, R.color.yellow);
-            } else if (v.getId() == R.id.color_purple) {
-                color = ContextCompat.getColor(this, R.color.purple);
-            }
-            
-            if (color != 0) {
-                currentTextColor = color;
-                
-                // Cập nhật màu nếu đang chạy
-                if (isRunning) {
-                    textLightView.setTextColor(color);
-                }
-                
-                // Đổi màu preview nếu có
-                View colorPreview = findViewById(R.id.color_preview);
-                if (colorPreview != null) {
-                    colorPreview.setBackgroundColor(color);
-                }
-            }
-        };
+    private void updateColorPreview(int color) {
+        // Cập nhật màu và chữ "A" cho colorPreview
+        colorPreview.setBackgroundColor(color);
         
-        btnColorRed.setOnClickListener(colorClickListener);
-        btnColorGreen.setOnClickListener(colorClickListener);
-        btnColorBlue.setOnClickListener(colorClickListener);
-        btnColorWhite.setOnClickListener(colorClickListener);
-        btnColorYellow.setOnClickListener(colorClickListener);
-        
-        // Thêm button purple nếu có trong layout
-        ImageButton btnColorPurple = findViewById(R.id.color_purple);
-        if (btnColorPurple != null) {
-            btnColorPurple.setOnClickListener(colorClickListener);
-        }
+        // Đảm bảo chữ "A" luôn hiển thị với màu tương phản
+        int textColor = isColorDark(color) ? Color.WHITE : Color.BLACK;
+        colorPreview.setTextColor(textColor);
     }
-
-    private void startTextLight() {
-        String text = etInputText.getText().toString();
-        if (text.isEmpty()) {
-            text = getString(R.string.default_text); // "I LOVE YOU" hoặc giá trị mặc định khác
-        }
-        
-        // Sau khi start, kiểm tra xem đã chạy chưa
-        if (!isRunning) {
-            // Đặt kích thước lớn để hiển thị tốt
-            int enhancedTextSize = textSize * 3;
-            
-            textLightView.setupTextLight(text, enhancedTextSize, currentTextColor, scrollDirection, scrollSpeed, false);
-            isRunning = true;
-            btnStart.setText(R.string.stop);
-            
-            // Kích hoạt chế độ toàn màn hình và quay ngang chỉ khi người dùng đã chọn Full Background
-            if (isFullBackground) {
-                enableFullScreenLandscape();
-            }
-        } else {
-            textLightView.stop();
-            isRunning = false;
-            btnStart.setText(R.string.start);
-            
-            // Trở về chế độ bình thường nếu đang trong chế độ fullscreen landscape
-            if (getRequestedOrientation() == android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-                disableFullScreenLandscape();
-            }
-        }
-        
-        // Lưu lại cài đặt hiện tại
-        saveCurrentSettings(text, scrollSpeed, textSize, currentTextColor);
+    
+    // Helper method để kiểm tra màu tối hay sáng
+    private boolean isColorDark(int color) {
+        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
+        return darkness >= 0.5;
     }
 
     private void updateSpeedText(float value) {
@@ -393,32 +346,31 @@ public class TextLightActivity extends BaseActivity {
     }
 
     private void restoreLastSettings() {
-        String text = preferenceManager.getString("text_light_text", "");
-        // Không cần đọc direction từ preferences vì chúng ta đã loại bỏ tính năng chọn direction
-        // int directionOrdinal = preferenceManager.getInt("text_light_direction", 0);
-        float speed = preferenceManager.getFloat("text_light_speed", 5);
-        int size = preferenceManager.getInt("text_light_size", 100);
-        int color = preferenceManager.getInt("text_light_color", 0xFFFFFFFF);
+        // Lấy cài đặt từ lần sử dụng trước đó
+        String lastText = preferenceManager.getString("text_light_text", "");
+        float speedValue = preferenceManager.getFloat("text_light_speed", 10f);
+        int lastSpeed = (int)speedValue;
+        int lastSize = preferenceManager.getInt("text_light_size", 160);
+        int lastColor = preferenceManager.getInt("text_light_color", Color.WHITE);
         
-        // Áp dụng cài đặt
-        if (!text.isEmpty()) {
-            etInputText.setText(text);
-        }
+        // Thiết lập các giá trị
+        etInputText.setText(lastText);
+        speedSeekBar.setProgress(lastSpeed);
+        sizeSeekBar.setProgress(lastSize);
+        scrollSpeed = lastSpeed;
+        textSize = lastSize;
+        currentTextColor = lastColor;
         
-        // Thiết lập direction luôn là LEFT_TO_RIGHT
-        scrollDirection = TextLightView.ScrollDirection.LEFT_TO_RIGHT;
+        // Cập nhật hiển thị
+        updateSpeedText(lastSpeed);
+        updateSizeText(lastSize);
         
-        // Không cần thiết lập RadioGroup vì đã loại bỏ
-        // int radioButtonId;
-        // switch (directionOrdinal) { ... }
-        // rgDirection.check(radioButtonId);
-        
-        speedSeekBar.setProgress((int)speed);
-        sizeSeekBar.setProgress(size);
-        currentTextColor = color;
-        
-        updateSpeedText(speed);
-        updateSizeText(size);
+        // Cập nhật ColorSliderView với màu đã lưu
+        colorSlider.setSelectedColor(lastColor);
+        updateColorPreview(lastColor);
+
+        // Đặt hướng mặc định là RIGHT_TO_LEFT
+        scrollDirection = TextLightView.ScrollDirection.RIGHT_TO_LEFT;
     }
 
     private void toggleFullscreen() {
@@ -432,9 +384,7 @@ public class TextLightActivity extends BaseActivity {
             setFullScreenMode();
             
             // Cập nhật nút
-            btnWallpaper.setText(R.string.exit_fullscreen);
-            
-            Toast.makeText(this, "Nhấn vào màn hình để thoát chế độ toàn màn hình", Toast.LENGTH_SHORT).show();
+            btnStart.setText(R.string.exit_fullscreen);
             
             // Thêm listener để bắt touch event và thoát full screen
             textLightView.setOnClickListener(v -> toggleFullscreen());
@@ -442,13 +392,11 @@ public class TextLightActivity extends BaseActivity {
             // Hiện settings panel
             settingsPanel.setVisibility(View.VISIBLE);
             
-            // Hiện lại thanh trạng thái nhưng vẫn ẩn thanh điều hướng để tạo trải nghiệm đồng nhất
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            // Khôi phục trạng thái bình thường của màn hình
+            restoreNormalScreenMode();
             
             // Cập nhật nút
-            btnWallpaper.setText(R.string.fullscreen);
+            btnStart.setText(R.string.fullscreen);
             
             // Xóa listener khỏi textLightView khi không còn ở chế độ full screen
             textLightView.setOnClickListener(null);
@@ -466,18 +414,9 @@ public class TextLightActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (isRunning && getRequestedOrientation() == android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            // Nếu đang chạy text light ở chế độ landscape, dừng lại và quay về portrait mode
-            textLightView.stop();
-            isRunning = false;
-            btnStart.setText(R.string.start);
-            disableFullScreenLandscape();
-            
-            // Reset trạng thái full background nếu cần
-            if (isFullBackground) {
-                isFullBackground = false;
-                btnWallpaper.setText(R.string.full_background);
-            }
+        if (getRequestedOrientation() == android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            // Nếu đang ở chế độ landscape, quay về portrait
+            toggleFullScreenLandscape();
         } else if (isFullscreen) {
             // Nếu đang ở chế độ fullscreen thông thường, thoát fullscreen
             toggleFullscreen();
@@ -491,15 +430,11 @@ public class TextLightActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (textLightView != null && textLightView.isRunning()) {
-            textLightView.stop();
-            btnStart.setText(R.string.start);
-            isRunning = false;
-            
+        // Không cần dừng animation khi thoát ứng dụng vì chữ luôn chạy
+        // Chỉ cần xử lý trường hợp đang ở chế độ landscape
+        if (getRequestedOrientation() == android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             // Đảm bảo quay về portrait mode khi ứng dụng đi vào background
-            if (getRequestedOrientation() == android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-                disableFullScreenLandscape();
-            }
+            setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
 
@@ -511,13 +446,8 @@ public class TextLightActivity extends BaseActivity {
             setFullScreenMode();
         }
         
-        if (isRunning) {
-            // Kiểm tra xem có đang ở chế độ landscape không
-            if (getRequestedOrientation() == android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-                // Đảm bảo UI ở chế độ fullscreen landscape
-                enableFullScreenLandscape();
-            }
-            
+        // Đảm bảo text vẫn chạy khi quay lại ứng dụng
+        if (!textLightView.isRunning()) {
             textLightView.startScrolling();
         }
     }
@@ -538,53 +468,21 @@ public class TextLightActivity extends BaseActivity {
     }
 
     private void updateTextLight() {
+        // Lấy giá trị từ giao diện người dùng
         String text = etInputText.getText().toString();
-        if (text.isEmpty()) {
-            text = getString(R.string.default_text);
-        }
         
-        // Đặt kích thước lớn để hiển thị tốt
-        int enhancedTextSize = textSize * 3;
+        // Luôn đảm bảo sử dụng hướng RIGHT_TO_LEFT
+        scrollDirection = TextLightView.ScrollDirection.RIGHT_TO_LEFT;
         
-        textLightView.setupTextLight(text, enhancedTextSize, currentTextColor, scrollDirection, scrollSpeed, false);
-    }
-
-    private void showColorPickerDialog() {
-        // Tạo một danh sách các màu để chọn
-        final int[] colors = new int[] {
-            ContextCompat.getColor(this, R.color.red),
-            ContextCompat.getColor(this, R.color.green),
-            ContextCompat.getColor(this, R.color.blue),
-            ContextCompat.getColor(this, R.color.yellow),
-            ContextCompat.getColor(this, R.color.purple),
-            ContextCompat.getColor(this, R.color.white),
-            ContextCompat.getColor(this, R.color.black)
-        };
-        
-        // Tên các màu tương ứng
-        final String[] colorNames = new String[] {
-            "Đỏ", "Xanh lá", "Xanh dương", "Vàng", "Tím", "Trắng", "Đen"
-        };
-        
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Chọn màu chữ");
-        builder.setItems(colorNames, (dialog, which) -> {
-            // Cập nhật màu khi người dùng chọn
-            currentTextColor = colors[which];
-            
-            // Cập nhật màu nếu đang chạy
-            if (isRunning) {
-                textLightView.setTextColor(currentTextColor);
-            }
-            
-            // Đổi màu preview nếu có
-            View colorPreview = findViewById(R.id.color_preview);
-            if (colorPreview != null) {
-                colorPreview.setBackgroundColor(currentTextColor);
-            }
-        });
-        
-        builder.show();
+        // Cập nhật TextLightView với tham số mới
+        // Nhân kích thước với 3 để kích thước 1 = 3px
+        textLightView.setupTextLight(
+            text,
+            textSize * 3, 
+            currentTextColor,
+            scrollDirection,
+            scrollSpeed
+        );
     }
 
     /**
@@ -636,115 +534,88 @@ public class TextLightActivity extends BaseActivity {
     }
 
     /**
-     * Chuyển đổi chế độ full background (toàn màn hình và quay ngang)
+     * Bật/tắt chế độ toàn màn hình và tự động quay ngang
      */
-    private void toggleFullBackground() {
-        isFullBackground = !isFullBackground;
-        
-        if (isFullBackground) {
-            btnWallpaper.setText(R.string.exit_fullscreen);
-            Toast.makeText(this, "Nhấn Start để kích hoạt chế độ toàn màn hình và quay ngang", Toast.LENGTH_SHORT).show();
+    private void toggleFullScreenLandscape() {
+        // Nếu đã đang ở chế độ landscape, chuyển về portrait
+        if (getRequestedOrientation() == android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            // Hiện lại settings panel
+            settingsPanel.setVisibility(View.VISIBLE);
             
-            // Nếu đang chạy thì kích hoạt ngay
-            if (isRunning) {
-                enableFullScreenLandscape();
+            // Hiện lại thanh header
+            View headerBar = findViewById(R.id.header_bar);
+            if (headerBar != null) {
+                headerBar.setVisibility(View.VISIBLE);
             }
+            
+            // Hiện lại thanh bottom navigation
+            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            if (bottomNav != null) {
+                bottomNav.setVisibility(View.VISIBLE);
+            }
+            
+            // Hiện lại EditText
+            etInputText.setVisibility(View.VISIBLE);
+            
+            // Khôi phục trạng thái bình thường của màn hình
+            restoreNormalScreenMode();
+            
+            // Đặt orientation thành portrait (quay dọc)
+            setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            
+            // Xóa listener khỏi textLightView
+            textLightView.setOnClickListener(null);
+            
+            // Cập nhật văn bản nút
+            btnStart.setText(R.string.fullscreen);
         } else {
-            btnWallpaper.setText(R.string.full_background);
+            // Chuyển sang chế độ fullscreen landscape
             
-            // Nếu đang ở chế độ landscape thì quay về portrait
-            if (getRequestedOrientation() == android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-                disableFullScreenLandscape();
+            // Ẩn bàn phím nếu đang hiển thị
+            android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            View currentFocus = getCurrentFocus();
+            if (currentFocus != null) {
+                imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
-        }
-    }
-
-    /**
-     * Kích hoạt chế độ toàn màn hình và tự động quay ngang
-     */
-    private void enableFullScreenLandscape() {
-        // Ẩn bàn phím nếu đang hiển thị
-        android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        View currentFocus = getCurrentFocus();
-        if (currentFocus != null) {
-            imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-        }
-        
-        // Ẩn settings panel
-        settingsPanel.setVisibility(View.GONE);
-        
-        // Ẩn thanh header
-        View headerBar = findViewById(R.id.header_bar);
-        if (headerBar != null) {
-            headerBar.setVisibility(View.GONE);
-        }
-        
-        // Ẩn thanh bottom navigation
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        if (bottomNav != null) {
-            bottomNav.setVisibility(View.GONE);
-        }
-        
-        // Ẩn EditText khi ở chế độ fullscreen
-        etInputText.setVisibility(View.GONE);
-        
-        // Thiết lập chế độ full screen
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN);
-        
-        // Đặt orientation thành landscape (quay ngang)
-        setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        
-        // Thêm listener để bắt touch event và thoát full screen
-        textLightView.setOnClickListener(v -> {
-            if (isRunning) {
-                disableFullScreenLandscape();
-                textLightView.stop();
-                isRunning = false;
-                btnStart.setText(R.string.start);
+            
+            // Ẩn settings panel
+            settingsPanel.setVisibility(View.GONE);
+            
+            // Ẩn thanh header
+            View headerBar = findViewById(R.id.header_bar);
+            if (headerBar != null) {
+                headerBar.setVisibility(View.GONE);
             }
-        });
-        
-        Toast.makeText(this, "Nhấn vào màn hình để thoát chế độ toàn màn hình", Toast.LENGTH_SHORT).show();
-    }
-    
-    /**
-     * Tắt chế độ toàn màn hình và quay ngang
-     */
-    private void disableFullScreenLandscape() {
-        // Hiện lại settings panel
-        settingsPanel.setVisibility(View.VISIBLE);
-        
-        // Hiện lại thanh header
-        View headerBar = findViewById(R.id.header_bar);
-        if (headerBar != null) {
-            headerBar.setVisibility(View.VISIBLE);
+            
+            // Ẩn thanh bottom navigation
+            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            if (bottomNav != null) {
+                bottomNav.setVisibility(View.GONE);
+            }
+            
+            // Ẩn EditText khi ở chế độ fullscreen
+            etInputText.setVisibility(View.GONE);
+            
+            // Thiết lập chế độ full screen
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN);
+            
+            // Đặt orientation thành landscape (quay ngang)
+            setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            
+            // Thêm listener để bắt touch event và thoát full screen
+            textLightView.setOnClickListener(v -> toggleFullScreenLandscape());
+            
+            // Cập nhật văn bản nút (mặc dù nó không hiển thị ở chế độ này)
+            btnStart.setText(R.string.exit_fullscreen);
+            
+            Toast.makeText(this, "Nhấn vào màn hình để thoát chế độ toàn màn hình", Toast.LENGTH_SHORT).show();
         }
-        
-        // Hiện lại thanh bottom navigation
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        if (bottomNav != null) {
-            bottomNav.setVisibility(View.VISIBLE);
-        }
-        
-        // Hiện lại EditText
-        etInputText.setVisibility(View.VISIBLE);
-        
-        // Hiện lại thanh trạng thái nhưng vẫn ẩn thanh điều hướng
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        
-        // Đặt orientation thành portrait (quay dọc)
-        setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        
-        // Xóa listener khỏi textLightView
-        textLightView.setOnClickListener(null);
     }
 
     /**
@@ -794,5 +665,27 @@ public class TextLightActivity extends BaseActivity {
                 ((ScrollView) parentScrollView).requestChildRectangleOnScreen(etInputText, rect, false);
             }
         });
+    }
+
+    /**
+     * Khởi động chữ chạy tự động khi mở màn hình
+     */
+    private void startTextLightAutomatically() {
+        String text = etInputText.getText().toString();
+        if (text.isEmpty()) {
+            text = getString(R.string.default_text);
+            etInputText.setText(text);
+        }
+        
+        // Sử dụng kích thước với hệ số nhân 3 để kích thước 1 = 3px
+        int enhancedTextSize = textSize * 3;
+        
+        // Khởi động chữ chạy
+        scrollDirection = TextLightView.ScrollDirection.RIGHT_TO_LEFT;
+        textLightView.setupTextLight(text, enhancedTextSize, currentTextColor, scrollDirection, scrollSpeed, false);
+        isRunning = true;
+        
+        // Lưu lại cài đặt hiện tại
+        saveCurrentSettings(text, scrollSpeed, textSize, currentTextColor);
     }
 } 

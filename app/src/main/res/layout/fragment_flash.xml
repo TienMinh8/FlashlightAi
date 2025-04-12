@@ -273,57 +273,64 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/flashing_speed"
                         android:textColor="#FFFFFF"
+                        android:fontFamily="sans-serif-medium"
                         android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="16dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+
                             android:text="@string/slow"
                             android:textColor="#FFFFFF"
+
                             android:textSize="14sp" />
 
-                        <SeekBar
-                            android:id="@+id/speed_slider"
+                        <FrameLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
                             android:layout_weight="1"
-                            android:max="30"
-                            android:progress="15"
-                            android:progressDrawable="@drawable/seekbar_progress"
-                            android:thumb="@drawable/seekbar_thumb" />
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp">
+                            
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/slider_track" />
+
+                            <SeekBar
+                                android:id="@+id/speed_slider"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:max="30"
+                                android:progress="15"
+                                android:progressDrawable="@drawable/seekbar_progress"
+                                android:thumb="@drawable/seekbar_thumb"
+                                android:paddingStart="0dp"
+                                android:paddingEnd="0dp" />
+                        </FrameLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+
                             android:text="@string/fast"
                             android:textColor="#FFFFFF"
                             android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/tv_speed_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="275ms"
-                            android:textColor="#4FC3F7"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

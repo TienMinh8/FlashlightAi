@@ -9,12 +9,14 @@
    - Khi tắt ứng dụng, đèn pin vẫn tiếp tục hoạt động nếu chưa tắt
 
 2. **Chọn Chế Độ Đèn Pin**
-   - Vuốt qua các card tính năng phía dưới để chọn chế độ đèn pin:
+   - **Mới**: Nhấn giữ nút nguồn để hiển thị menu chọn chế độ đèn pin
+   - Chọn một trong các chế độ sau từ menu popup:
      - **Normal**: Đèn sáng liên tục
      - **Blink**: Đèn nhấp nháy theo tần số có thể điều chỉnh
      - **SOS**: Đèn phát tín hiệu cứu nạn SOS theo chuẩn Morse (... --- ...)
      - **Strobe**: Đèn nhấp nháy cực nhanh
      - **Disco**: Đèn nhấp nháy ngẫu nhiên theo kiểu đèn disco
+   - Chế độ hiện tại sẽ hiển thị phía trên nút nguồn
 
 3. **Điều Chỉnh Tần Số Nhấp Nháy**
    - Khi chọn chế độ Blink, thanh trượt điều chỉnh tần số sẽ hiện ra

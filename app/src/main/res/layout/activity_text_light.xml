@@ -96,7 +96,7 @@
         android:id="@+id/settings_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#222222"
+        android:background="@color/colorPrimaryDark"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation">
 
         <LinearLayout
@@ -118,7 +118,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/color_preview"
@@ -128,55 +129,13 @@
                     android:background="@drawable/circle_white"
                     android:gravity="center"
                     android:text="A"
-                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <ImageButton
-                    android:id="@+id/color_red"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/circle_red"
-                    android:contentDescription="Red color" />
-
-                <ImageButton
-                    android:id="@+id/color_green"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/circle_green"
-                    android:contentDescription="Green color" />
-
-                <ImageButton
-                    android:id="@+id/color_blue"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/circle_blue"
-                    android:contentDescription="Blue color" />
-
-                <ImageButton
-                    android:id="@+id/color_yellow"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/circle_yellow"
-                    android:contentDescription="Yellow color" />
-
-                <ImageButton
-                    android:id="@+id/color_purple"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/circle_purple"
-                    android:contentDescription="Purple color" />
-
-                <ImageButton
-                    android:id="@+id/color_white"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/circle_white"
-                    android:contentDescription="White color" />
+                <com.example.flashlightai.customviews.ColorSliderView
+                    android:id="@+id/color_slider"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <!-- Scroll Speed -->
@@ -194,26 +153,34 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
                 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chậm"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
                 <SeekBar
                     android:id="@+id/scroll_speed_seekbar"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:layout_marginTop="8dp"
                     android:max="100"
-                    android:progress="50"
-                    android:progressTint="@android:color/white"
-                    android:thumbTint="@android:color/white" />
-                    
+                    android:progress="10"
+                    android:progressTint="@color/colorAccent"
+                    android:thumbTint="@color/colorAccent" />
+
                 <TextView
-                    android:id="@+id/tv_speed_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="50"
-                    android:textColor="@android:color/white"
+                    android:text="Nhanh"
+                    android:textColor="#FFFFFF"
                     android:textSize="14sp" />
-            </LinearLayout>
+                    
+                  </LinearLayout>
 
             <!-- Text Size -->
             <TextView
@@ -230,25 +197,33 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
                 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nhỏ"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+                
                 <SeekBar
                     android:id="@+id/text_size_seekbar"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="20dp"
                     android:layout_weight="1"
-                    android:layout_marginTop="8dp"
-                    android:max="150"
-                    android:progress="100"
-                    android:progressTint="@android:color/white"
-                    android:thumbTint="@android:color/white" />
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="0dp"
+                    android:max="200"
+                    android:progress="160"
+                    android:progressTint="@color/colorAccent"
+                    android:thumbTint="@color/colorAccent" />
                     
                 <TextView
-                    android:id="@+id/tv_size_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="100"
-                    android:textColor="@android:color/white"
+                    android:text="Lớn"
+                    android:textColor="#FFFFFF"
                     android:textSize="14sp" />
+
             </LinearLayout>
 
             <!-- Action Buttons -->
@@ -260,21 +235,12 @@
 
                 <Button
                     android:id="@+id/start_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/round_button_bg"
-                    android:text="@string/start_text"
-                    android:textColor="@android:color/white" />
-
-                <Button
-                    android:id="@+id/set_wallpaper_button"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/round_button_bg"
-                    android:text="@string/full_background"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="@string/fullscreen"
                     android:textColor="@android:color/white" />
             </LinearLayout>
         </LinearLayout>
@@ -285,10 +251,17 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/bottom_nav_bg"
-        app:itemIconTint="@android:color/white"
-        app:itemTextColor="@android:color/white"
+        android:elevation="8dp"
+        app:itemIconSize="24dp"
+        app:itemIconTint="@color/accent"
+        app:itemTextColor="@color/white"
+        app:itemRippleColor="#40FFFFFF"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

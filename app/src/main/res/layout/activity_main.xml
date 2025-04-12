@@ -59,7 +59,14 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/bottom_nav_bg"
+        android:elevation="8dp"
+        app:itemIconSize="24dp"
+        app:itemIconTint="@color/accent"
+        app:itemTextColor="@color/white"
+        app:itemRippleColor="#40FFFFFF"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -144,6 +151,17 @@
                             android:shadowDx="1"
                             android:shadowDy="1"
                             android:shadowRadius="3" />
+                            
+                        <TextView
+                            android:id="@+id/flash_mode_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|bottom"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="sans-serif"
+                            android:textColor="#4FC3F7"
+                            android:textSize="14sp"
+                            android:visibility="invisible" />
                     </FrameLayout>
                 </androidx.cardview.widget.CardView>
 

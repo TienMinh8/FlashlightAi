@@ -45,7 +45,10 @@ public class FlashlightService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && intent.getAction() != null) {
-            switch (intent.getAction()) {
+            String action = intent.getAction();
+            Log.d(TAG, "Received action: " + action);
+            
+            switch (action) {
                 case "ACTION_START_FOREGROUND_SERVICE":
                     startForegroundService();
                     break;
@@ -53,7 +56,18 @@ public class FlashlightService extends Service {
                     stopForegroundService();
                     break;
                 case "ACTION_TOGGLE_FLASH":
-                    toggleFlash();
+                    // Ghi log trạng thái hiện tại
+                    if (flashController != null) {
+                        Log.d(TAG, "Before toggle: Flash is " + 
+                              (flashController.isFlashOn() ? "ON" : "OFF") + 
+                              " in mode " + flashController.getCurrentMode());
+                    }
+                    
+                    // Chuyển đổi trạng thái đèn flash
+                    boolean newState = toggleFlash();
+                    
+                    // Ghi log trạng thái mới
+                    Log.d(TAG, "After toggle: Flash is " + (newState ? "ON" : "OFF"));
                     break;
             }
         }
@@ -128,9 +142,26 @@ public class FlashlightService extends Service {
      */
     public boolean toggleFlash() {
         if (flashController != null) {
-            boolean isOn = flashController.toggleFlash();
-            updateNotification(isOn);
-            return isOn;
+            // Lấy trạng thái đèn từ controller
+            boolean isCurrentlyOn = flashController.isFlashOn();
+            
+            if (isCurrentlyOn) {
+                // Nếu đèn đang bật, dừng mọi hiệu ứng và tắt đèn
+                Log.d(TAG, "Toggle: Turning flash OFF");
+                flashController.stopBlinking();
+                flashController.turnOffFlash();
+                updateNotification(false);
+                return false;
+            } else {
+                // Nếu đèn đang tắt, bật lên với chế độ hiện tại
+                Log.d(TAG, "Toggle: Turning flash ON in mode " + flashController.getCurrentMode());
+                // Sử dụng turnOnFlash để bật đèn với chế độ hiện tại
+                flashController.turnOnFlash();
+                // Cập nhật thông báo
+                updateNotification(true);
+                Log.d(TAG, "After toggle: Flash is now " + (flashController.isFlashOn() ? "ON" : "OFF"));
+                return flashController.isFlashOn(); // Trả về trạng thái thực tế từ controller
+            }
         }
         return false;
     }
@@ -141,7 +172,16 @@ public class FlashlightService extends Service {
      */
     public void setFlashMode(FlashController.FlashMode mode) {
         if (flashController != null) {
+            boolean wasFlashOn = flashController.isFlashOn();
+            
+            // Thiết lập chế độ mới mà không tự bật đèn
             flashController.setFlashMode(mode);
+            
+            // Ghi log trạng thái mới
+            Log.d(TAG, "Flash mode set to: " + mode + 
+                " (Flash is " + (flashController.isFlashOn() ? "ON" : "OFF") + ")");
+            
+            // Cập nhật thông báo với trạng thái hiện tại
             updateNotification(flashController.isFlashOn());
         }
     }
@@ -153,6 +193,17 @@ public class FlashlightService extends Service {
     public void setBlinkFrequency(int frequency) {
         if (flashController != null) {
             flashController.setBlinkFrequency(frequency);
+        }
+    }
+    
+    /**
+     * Set the disco frequency range
+     * @param minDelay minimum delay time in milliseconds 
+     * @param maxDelay maximum delay time in milliseconds
+     */
+    public void setDiscoFrequency(int minDelay, int maxDelay) {
+        if (flashController != null) {
+            flashController.setDiscoFrequency(minDelay, maxDelay);
         }
     }
     
@@ -237,11 +288,21 @@ public class FlashlightService extends Service {
     }
     
     /**
-     * Bật đèn flash
+     * Bật đèn flash với chế độ hiện tại
      */
     public void turnOnFlash() {
-        if (flashController != null && !flashController.isFlashOn()) {
-            flashController.toggleFlash();
+        if (flashController != null) {
+            // Nếu đèn đã bật, không làm gì cả
+            if (flashController.isFlashOn()) {
+                Log.d(TAG, "Flash is already ON, doing nothing");
+                return;
+            }
+            
+            // Bật đèn với chế độ hiện tại bằng phương thức turnOnFlash
+            Log.d(TAG, "Turning ON flash in mode: " + flashController.getCurrentMode());
+            flashController.turnOnFlash();
+            
+            // Cập nhật thông báo
             updateNotification(true);
         }
     }
@@ -250,8 +311,16 @@ public class FlashlightService extends Service {
      * Tắt đèn flash
      */
     public void turnOffFlash() {
-        if (flashController != null && flashController.isFlashOn()) {
-            flashController.toggleFlash();
+        if (flashController != null) {
+            // Dừng mọi hiệu ứng nhấp nháy trước khi tắt đèn
+            flashController.stopBlinking();
+            
+            // Tắt đèn flash nếu đang bật
+            if (flashController.isFlashOn()) {
+                flashController.turnOffFlash();
+            }
+            
+            // Cập nhật thông báo
             updateNotification(false);
         }
     }
@@ -265,5 +334,14 @@ public class FlashlightService extends Service {
             return flashController.getFlashMode();
         }
         return FlashController.FlashMode.NORMAL;
+    }
+    
+    /**
+     * Dừng mọi chế độ nhấp nháy đèn flash
+     */
+    public void stopBlinking() {
+        if (flashController != null) {
+            flashController.stopBlinking();
+        }
     }
 } 
