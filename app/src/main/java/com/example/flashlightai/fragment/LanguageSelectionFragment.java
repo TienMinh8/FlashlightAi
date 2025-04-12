@@ -2,6 +2,7 @@ package com.example.flashlightai.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +14,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.flashlightai.FlashLightApp;
 import com.example.flashlightai.R;
 import com.example.flashlightai.adapter.LanguageAdapter;
 import com.example.flashlightai.model.Language;
 import com.example.flashlightai.utils.LanguageManager;
-import com.example.flashlightai.utils.PreferenceManager;
-import com.example.flashlightai.FlashLightApp;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Fragment hiển thị giao diện chọn ngôn ngữ
@@ -29,6 +28,7 @@ import java.util.Locale;
  */
 public class LanguageSelectionFragment extends Fragment {
 
+    private static final String TAG = "LanguageFragment";
     private LanguageAdapter adapter;
     private Language selectedLanguage = null;
     private LanguageManager languageManager;
@@ -60,12 +60,15 @@ public class LanguageSelectionFragment extends Fragment {
         
         // Khởi tạo LanguageManager
         languageManager = new LanguageManager(requireContext());
+        Log.d(TAG, "Creating language selection fragment");
         
         // Lấy danh sách ngôn ngữ
         List<Language> languages = languageManager.getLanguages();
         
-        // Tìm ngôn ngữ mặc định (cùng với ngôn ngữ hệ thống hoặc ngôn ngữ đã được chọn trước đó)
+        // Tìm ngôn ngữ hiện tại
         String currentLanguageCode = languageManager.getCurrentLanguageCode();
+        Log.d(TAG, "Current language code: " + currentLanguageCode);
+        
         for (Language language : languages) {
             if (language.getCode().equals(currentLanguageCode)) {
                 selectedLanguage = language;
@@ -79,45 +82,41 @@ public class LanguageSelectionFragment extends Fragment {
         adapter = new LanguageAdapter(languages);
         recyclerLanguages.setAdapter(adapter);
         
-        // Thiết lập callback khi chọn ngôn ngữ để hiển thị dấu tích
+        // Thiết lập callback khi chọn ngôn ngữ
         adapter.setOnLanguageSelectedListener((language, position) -> {
-            // Language đã được chọn, UI đã được cập nhật trong adapter
-            // Lưu language đã chọn
+            // Đánh dấu ngôn ngữ đã chọn
             selectedLanguage = language;
-            
-            // Không hiển thị Toast thông báo khi chọn ngôn ngữ nữa
-            // Chỉ hiển thị thông báo khi nhấn nút Confirm
+            Log.d(TAG, "Selected language: " + language.getCode());
         });
         
-        // Lấy nút Apply
+        // Lấy nút Áp dụng
         Button btnApply = view.findViewById(R.id.btn_continue);
         
-        // Xử lý sự kiện khi nhấn nút Apply
+        // Nút Hủy (nếu có)
+        Button btnCancel = view.findViewById(R.id.btn_cancel);
+        if (btnCancel != null) {
+            btnCancel.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onLanguageSelectionCancelled();
+                }
+            });
+        }
+        
+        // Xử lý khi nhấn nút Áp dụng
         btnApply.setOnClickListener(v -> {
             if (selectedLanguage == null) {
-                // Chưa chọn ngôn ngữ, hiển thị thông báo
+                // Chưa chọn ngôn ngữ
                 Toast.makeText(requireContext(), R.string.select_your_language, Toast.LENGTH_SHORT).show();
                 return;
             }
             
-            // Áp dụng ngôn ngữ mới
-            languageManager.setLanguage(selectedLanguage.getCode());
+            // Lấy mã ngôn ngữ đã chọn
+            String languageCode = selectedLanguage.getCode();
+            Log.d(TAG, "Applying language: " + languageCode);
             
-            // Thông báo cho người dùng
-            Toast.makeText(requireContext(), R.string.language_changed, Toast.LENGTH_SHORT).show();
-            
-            // Thông báo cho Activity/Fragment cha
+            // Thông báo cho Activity xử lý
             if (listener != null) {
-                listener.onLanguageSelected(selectedLanguage.getCode());
-            }
-            
-            // Đảm bảo áp dụng ngôn ngữ trên toàn ứng dụng
-            try {
-                FlashLightApp app = (FlashLightApp) requireActivity().getApplication();
-                app.restartApp();
-            } catch (Exception e) {
-                // Fallback nếu không thể khởi động lại qua FlashLightApp
-                requireActivity().recreate();
+                listener.onLanguageSelected(languageCode);
             }
         });
         

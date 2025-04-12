@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    Vietnamese Language Strings
+    Locale: vi
+    Country: Vietnam (VN)
+-->
 <resources>
     <string name="app_name">FlashLight AI</string>
     <string name="settings">Cài đặt</string>
@@ -109,6 +114,10 @@
     <string name="flash_off">Đèn tắt</string>
     <string name="permission_denied">Quyền bị từ chối. Đèn flash sẽ không hoạt động.</string>
     
+    <!-- Flash Status Messages -->
+    <string name="mode_set_to">Đã chuyển chế độ sang</string>
+    <string name="flash_mode_hold_tip">Nhấn giữ nút nguồn để thay đổi chế độ đèn</string>
+    
     <!-- Text Light Activity -->
     <string name="start_text">Bắt đầu văn bản</string>
     <string name="stop_text">Dừng văn bản</string>
@@ -197,4 +206,33 @@
     <string name="language_india">हिन्दी</string>
     <string name="language_arabic">العربية</string>
     <string name="language_bangladesh">বাংলা</string>
+    <string name="language_ukrainian">Українська</string>
+    <string name="slow">Chậm</string>
+    <string name="fast">Nhanh</string>
+    <string name="input_text">Nhập văn bản</string>
+    <string name="request_permissions">Yêu cầu quyền truy cập</string>
+    <string name="request_permissions_desc">Cấp quyền truy cập tin nhắn và cuộc gọi để sử dụng các tính năng thông báo đèn flash.</string>
+    <string name="permissions">Quyền truy cập</string>
+    <string name="camera_permission">Quyền camera (đèn flash)</string>
+    <string name="phone_permission">Quyền điện thoại (cuộc gọi)</string>
+    <string name="sms_permission">Quyền SMS (tin nhắn)</string>
+    <string name="permission_required">Cần cấp quyền</string>
+    <string name="permission_description">Ứng dụng cần các quyền này để hoạt động</string>
+    <string name="go_to_settings">Đi đến cài đặt</string>
+    <string name="sms_permission_message">Cần quyền đọc tin nhắn SMS để nhận thông báo tin nhắn</string>
+    <string name="camera_permission_message">Cần quyền truy cập camera để sử dụng đèn flash</string>
+    <string name="low_battery_brightness_reduced">Pin yếu! Độ sáng màn hình sẽ được giảm để tiết kiệm pin</string>
+    <string name="device_overheat_brightness_reduced">Nhiệt độ thiết bị cao! Độ sáng màn hình sẽ được giảm</string>
+    
+    <!-- Additional Strings -->
+    <string name="select_effect">Chọn hiệu ứng</string>
+    <string name="call_notification_enabled">Đã bật đèn flash thông báo cuộc gọi</string>
+    <string name="call_notification_disabled">Đã tắt đèn flash thông báo cuộc gọi</string>
+    <string name="camera_permission_granted">Đã được cấp quyền camera</string>
+    <string name="phone_permission_granted">Đã được cấp quyền điện thoại</string>
+    <string name="phone_permission_denied">Quyền điện thoại bị từ chối</string>
+    <string name="sms_permission_granted">Đã được cấp quyền SMS</string>
+    <string name="sms_permission_denied">Quyền SMS bị từ chối</string>
+    <string name="sms_flash_notification_enabled">Đã bật đèn flash thông báo SMS</string>
+    <string name="sms_flash_notification_disabled">Đã tắt đèn flash thông báo SMS</string>
 </resources> 

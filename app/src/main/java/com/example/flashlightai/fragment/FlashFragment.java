@@ -177,12 +177,14 @@ public class FlashFragment extends Fragment {
                     // Gọi phương thức gửi mã Morse nếu service hỗ trợ
                     if (morseCodeUtil != null) {
                         morseCodeUtil.playMorseCode(morseInput.getText().toString(), 1.0f);
+                        Context context = getContext();
                         if (context != null) {
                             Toast.makeText(context, R.string.sending_morse_code, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
             } else {
+                Context context = getContext();
                 if (context != null) {
                     Toast.makeText(context, R.string.please_enter_text, Toast.LENGTH_SHORT).show();
                 }

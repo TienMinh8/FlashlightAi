@@ -156,7 +156,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chậm"
+                    android:text="@string/slow"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp" />
 
@@ -176,7 +176,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nhanh"
+                    android:text="@string/fast"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp" />
                     
@@ -200,7 +200,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nhỏ"
+                    android:text="@string/text_size_small"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp" />
                 
@@ -220,7 +220,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lớn"
+                    android:text="@string/text_size_large"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp" />
 

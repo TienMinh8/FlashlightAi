@@ -34,6 +34,7 @@ import com.example.flashlightai.textlight.TextLightActivity;
 import com.example.flashlightai.SettingsActivity;
 import com.example.flashlightai.base.BaseActivity;
 import com.google.android.material.slider.Slider;
+import com.example.flashlightai.FlashLightApp;
 
 import java.util.Arrays;
 import java.util.List;
@@ -368,7 +369,7 @@ public class ScreenLightActivity extends BaseActivity {
         
         // Tạo dialog chọn hiệu ứng
         new AlertDialog.Builder(this)
-                .setTitle("Chọn hiệu ứng")
+                .setTitle(R.string.select_effect)
                 .setItems(effectNames, (dialog, which) -> {
                     LightEffectsManager.EffectType selectedEffect = effects.get(which);
                     currentEffect = selectedEffect;
@@ -395,7 +396,7 @@ public class ScreenLightActivity extends BaseActivity {
      * Hiển thị cảnh báo pin yếu
      */
     private void showLowBatteryWarning() {
-        Toast.makeText(this, "Pin yếu! Độ sáng màn hình sẽ được giảm để tiết kiệm pin", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.low_battery_brightness_reduced), Toast.LENGTH_LONG).show();
         
         // Tự động giảm độ sáng
         float reducedBrightness = Math.min(screenLightController.getCurrentBrightness(), 0.5f);
@@ -409,7 +410,7 @@ public class ScreenLightActivity extends BaseActivity {
      * Hiển thị cảnh báo nhiệt độ cao
      */
     private void showOverheatWarning() {
-        Toast.makeText(this, "Nhiệt độ thiết bị cao! Độ sáng màn hình sẽ được giảm", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.device_overheat_brightness_reduced), Toast.LENGTH_LONG).show();
         
         // Tự động giảm độ sáng
         float reducedBrightness = Math.min(screenLightController.getCurrentBrightness(), 0.3f);
@@ -422,6 +423,22 @@ public class ScreenLightActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        
+        // Kiểm tra xem ngôn ngữ có thay đổi không và áp dụng lại
+        if (FlashLightApp.isLanguageChanged()) {
+            // Đặt lại cờ
+            FlashLightApp.resetLanguageChangedFlag();
+            // Lưu trạng thái hiện tại nếu cần
+            // Tạo lại Activity với ngôn ngữ mới
+            recreate();
+            return;
+        }
+        
+        // Đặt lại chế độ full screen khi quay lại từ một activity khác
+        setFullScreenMode();
+        
+        // Cập nhật battery level nếu cần
+        checkBatteryLevel();
         
         // Bật lại màn hình phát sáng
         if (screenLightController != null) {
@@ -546,7 +563,7 @@ public class ScreenLightActivity extends BaseActivity {
             });
             
             // Thêm nút Settings vào top bar nếu có
-            ImageButton btnSettings = findViewById(R.id.btn_settings);
+            ImageButton btnSettings = findViewById(R.id.settings_button);
             if (btnSettings != null) {
                 btnSettings.setOnClickListener(v -> {
                     // Mở SettingsActivity
@@ -555,6 +572,33 @@ public class ScreenLightActivity extends BaseActivity {
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 });
             }
+        }
+    }
+
+    /**
+     * Kiểm tra mức pin hiện tại và hiển thị cảnh báo nếu thấp
+     */
+    private void checkBatteryLevel() {
+        try {
+            // Lấy thông tin pin từ BatteryManager
+            Intent intent = registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+            if (intent != null) {
+                int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+                int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+                
+                if (level != -1 && scale != -1) {
+                    float batteryPct = level * 100 / (float) scale;
+                    if (batteryPct <= 20) {
+                        isBatteryLow = true;
+                        // Hiển thị cảnh báo pin yếu
+                        showLowBatteryWarning();
+                    } else {
+                        isBatteryLow = false;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error checking battery level: " + e.getMessage());
         }
     }
 } 

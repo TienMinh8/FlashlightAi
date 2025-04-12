@@ -40,8 +40,8 @@ public class LanguageSelectionActivity extends AppCompatActivity implements Lang
         if (isFirstRun) {
             // Đây là lần đầu chạy, hiển thị fragment chọn ngôn ngữ
             
-            // Luôn sử dụng tiếng Anh làm ngôn ngữ mặc định
-            languageManager.setLanguage("en");
+            // Thiết lập tiếng Anh làm mặc định
+            languageManager.saveLanguageCode("en");
             
             // Load fragment chọn ngôn ngữ
             loadLanguageSelectionFragment();
@@ -69,8 +69,8 @@ public class LanguageSelectionActivity extends AppCompatActivity implements Lang
         // Đánh dấu rằng ứng dụng đã được chạy
         preferenceManager.setBoolean(KEY_FIRST_RUN, false);
         
-        // Áp dụng ngôn ngữ đã chọn
-        languageManager.setLanguage(languageCode);
+        // Áp dụng ngôn ngữ mới
+        languageManager.saveLanguageCode(languageCode);
         
         // Chuyển đến MainActivity
         startMainActivity();

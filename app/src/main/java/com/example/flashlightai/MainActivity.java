@@ -48,7 +48,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.flashlightai.base.BaseActivity;
 import com.example.flashlightai.controller.FlashController;
 import com.example.flashlightai.fragment.FlashFragment;
-import com.example.flashlightai.fragment.HomeFragment;
 import com.example.flashlightai.fragment.SettingsFragment;
 import com.example.flashlightai.screen.ScreenLightActivity;
 import com.example.flashlightai.service.FlashlightService;
@@ -263,8 +262,8 @@ public class MainActivity extends BaseActivity {
                     
                     // Hiển thị lý do yêu cầu quyền nếu cần
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
-                        Toast.makeText(this, "Cần quyền đọc trạng thái điện thoại để nhận thông báo cuộc gọi", 
-                                Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.phone_permission_required),
+                            Toast.LENGTH_SHORT).show();
                     }
                     
                     // Yêu cầu quyền
@@ -305,8 +304,8 @@ public class MainActivity extends BaseActivity {
                     
                     // Hiển thị lý do yêu cầu quyền nếu cần
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECEIVE_SMS)) {
-                        Toast.makeText(this, "Cần quyền đọc tin nhắn SMS để nhận thông báo tin nhắn", 
-                                Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.sms_permission_message),
+                            Toast.LENGTH_LONG).show();
                     }
                     
                     // Yêu cầu quyền
@@ -331,8 +330,9 @@ public class MainActivity extends BaseActivity {
                 notificationService.setSmsFlashEnabled(isChecked);
                 
                 // Hiển thị thông báo
-                Toast.makeText(this, "Thông báo đèn flash cho SMS " + 
-                        (isChecked ? "đã bật" : "đã tắt"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, 
+                        isChecked ? getString(R.string.sms_flash_notification_enabled) : getString(R.string.sms_flash_notification_disabled), 
+                        Toast.LENGTH_SHORT).show();
             }
         });
         
@@ -437,7 +437,7 @@ public class MainActivity extends BaseActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             // Hiển thị lý do yêu cầu quyền
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-                Toast.makeText(this, "Cần quyền truy cập camera để sử dụng đèn flash", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.camera_permission_message), Toast.LENGTH_LONG).show();
             }
             
             // Yêu cầu quyền camera
@@ -467,8 +467,8 @@ public class MainActivity extends BaseActivity {
                     new String[]{Manifest.permission.READ_PHONE_STATE},
                     READ_PHONE_STATE_PERMISSION_REQUEST_CODE);
             
-            Toast.makeText(this, "Cần cấp quyền đọc trạng thái điện thoại để nhận thông báo cuộc gọi", 
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.phone_permission_required),
+                Toast.LENGTH_LONG).show();
         }
         
         // Yêu cầu quyền RECEIVE_SMS
@@ -479,8 +479,8 @@ public class MainActivity extends BaseActivity {
                     new String[]{Manifest.permission.RECEIVE_SMS},
                     RECEIVE_SMS_PERMISSION_REQUEST_CODE);
             
-            Toast.makeText(this, "Cần cấp quyền đọc tin nhắn SMS để nhận thông báo tin nhắn", 
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.sms_permission_message),
+                Toast.LENGTH_LONG).show();
         }
     }
     
@@ -964,36 +964,49 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void setupBottomNavigation() {
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.navigation_flash) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new FlashFragment())
-                        .commit();
-                return true;
-            } else if (itemId == R.id.navigation_screen) {
-                Intent screenIntent = new Intent(MainActivity.this, ScreenLightActivity.class);
-                startActivity(screenIntent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                return true;
-            } else if (itemId == R.id.navigation_text_light) {
-                Intent textLightIntent = new Intent(MainActivity.this, TextLightActivity.class);
-                startActivity(textLightIntent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                return true;
-            }
-            return false;
-        });
-        
-        // Mặc định load FlashFragment
-        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new FlashFragment())
-                    .commit();
-            bottomNavigationView.setSelectedItemId(R.id.navigation_flash);
+    /**
+     * Set the app to fullscreen mode, hiding navigation bars
+     */
+    private void setFullScreenMode() {
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        decorView.setSystemUiVisibility(uiOptions);
+    }
+
+    /**
+     * Show tooltip for flash mode when app is first run
+     */
+    private void showFlashModeTooltipIfNeeded() {
+        // Check if this is the first run
+        boolean isFirstRun = preferenceManager.getBoolean(KEY_FIRST_RUN, true);
+        if (isFirstRun) {
+            Toast.makeText(this, R.string.flash_mode_hold_tip, Toast.LENGTH_LONG).show();
+            preferenceManager.setBoolean(KEY_FIRST_RUN, false);
+        }
+    }
+
+    /**
+     * Get text representation of flash mode
+     */
+    private String getFlashModeText(FlashController.FlashMode mode) {
+        switch (mode) {
+            case NORMAL:
+                return getString(R.string.normal);
+            case BLINK:
+                return getString(R.string.blink);
+            case SOS:
+                return getString(R.string.sos);
+            case STROBE:
+                return getString(R.string.strobe);
+            case DISCO:
+                return getString(R.string.disco);
+            default:
+                return getString(R.string.normal);
         }
     }
 

@@ -78,7 +78,7 @@ public class SettingsFragment extends Fragment {
         String currentLanguage = preferenceManager.getString("app_language", null);
         if (currentLanguage == null) {
             // Sử dụng tiếng Anh làm ngôn ngữ mặc định, bất kể ngôn ngữ hệ thống là gì
-            languageManager.setLanguage("en");
+            languageManager.saveLanguageCode("en");
         }
         
         // Kiểm tra xem đây có phải là lần đầu khởi động không
@@ -250,9 +250,11 @@ public class SettingsFragment extends Fragment {
                     notificationService.setCallFlashEnabled(isChecked);
                     
                     // Hiển thị thông báo
-                    Toast.makeText(requireContext(), 
-                            "Đèn flash báo cuộc gọi " + (isChecked ? "đã bật" : "đã tắt"), 
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(
+                        requireContext(),
+                        isChecked ? getString(R.string.call_notification_enabled) : getString(R.string.call_notification_disabled),
+                        Toast.LENGTH_SHORT
+                    ).show();
                 }
             } catch (Exception e) {
                 Log.e("SettingsFragment", "Lỗi khi thay đổi trạng thái cuộc gọi", e);
@@ -281,7 +283,7 @@ public class SettingsFragment extends Fragment {
                 
                 // Hiển thị thông báo
                 Toast.makeText(requireContext(), 
-                        "Đèn flash báo tin nhắn " + (isChecked ? "đã bật" : "đã tắt"), 
+                        isChecked ? getString(R.string.sms_flash_notification_enabled) : getString(R.string.sms_flash_notification_disabled), 
                         Toast.LENGTH_SHORT).show();
             }
         });
@@ -332,14 +334,14 @@ public class SettingsFragment extends Fragment {
         
         if (requestCode == 100 && permissions.length > 0 && permissions[0].equals(Manifest.permission.CAMERA)) {
             if (isGranted) {
-                Toast.makeText(requireContext(), "Quyền camera đã được cấp", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), getString(R.string.camera_permission_granted), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(requireContext(), "Quyền camera bị từ chối", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), getString(R.string.camera_permission_denied), Toast.LENGTH_SHORT).show();
             }
         } 
         else if (requestCode == 101 && permissions.length > 0 && permissions[0].equals(Manifest.permission.READ_PHONE_STATE)) {
             if (isGranted) {
-                Toast.makeText(requireContext(), "Quyền điện thoại đã được cấp", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), getString(R.string.phone_permission_granted), Toast.LENGTH_SHORT).show();
                 
                 try {
                     // TỰ ĐỘNG BẬT TÍNH NĂNG
@@ -366,7 +368,7 @@ public class SettingsFragment extends Fragment {
                     Log.e("SettingsFragment", "Lỗi khi bật tính năng đèn flash cho cuộc gọi", e);
                 }
             } else {
-                Toast.makeText(requireContext(), "Quyền điện thoại bị từ chối", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), getString(R.string.phone_permission_denied), Toast.LENGTH_SHORT).show();
                 // Đảm bảo switch ở trạng thái TẮT
                 preferenceManager.setBoolean("call_flash_enabled", false);
                 if (switchCallNotification != null) {
@@ -376,7 +378,7 @@ public class SettingsFragment extends Fragment {
         } 
         else if (requestCode == 102 && permissions.length > 0 && permissions[0].equals(Manifest.permission.RECEIVE_SMS)) {
             if (isGranted) {
-                Toast.makeText(requireContext(), "Quyền SMS đã được cấp", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), getString(R.string.sms_permission_granted), Toast.LENGTH_SHORT).show();
                 
                 try {
                     // TỰ ĐỘNG BẬT TÍNH NĂNG
@@ -403,7 +405,7 @@ public class SettingsFragment extends Fragment {
                     Log.e("SettingsFragment", "Lỗi khi bật tính năng đèn flash cho SMS", e);
                 }
             } else {
-                Toast.makeText(requireContext(), "Quyền SMS bị từ chối", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), getString(R.string.sms_permission_denied), Toast.LENGTH_SHORT).show();
                 // Đảm bảo switch ở trạng thái TẮT
                 preferenceManager.setBoolean("sms_flash_enabled", false);
                 if (switchSmsNotification != null) {

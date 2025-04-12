@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    Ukrainian Language Strings
+    Locale: uk
+    Country: Ukraine (UA)
+-->
+<resources>
+    <string name="app_name">FlashLight AI</string>
+    <string name="settings">Налаштування</string>
+    <string name="about">Про додаток</string>
+    <string name="flash">Ліхтарик</string>
+    <string name="screen">Екран</string>
+    <string name="more">Більше</string>
+    <string name="home">Головна</string>
+    <string name="sos">SOS</string>
+    <string name="normal">Звичайний</string>
+    <string name="strobe">Стробоскоп</string>
+    <string name="blink">Блимання</string>
+    <string name="disco">Диско</string>
+    <string name="on">УВІМК</string>
+    <string name="off">ВИМК</string>
+    <string name="screen_light">Екранне світло</string>
+    <string name="privacy_policy">Політика конфіденційності</string>
+    <string name="terms_of_use">Умови використання</string>
+    <string name="rate_this_app">Оцінити додаток</string>
+    <string name="share">Поділитися</string>
+    <string name="battery_level">Рівень батареї</string>
+    <string name="warning">Попередження</string>
+    <string name="ok">OK</string>
+    <string name="version">Версія</string>
+    <string name="incoming_call">Вхідний дзвінок від:</string>
+    <string name="incoming_sms">У вас нове SMS від:</string>
+    <string name="camera_permission_denied">Для використання ліхтарика потрібен дозвіл камери</string>
+    <string name="alert_battery_level">Рівень заряду батареї %d%%. Використання ліхтарика швидше розряджає батарею.</string>
+    <string name="alert_device_heat">Пристрій може нагріватися при тривалому використанні цього додатка.</string>
+    <string name="warning_title">Увага!</string>
+    <string name="warning_message">Ця функція використовує максимальну яскравість екрану. Тривале використання може викликати втому очей та швидше розрядити батарею.</string>
+    <string name="solid_mode">Суцільний</string>
+    <string name="colorful_mode">Кольоровий</string>
+    <string name="pulse_mode">Пульсація</string>
+    <string name="dark_mode">Темний режим</string>
+    <string name="language">Мова</string>
+    <string name="notification_settings">Налаштування сповіщень</string>
+    <string name="theme">Тема</string>
+    <string name="morse">Морзе</string>
+    <string name="morse_code">Код Морзе</string>
+    <string name="send">Надіслати</string>
+    <string name="morse_code_input_hint">Введіть повідомлення тут...</string>
+    <string name="toggle_morse">Морзе</string>
+    <string name="sos_signal">Сигнал SOS</string>
+    <string name="text_message">Текстове повідомлення</string>
+    <string name="compass">Компас</string>
+    <string name="magnifier">Лупа</string>
+    <string name="ruler">Лінійка</string>
+    <string name="mirror">Дзеркало</string>
+    <string name="calculator">Калькулятор</string>
+    <string name="weather">Погода</string>
+    <string name="text_light">Текстове світло</string>
+    <string name="colorblind">Дальтонізм</string>
+    <string name="qr_code">QR-код</string>
+    <string name="sound_meter">Вимірювач звуку</string>
+    <string name="level">Рівень</string>
+    <string name="stopwatch">Секундомір</string>
+    <string name="timer">Таймер</string>
+    <string name="uv_detector">УФ-детектор</string>
+    <string name="metal_detector">Металошукач</string>
+    <string name="ghost_detector">Детектор привидів</string>
+    <string name="heart_rate">Пульс</string>
+    <string name="sleep_sounds">Звуки для сну</string>
+    <string name="white_noise">Білий шум</string>
+    <string name="night_mode">Нічний режим</string>
+    <string name="strobe_warning">ПОПЕРЕДЖЕННЯ: Стробоскопічні спалахи можуть викликати судоми у людей з фоточутливою епілепсією. Використовуйте з обережністю.</string>
+    <string name="flashlight_not_available">Ліхтарик недоступний на цьому пристрої</string>
+    <string name="speed">Швидкість</string>
+    <string name="size">Розмір</string>
+    <string name="text_color">Колір тексту</string>
+    <string name="blink_mode">Режим блимання</string>
+    <string name="scroll_direction">Напрямок прокрутки</string>
+    <string name="start">Почати</string>
+    <string name="stop">Зупинити</string>
+    <string name="left">Вліво</string>
+    <string name="right">Вправо</string>
+    <string name="up">Вгору</string>
+    <string name="down">Вниз</string>
+    <string name="default_text">Я КОХАЮ ТЕБЕ</string>
+    <string name="set_as_wallpaper">Встановити як шпалери</string>
+    <string name="left_to_right">Зліва направо</string>
+    <string name="right_to_left">Справа наліво</string>
+    <string name="top_to_bottom">Зверху вниз</string>
+    <string name="bottom_to_top">Знизу вгору</string>
+    <string name="back">Назад</string>
+    <string name="scroll_speed">Швидкість прокрутки</string>
+    <string name="app_selection">Вибір додатків</string>
+    <string name="flashing_speed">Швидкість блимання</string>
+    <string name="select">Вибрати</string>
+    <string name="glow_effect">Ефект свічення</string>
+    <string name="power_button">Кнопка живлення</string>
+    <string name="incoming_calls">Вхідні дзвінки</string>
+    <string name="sms">SMS</string>
+    <string name="text_size">Розмір тексту</string>
+    <string name="ms">мс</string>
+    <string name="enable">Увімкнути</string>
+    <string name="flashing_pattern">Шаблон блимання</string>
+    <string name="call_notification">Сповіщення про дзвінок</string>
+    <string name="call_flash_notification">Сповіщення ліхтариком для дзвінків</string>
+    <string name="sms_flash_notification">Сповіщення ліхтариком для SMS</string>
+    <string name="notification_permission_required">Потрібен дозвіл на сповіщення</string>
+    <string name="phone_permission_required">Потрібен дозвіл на доступ до телефону</string>
+    <string name="sms_permission_required">Потрібен дозвіл на доступ до SMS</string>
+    <string name="enable_notifications">Увімкнути сповіщення</string>
+    <string name="play">Відтворити</string>
+    <string name="pause">Пауза</string>
+    <string name="ready">Готово</string>
+    <string name="flash_on">Ліхтарик увімкнено</string>
+    <string name="flash_off">Ліхтарик вимкнено</string>
+    <string name="permission_denied">Дозвіл відхилено. Ліхтарик не працюватиме.</string>
+    
+    <!-- Text Light Activity -->
+    <string name="start_text">Запустити текст</string>
+    <string name="stop_text">Зупинити текст</string>
+    <string name="set_text_wallpaper">Встановити як шпалери</string>
+    <string name="full_background">Повний фон</string>
+    <string name="text_light_input_hint">Введіть текст для відображення...</string>
+    <string name="text_font">Шрифт</string>
+    <string name="font_normal">Звичайний</string>
+    <string name="font_bold">Жирний</string>
+    <string name="font_italic">Курсив</string>
+    <string name="reverse">Інвертувати</string>
+    <string name="no_scroll">Без прокрутки</string>
+    <string name="text_scroll_direction">Напрямок</string>
+    <string name="text_scroll_speed">Швидкість</string>
+    <string name="fullscreen">Повний екран</string>
+    <string name="exit_fullscreen">Вийти з повного екрану</string>
+    
+    <!-- Bottom Navigation Titles -->
+    <string name="nav_home">Головна</string>
+    <string name="nav_flash">Ліхтарик</string>
+    <string name="nav_screen">Екран</string>
+    <string name="nav_text">Текст</string>
+    <string name="nav_settings">Налаштування</string>
+    
+    <!-- Rate App Dialog -->
+    <string name="rate_dialog_title">Оцінити додаток</string>
+    <string name="rate_dialog_message">Оцініть ваш досвід використання додатка!</string>
+    <string name="feedback_hint">Поділіться своєю думкою...</string>
+    <string name="feedback_prompt">Допоможіть нам покращити додаток:</string>
+    <string name="rate_dialog_info">Оцінки 4-5 зірок будуть відправлені в Play Store</string>
+    <string name="rate_dialog_submit">Надіслати</string>
+    <string name="rate_dialog_cancel">Скасувати</string>
+    <string name="rate_thanks_high">Дякуємо за вашу оцінку!</string>
+    <string name="rate_thanks_low">Дякуємо за ваш відгук! Ми покращимо додаток.</string>
+    <string name="rate_no_rating">Будь ласка, оцініть додаток</string>
+    
+    <!-- Language Settings -->
+    <string name="language_changed">Мову успішно змінено!</string>
+    <string name="confirm">Підтвердити</string>
+    <string name="select_language">Виберіть мову</string>
+    <string name="language_cancel">Вибір мови скасовано</string>
+    <string name="continue_btn">Продовжити</string>
+    <string name="select_your_language">Виберіть найбільш зручну мову</string>
+    <string name="language_selected">Вибрано: %s</string>
+    <string name="language_confirm_title">Підтвердити мову</string>
+    <string name="language_confirm_message">Ви впевнені, що хочете змінити мову на %s?</string>
+    <string name="language_confirm_yes">Так, змінити</string>
+    <string name="language_confirm_no">Скасувати</string>
+    <string name="cancel">Скасувати</string>
+    
+    <!-- New strings -->
+    <string name="coming_soon">Скоро!</string>
+    <string name="share_via">Поділитися через</string>
+    <string name="share_message">Погляньте на цей чудовий додаток-ліхтарик!</string>
+    <string name="notification">Сповіщення</string>
+    <string name="flashlight">Ліхтарик</string>
+    <string name="title_activity_settings">Налаштування</string>
+    <string name="title_activity_language_selection">Вибір мови</string>
+    <string name="app_intro">Розумний ліхтарик з багатьма функціями</string>
+    <string name="loading">Завантаження...</string>
+    <string name="search">Пошук</string>
+    <string name="welcome">Ласкаво просимо</string>
+    <string name="next">Далі</string>
+    <string name="previous">Назад</string>
+    <string name="finish">Завершити</string>
+    <string name="skip">Пропустити</string>
+    
+    <!-- Languages -->
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_portuguese">Português</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_indonesia">Bahasa Indonesia</string>
+    <string name="language_india">हिन्दी</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_bangladesh">বাংলা</string>
+    <string name="language_ukrainian">Українська</string>
+    
+    <!-- Additional strings -->
+    <string name="slow">Повільно</string>
+    <string name="fast">Швидко</string>
+    <string name="input_text">Введення тексту</string>
+    <string name="request_permissions">Запитати дозволи</string>
+    <string name="request_permissions_desc">Надайте дозволи на повідомлення та дзвінки для використання функцій сповіщення ліхтариком.</string>
+    <string name="permissions">Дозволи</string>
+    <string name="camera_permission">Дозвіл камери (ліхтарик)</string>
+    <string name="phone_permission">Дозвіл телефону (дзвінки)</string>
+    <string name="sms_permission">Дозвіл SMS (повідомлення)</string>
+    <string name="permission_required">Потрібен дозвіл</string>
+    <string name="permission_description">Додатку потрібні ці дозволи для роботи</string>
+    <string name="go_to_settings">Перейти до налаштувань</string>
+    
+    <!-- Flash Mode Messages -->
+    <string name="mode_set_to">Режим змінено на</string>
+    <string name="flash_mode_hold_tip">Утримуйте кнопку для зміни режиму ліхтарика</string>
+    <string name="mode_normal_active">Звичайний режим активний: %d мс</string>
+    <string name="mode_sos_active">Режим сигналу SOS активний</string>
+    <string name="mode_disco_active">Режим диско активний: %1$d-%2$d мс</string>
+    <string name="flash_modes">РЕЖИМИ ЛІХТАРИКА</string>
+    <string name="flash_settings">НАЛАШТУВАННЯ ЛІХТАРИКА</string>
+    <string name="normal_mode">Звичайний режим</string>
+    <string name="sos_mode">Режим SOS</string>
+    <string name="disco_mode">Режим Диско</string>
+    <string name="sending_morse_code">Надсилання коду Морзе</string>
+    <string name="please_enter_text">Будь ласка, введіть текст</string>
+    <string name="sending_sos_signal">Надсилання сигналу SOS</string>
+    
+    <!-- Additional Strings -->
+    <string name="select_effect">Вибір ефекту</string>
+    <string name="call_notification_enabled">Сповіщення спалахом для дзвінків увімкнено</string>
+    <string name="call_notification_disabled">Сповіщення спалахом для дзвінків вимкнено</string>
+    <string name="sms_permission_message">Потрібен дозвіл на доступ до SMS для отримання сповіщень</string>
+    <string name="camera_permission_message">Потрібен дозвіл на доступ до камери для використання ліхтарика</string>
+    <string name="low_battery_brightness_reduced">Низький заряд батареї! Яскравість екрану знижено для економії заряду</string>
+    <string name="device_overheat_brightness_reduced">Висока температура пристрою! Яскравість екрану знижено</string>
+    <string name="camera_permission_granted">Дозвіл на доступ до камери надано</string>
+    <string name="phone_permission_granted">Дозвіл на доступ до телефону надано</string>
+    <string name="phone_permission_denied">Доступ до телефону відхилено</string>
+    <string name="sms_permission_granted">Дозвіл на доступ до SMS надано</string>
+    <string name="sms_permission_denied">Доступ до SMS відхилено</string>
+    <string name="sms_flash_notification_enabled">Сповіщення спалахом для SMS увімкнено</string>
+    <string name="sms_flash_notification_disabled">Сповіщення спалахом для SMS вимкнено</string>
+</resources> 

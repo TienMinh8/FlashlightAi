@@ -1,3 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    English Language Strings (Default)
+    Locale: en
+    Country: International
+-->
 <resources>
     <string name="app_name">FlashLight AI</string>
     <string name="settings">Settings</string>
@@ -23,6 +29,7 @@
     <string name="battery_level">Battery Level</string>
     <string name="warning">Warning</string>
     <string name="ok">OK</string>
+    <string name="version">Version</string>
     <string name="incoming_call">Incoming call from:</string>
     <string name="incoming_sms">You have a new SMS from:</string>
     <string name="camera_permission_denied">Camera permission is required to use the flashlight</string>
@@ -111,6 +118,8 @@
     <string name="permission_denied">Permission denied. The flashlight will not work.</string>
     
     <!-- Flash Status Messages -->
+    <string name="mode_set_to">Mode set to</string>
+    <string name="flash_mode_hold_tip">Long press the power button to change flash mode</string>
     <string name="mode_normal_active">Normal mode active: %d ms</string>
     <string name="mode_sos_active">SOS signal mode active</string>
     <string name="mode_disco_active">Disco mode active: %1$d-%2$d ms</string>
@@ -120,7 +129,7 @@
     <string name="stop_text">Stop Text</string>
     <string name="set_text_wallpaper">Set as Wallpaper</string>
     <string name="full_background">Full Background</string>
-    <string name="text_light_input_hint">Nhập văn bản để hiển thị...</string>
+    <string name="text_light_input_hint">Enter text to display...</string>
     <string name="text_font">Font</string>
     <string name="font_normal">Normal</string>
     <string name="font_bold">Bold</string>
@@ -131,6 +140,10 @@
     <string name="text_scroll_speed">Speed</string>
     <string name="fullscreen">Fullscreen</string>
     <string name="exit_fullscreen">Exit Fullscreen</string>
+    <string name="slow">Slow</string>
+    <string name="fast">Fast</string>
+    <string name="text_size_small">Small</string>
+    <string name="text_size_large">Large</string>
     
     <!-- Bottom Navigation Titles -->
     <string name="nav_home">Home</string>
@@ -141,16 +154,16 @@
 
     
     <!-- Rate App Dialog -->
-    <string name="rate_dialog_title">Đánh giá ứng dụng</string>
-    <string name="rate_dialog_message">Hãy đánh giá trải nghiệm của bạn với ứng dụng!</string>
-    <string name="feedback_hint">Chia sẻ ý kiến của bạn...</string>
-    <string name="feedback_prompt">Góp ý để chúng tôi cải thiện ứng dụng:</string>
-    <string name="rate_dialog_info">Đánh giá 4-5 sao sẽ được chuyển đến CH Play</string>
-    <string name="rate_dialog_submit">Gửi</string>
-    <string name="rate_dialog_cancel">Hủy</string>
-    <string name="rate_thanks_high">Cảm ơn bạn đã đánh giá!</string>
-    <string name="rate_thanks_low">Cảm ơn phản hồi của bạn! Chúng tôi sẽ cải thiện ứng dụng.</string>
-    <string name="rate_no_rating">Vui lòng đánh giá ứng dụng</string>
+    <string name="rate_dialog_title">Rate App</string>
+    <string name="rate_dialog_message">Please rate your experience with the app!</string>
+    <string name="feedback_hint">Share your feedback...</string>
+    <string name="feedback_prompt">Help us improve the app:</string>
+    <string name="rate_dialog_info">4-5 star ratings will be sent to Play Store</string>
+    <string name="rate_dialog_submit">Submit</string>
+    <string name="rate_dialog_cancel">Cancel</string>
+    <string name="rate_thanks_high">Thank you for your rating!</string>
+    <string name="rate_thanks_low">Thank you for your feedback! We will improve the app.</string>
+    <string name="rate_no_rating">Please rate the app</string>
     
     <!-- Language Settings -->
     <string name="language_changed">Language changed successfully!</string>
@@ -194,7 +207,7 @@
     <string name="please_enter_text">Please enter text</string>
     <string name="sending_sos_signal">Sending SOS signal</string>
     
-    <!-- Ngôn ngữ -->
+    <!-- Languages -->
     <string name="language_english">English</string>
     <string name="language_vietnamese">Tiếng Việt</string>
     <string name="language_chinese">中文</string>
@@ -205,16 +218,31 @@
     <string name="language_india">हिन्दी</string>
     <string name="language_arabic">العربية</string>
     <string name="language_bangladesh">বাংলা</string>
-    <string name="slow">Slow</string>
-    <string name="fast">Fast</string>
+    <string name="language_ukrainian">Українська</string>
     <string name="input_text">Input Text</string>
-    <string name="request_permissions">Yêu cầu quyền truy cập</string>
-    <string name="request_permissions_desc">Cấp quyền truy cập tin nhắn và cuộc gọi để sử dụng các tính năng thông báo đèn flash.</string>
-    <string name="permissions">Quyền truy cập</string>
-    <string name="camera_permission">Quyền camera (đèn flash)</string>
-    <string name="phone_permission">Quyền điện thoại (cuộc gọi)</string>
-    <string name="sms_permission">Quyền SMS (tin nhắn)</string>
-    <string name="permission_required">Cần cấp quyền</string>
-    <string name="permission_description">Ứng dụng cần các quyền này để hoạt động</string>
-    <string name="go_to_settings">Đi đến cài đặt</string>
+    <string name="request_permissions">Request Permissions</string>
+    <string name="request_permissions_desc">Grant message and call permissions to use flashlight notification features.</string>
+    <string name="permissions">Permissions</string>
+    <string name="camera_permission">Camera permission (flashlight)</string>
+    <string name="phone_permission">Phone permission (calls)</string>
+    <string name="sms_permission">SMS permission (messages)</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="permission_description">The app needs these permissions to function</string>
+    <string name="go_to_settings">Go to settings</string>
+    
+    <!-- Additional Strings -->
+    <string name="select_effect">Select Effect</string>
+    <string name="call_notification_enabled">Call notification flash enabled</string>
+    <string name="call_notification_disabled">Call notification flash disabled</string>
+    <string name="sms_permission_message">SMS permission is required to receive message notifications</string>
+    <string name="camera_permission_message">Camera permission is required to use the flashlight</string>
+    <string name="low_battery_brightness_reduced">Low battery! Screen brightness has been reduced to save power</string>
+    <string name="device_overheat_brightness_reduced">Device temperature is high! Screen brightness has been reduced</string>
+    <string name="camera_permission_granted">Camera permission granted</string>
+    <string name="phone_permission_granted">Phone permission granted</string>
+    <string name="phone_permission_denied">Phone permission denied</string>
+    <string name="sms_permission_granted">SMS permission granted</string>
+    <string name="sms_permission_denied">SMS permission denied</string>
+    <string name="sms_flash_notification_enabled">SMS flash notification enabled</string>
+    <string name="sms_flash_notification_disabled">SMS flash notification disabled</string>
 </resources>

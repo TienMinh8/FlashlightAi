@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Indonesian (id) language file -->
+<resources>
+    <!-- App Names -->
+    <string name="app_name">Senter AI</string>
+    <string name="app_name_dark">Senter AI (Gelap)</string>
+    <string name="app_name_light">Senter AI (Terang)</string>
+
+    <!-- Main Screen -->
+    <string name="flashlight_screen_title">Senter</string>
+    <string name="tap_to_turn_on">Ketuk untuk menyalakan</string>
+    <string name="tap_to_turn_off">Ketuk untuk mematikan</string>
+    <string name="swipe_for_intensity">Geser untuk mengatur intensitas</string>
+    <string name="not_available">Tidak tersedia</string>
+    <string name="flashlight_not_available">Senter tidak tersedia di perangkat ini</string>
+    <string name="camera_permission_required">Izin kamera diperlukan</string>
+
+    <!-- Settings -->
+    <string name="settings">Pengaturan</string>
+    <string name="theme">Tema</string>
+    <string name="theme_system">Sistem</string>
+    <string name="theme_light">Terang</string>
+    <string name="theme_dark">Gelap</string>
+    <string name="language">Bahasa</string>
+    <string name="language_system">Bahasa sistem</string>
+    <string name="show_banner_ads">Tampilkan iklan banner</string>
+    <string name="about">Tentang</string>
+    <string name="version">Versi</string>
+    <string name="privacy_policy">Kebijakan privasi</string>
+    <string name="terms_of_service">Persyaratan layanan</string>
+    <string name="feedback">Umpan balik</string>
+    <string name="rate_app">Nilai aplikasi</string>
+    <string name="share_app">Bagikan aplikasi</string>
+    <string name="remove_ads">Hilangkan iklan</string>
+    <string name="restore_purchases">Pulihkan pembelian</string>
+    <string name="purchase_successful">Pembelian berhasil</string>
+    <string name="purchase_pending">Pembelian tertunda</string>
+    <string name="purchase_failed">Pembelian gagal</string>
+    <string name="purchase_restored">Pembelian dipulihkan</string>
+    <string name="purchase_not_restored">Tidak ada pembelian yang dipulihkan</string>
+    <string name="purchase_canceled">Pembelian dibatalkan</string>
+    <string name="premium_desc">Hilangkan semua iklan dari aplikasi ini</string>
+    <string name="premium_price">$3.99</string>
+    <string name="premium_title">Premium</string>
+    <string name="purchase">Beli</string>
+    <string name="price_error">Error mendapatkan harga</string>
+
+    <!-- Warnings -->
+    <string name="warning_epilepsy">PERINGATAN: Senter yang berkedip dapat menyebabkan kejang pada orang dengan epilepsi fotosensitif</string>
+    <string name="warning_general">PERINGATAN: Jangan arahkan cahaya langsung ke mata atau benda sensitif</string>
+    <string name="stay_on_notification_title">Senter menyala</string>
+    <string name="stay_on_notification_text">Ketuk untuk membuka aplikasi</string>
+
+    <!-- SOS -->
+    <string name="sos_mode">Mode SOS</string>
+    <string name="sos_active">SOS Aktif</string>
+    <string name="start_sos">Mulai SOS</string>
+    <string name="stop_sos">Hentikan SOS</string>
+
+    <!-- Strobe/Blinking -->
+    <string name="strobe_mode">Mode Berkedip</string>
+    <string name="strobe_active">Kedipan Aktif</string>
+    <string name="strobe_speed">Kecepatan Kedipan</string>
+    <string name="strobe_pattern">Pola Kedipan</string>
+    <string name="start_strobe">Mulai Kedipan</string>
+    <string name="stop_strobe">Hentikan Kedipan</string>
+    <string name="pattern_regular">Reguler</string>
+    <string name="pattern_sos">SOS</string>
+    <string name="pattern_random">Acak</string>
+    <string name="pattern_heartbeat">Detak Jantung</string>
+    <string name="pattern_police">Polisi</string>
+    <string name="pattern_disco">Disko</string>
+
+    <!-- Colors (for color flashlight) -->
+    <string name="choose_color">Pilih Warna</string>
+    <string name="color_red">Merah</string>
+    <string name="color_green">Hijau</string>
+    <string name="color_blue">Biru</string>
+    <string name="color_yellow">Kuning</string>
+    <string name="color_purple">Ungu</string>
+    <string name="color_cyan">Cyan</string>
+    <string name="color_white">Putih</string>
+
+    <!-- Gestures -->
+    <string name="gestures">Gerakan</string>
+    <string name="shake_to_turn_on">Kocok untuk menyalakan</string>
+    <string name="shake_to_turn_off">Kocok untuk mematikan</string>
+    <string name="double_tap_to_turn_on">Ketuk dua kali untuk menyalakan</string>
+    <string name="double_tap_to_turn_off">Ketuk dua kali untuk mematikan</string>
+
+    <!-- Misc -->
+    <string name="ok">OK</string>
+    <string name="cancel">Batal</string>
+    <string name="close">Tutup</string>
+    <string name="save">Simpan</string>
+    <string name="on">Nyala</string>
+    <string name="off">Mati</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+
+    <!-- Error messages -->
+    <string name="error_occurred">Terjadi kesalahan</string>
+    <string name="error_camera_access">Kesalahan mengakses kamera</string>
+    <string name="error_flashlight_access">Kesalahan mengakses senter</string>
+    <string name="something_went_wrong">Terjadi kesalahan</string>
+    <string name="retry">Coba lagi</string>
+    <string name="permission_denied">Izin ditolak</string>
+    <string name="please_grant_camera_permission">Harap berikan izin kamera untuk menggunakan senter</string>
+    <string name="flashlight_unavailable_on_this_device">Senter tidak tersedia di perangkat ini</string>
+
+    <!-- Text Light -->
+    <string name="text_light">Lampu Teks</string>
+    <string name="text_color">Warna Teks</string>
+    <string name="text_size">Ukuran Teks</string>
+    <string name="scroll_direction">Arah Geser</string>
+    <string name="scroll_speed">Kecepatan Geser</string>
+    <string name="start_text">Mulai Teks</string>
+    <string name="stop_text">Hentikan Teks</string>
+    <string name="text_light_input_hint">Masukkan teks untuk ditampilkan...</string>
+    <string name="default_text">AKU CINTA KAMU</string>
+    <string name="left_to_right">Kiri ke Kanan</string>
+    <string name="right_to_left">Kanan ke Kiri</string>
+    <string name="top_to_bottom">Atas ke Bawah</string>
+    <string name="bottom_to_top">Bawah ke Atas</string>
+    <string name="no_scroll">Tidak Bergulir</string>
+    <string name="fullscreen">Layar Penuh</string>
+    <string name="exit_fullscreen">Keluar Layar Penuh</string>
+    <string name="text_font">Font</string>
+    <string name="font_normal">Normal</string>
+    <string name="font_bold">Tebal</string>
+    <string name="font_italic">Miring</string>
+    <string name="set_as_wallpaper">Atur sebagai Wallpaper</string>
+    <string name="set_text_wallpaper">Atur sebagai Wallpaper</string>
+    <string name="text_scroll_direction">Arah</string>
+    <string name="text_scroll_speed">Kecepatan</string>
+    
+    <!-- Screen Light -->
+    <string name="screen_light">Lampu Layar</string>
+    <string name="solid_mode">Mode Solid</string>
+    <string name="colorful_mode">Mode Berwarna</string>
+    <string name="pulse_mode">Mode Denyut</string>
+    <string name="speed">Kecepatan</string>
+    <string name="size">Ukuran</string>
+    <string name="start">Mulai</string>
+    <string name="stop">Berhenti</string>
+    <string name="warning_title">Peringatan!</string>
+    <string name="warning_message">Fungsi ini menggunakan tingkat kecerahan layar maksimum. Penggunaan yang lama dapat menyebabkan mata lelah dan baterai cepat habis.</string>
+    <string name="alert_battery_level">Level baterai Anda %d%%. Menggunakan senter akan menghabiskan baterai lebih cepat.</string>
+    <string name="alert_device_heat">Perangkat Anda mungkin akan panas jika Anda menggunakan aplikasi ini dalam waktu lama.</string>
+    <string name="slow">Lambat</string>
+    <string name="fast">Cepat</string>
+    
+    <!-- Nav Titles -->
+    <string name="nav_home">Beranda</string>
+    <string name="nav_flash">Senter</string>
+    <string name="nav_screen">Lampu Layar</string>
+    <string name="nav_text">Lampu Teks</string>
+    <string name="nav_settings">Pengaturan</string>
+    
+    <!-- Language Selection -->
+    <string name="language_changed">Bahasa berhasil diubah!</string>
+    <string name="language_changed_restart">Bahasa diubah! Memulai ulang aplikasi...</string>
+    <string name="confirm">Konfirmasi</string>
+    <string name="select_language">Pilih Bahasa</string>
+    <string name="language_cancel">Pemilihan bahasa dibatalkan</string>
+    <string name="continue_btn">Lanjutkan</string>
+    <string name="select_your_language">Silakan pilih bahasa yang Anda inginkan</string>
+    <string name="language_selected">Dipilih: %s</string>
+    <string name="language_confirm_title">Konfirmasi Bahasa</string>
+    <string name="language_confirm_message">Apakah Anda yakin ingin mengubah bahasa ke %s?</string>
+    <string name="language_confirm_yes">Ya, Ubah</string>
+    <string name="language_confirm_no">Batal</string>
+    
+    <!-- Languages -->
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_portuguese">Português</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_indonesia">Bahasa Indonesia</string>
+    <string name="language_india">हिन्दी</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_bangladesh">বাংলা</string>
+    <string name="language_ukrainian">Українська</string>
+</resources> 

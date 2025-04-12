@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    Russian Language Strings
+    Locale: ru
+    Country: Russia (RU)
+-->
+<resources>
+    <string name="app_name">FlashLight AI</string>
+    <string name="settings">Настройки</string>
+    <string name="about">О приложении</string>
+    <string name="flash">Фонарик</string>
+    <string name="screen">Экран</string>
+    <string name="more">Ещё</string>
+    <string name="home">Главная</string>
+    <string name="sos">SOS</string>
+    <string name="normal">Обычный</string>
+    <string name="strobe">Стробоскоп</string>
+    <string name="blink">Мигание</string>
+    <string name="disco">Диско</string>
+    <string name="on">ВКЛ</string>
+    <string name="off">ВЫКЛ</string>
+    <string name="screen_light">Экранный свет</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="terms_of_use">Условия использования</string>
+    <string name="rate_this_app">Оценить приложение</string>
+    <string name="share">Поделиться</string>
+    <string name="battery_level">Уровень батареи</string>
+    <string name="warning">Предупреждение</string>
+    <string name="ok">OK</string>
+    <string name="version">Версия</string>
+    <string name="incoming_call">Входящий звонок от:</string>
+    <string name="incoming_sms">У вас новое SMS от:</string>
+    <string name="camera_permission_denied">Для использования фонарика требуется разрешение камеры</string>
+    <string name="alert_battery_level">Уровень заряда батареи %d%%. Использование фонарика быстрее разряжает батарею.</string>
+    <string name="alert_device_heat">Устройство может нагреваться при длительном использовании этого приложения.</string>
+    <string name="warning_title">Внимание!</string>
+    <string name="warning_message">Эта функция использует максимальную яркость экрана. Длительное использование может вызвать усталость глаз и быстрее разрядить батарею.</string>
+    <string name="solid_mode">Сплошной</string>
+    <string name="colorful_mode">Цветной</string>
+    <string name="pulse_mode">Пульсация</string>
+    <string name="dark_mode">Тёмный режим</string>
+    <string name="language">Язык</string>
+    <string name="notification_settings">Настройки уведомлений</string>
+    <string name="theme">Тема</string>
+    <string name="morse">Морзе</string>
+    <string name="morse_code">Код Морзе</string>
+    <string name="send">Отправить</string>
+    <string name="morse_code_input_hint">Введите сообщение здесь...</string>
+    <string name="toggle_morse">Морзе</string>
+    <string name="sos_signal">Сигнал SOS</string>
+    <string name="text_message">Текстовое сообщение</string>
+    <string name="compass">Компас</string>
+    <string name="magnifier">Лупа</string>
+    <string name="ruler">Линейка</string>
+    <string name="mirror">Зеркало</string>
+    <string name="calculator">Калькулятор</string>
+    <string name="weather">Погода</string>
+    <string name="text_light">Текстовый свет</string>
+    <string name="colorblind">Дальтонизм</string>
+    <string name="qr_code">QR-код</string>
+    <string name="sound_meter">Измеритель звука</string>
+    <string name="level">Уровень</string>
+    <string name="stopwatch">Секундомер</string>
+    <string name="timer">Таймер</string>
+    <string name="uv_detector">УФ-детектор</string>
+    <string name="metal_detector">Металлоискатель</string>
+    <string name="ghost_detector">Детектор призраков</string>
+    <string name="heart_rate">Пульс</string>
+    <string name="sleep_sounds">Звуки для сна</string>
+    <string name="white_noise">Белый шум</string>
+    <string name="night_mode">Ночной режим</string>
+    <string name="strobe_warning">ПРЕДУПРЕЖДЕНИЕ: Стробоскопические вспышки могут вызвать судороги у людей с фоточувствительной эпилепсией. Использовать с осторожностью.</string>
+    <string name="flashlight_not_available">Фонарик недоступен на этом устройстве</string>
+    <string name="speed">Скорость</string>
+    <string name="size">Размер</string>
+    <string name="text_color">Цвет текста</string>
+    <string name="blink_mode">Режим мигания</string>
+    <string name="scroll_direction">Направление прокрутки</string>
+    <string name="start">Начать</string>
+    <string name="stop">Остановить</string>
+    <string name="left">Влево</string>
+    <string name="right">Вправо</string>
+    <string name="up">Вверх</string>
+    <string name="down">Вниз</string>
+    <string name="default_text">Я ЛЮБЛЮ ТЕБЯ</string>
+    <string name="set_as_wallpaper">Установить как обои</string>
+    <string name="left_to_right">Слева направо</string>
+    <string name="right_to_left">Справа налево</string>
+    <string name="top_to_bottom">Сверху вниз</string>
+    <string name="bottom_to_top">Снизу вверх</string>
+    <string name="back">Назад</string>
+    <string name="scroll_speed">Скорость прокрутки</string>
+    <string name="app_selection">Выбор приложений</string>
+    <string name="flashing_speed">Скорость мигания</string>
+    <string name="select">Выбрать</string>
+    <string name="glow_effect">Эффект свечения</string>
+    <string name="power_button">Кнопка питания</string>
+    <string name="incoming_calls">Входящие звонки</string>
+    <string name="sms">SMS</string>
+    <string name="text_size">Размер текста</string>
+    <string name="ms">мс</string>
+    <string name="enable">Включить</string>
+    <string name="flashing_pattern">Шаблон мигания</string>
+    <string name="call_notification">Уведомление о звонке</string>
+    <string name="call_flash_notification">Уведомление фонариком для звонков</string>
+    <string name="sms_flash_notification">Уведомление фонариком для SMS</string>
+    <string name="notification_permission_required">Требуется разрешение на уведомления</string>
+    <string name="phone_permission_required">Требуется разрешение на доступ к телефону</string>
+    <string name="sms_permission_required">Требуется разрешение на доступ к SMS</string>
+    <string name="enable_notifications">Включить уведомления</string>
+    <string name="play">Воспроизвести</string>
+    <string name="pause">Пауза</string>
+    <string name="ready">Готово</string>
+    <string name="flash_on">Фонарик включен</string>
+    <string name="flash_off">Фонарик выключен</string>
+    <string name="permission_denied">Разрешение отклонено. Фонарик не будет работать.</string>
+    
+    <!-- Text Light Activity -->
+    <string name="start_text">Запустить текст</string>
+    <string name="stop_text">Остановить текст</string>
+    <string name="set_text_wallpaper">Установить как обои</string>
+    <string name="full_background">Полный фон</string>
+    <string name="text_light_input_hint">Введите текст для отображения...</string>
+    <string name="text_font">Шрифт</string>
+    <string name="font_normal">Обычный</string>
+    <string name="font_bold">Жирный</string>
+    <string name="font_italic">Курсив</string>
+    <string name="reverse">Инвертировать</string>
+    <string name="no_scroll">Без прокрутки</string>
+    <string name="text_scroll_direction">Направление</string>
+    <string name="text_scroll_speed">Скорость</string>
+    <string name="fullscreen">Полный экран</string>
+    <string name="exit_fullscreen">Выйти из полного экрана</string>
+    
+    <!-- Bottom Navigation Titles -->
+    <string name="nav_home">Главная</string>
+    <string name="nav_flash">Фонарик</string>
+    <string name="nav_screen">Экран</string>
+    <string name="nav_text">Текст</string>
+    <string name="nav_settings">Настройки</string>
+    
+    <!-- Rate App Dialog -->
+    <string name="rate_dialog_title">Оценить приложение</string>
+    <string name="rate_dialog_message">Оцените ваш опыт использования приложения!</string>
+    <string name="feedback_hint">Поделитесь своим мнением...</string>
+    <string name="feedback_prompt">Помогите нам улучшить приложение:</string>
+    <string name="rate_dialog_info">Оценки 4-5 звезд будут отправлены в Play Store</string>
+    <string name="rate_dialog_submit">Отправить</string>
+    <string name="rate_dialog_cancel">Отмена</string>
+    <string name="rate_thanks_high">Спасибо за вашу оценку!</string>
+    <string name="rate_thanks_low">Спасибо за ваш отзыв! Мы улучшим приложение.</string>
+    <string name="rate_no_rating">Пожалуйста, оцените приложение</string>
+    
+    <!-- Language Settings -->
+    <string name="language_changed">Язык успешно изменен!</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="select_language">Выберите язык</string>
+    <string name="language_cancel">Выбор языка отменен</string>
+    <string name="continue_btn">Продолжить</string>
+    <string name="select_your_language">Выберите наиболее подходящий язык</string>
+    <string name="language_selected">Выбрано: %s</string>
+    <string name="language_confirm_title">Подтвердить язык</string>
+    <string name="language_confirm_message">Вы уверены, что хотите изменить язык на %s?</string>
+    <string name="language_confirm_yes">Да, изменить</string>
+    <string name="language_confirm_no">Отмена</string>
+    <string name="cancel">Отмена</string>
+    
+    <!-- New strings -->
+    <string name="coming_soon">Скоро!</string>
+    <string name="share_via">Поделиться через</string>
+    <string name="share_message">Посмотрите на это удивительное приложение-фонарик!</string>
+    <string name="notification">Уведомление</string>
+    <string name="flashlight">Фонарик</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="title_activity_language_selection">Выбор языка</string>
+    <string name="app_intro">Умный фонарик с множеством функций</string>
+    <string name="loading">Загрузка...</string>
+    <string name="search">Поиск</string>
+    <string name="welcome">Добро пожаловать</string>
+    <string name="next">Далее</string>
+    <string name="previous">Назад</string>
+    <string name="finish">Завершить</string>
+    <string name="skip">Пропустить</string>
+    
+    <!-- Languages -->
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_portuguese">Português</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_indonesia">Bahasa Indonesia</string>
+    <string name="language_india">हिन्दी</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_bangladesh">বাংলা</string>
+    <string name="language_ukrainian">Українська</string>
+    
+    <!-- Additional strings -->
+    <string name="slow">Медленно</string>
+    <string name="fast">Быстро</string>
+    <string name="input_text">Ввод текста</string>
+    <string name="request_permissions">Запросить разрешения</string>
+    <string name="request_permissions_desc">Предоставьте разрешения на сообщения и звонки для использования функций уведомления фонариком.</string>
+    <string name="permissions">Разрешения</string>
+    <string name="camera_permission">Разрешение камеры (фонарик)</string>
+    <string name="phone_permission">Разрешение телефона (звонки)</string>
+    <string name="sms_permission">Разрешение SMS (сообщения)</string>
+    <string name="permission_required">Требуется разрешение</string>
+    <string name="permission_description">Приложению нужны эти разрешения для работы</string>
+    <string name="go_to_settings">Перейти в настройки</string>
+    
+    <!-- Flash Mode Messages -->
+    <string name="mode_set_to">Режим изменен на</string>
+    <string name="flash_mode_hold_tip">Удерживайте кнопку для изменения режима фонарика</string>
+    <string name="mode_normal_active">Обычный режим активен: %d мс</string>
+    <string name="mode_sos_active">Режим сигнала SOS активен</string>
+    <string name="mode_disco_active">Режим диско активен: %1$d-%2$d мс</string>
+    <string name="flash_modes">РЕЖИМЫ ФОНАРИКА</string>
+    <string name="flash_settings">НАСТРОЙКИ ФОНАРИКА</string>
+    <string name="normal_mode">Обычный режим</string>
+    <string name="sos_mode">Режим SOS</string>
+    <string name="disco_mode">Режим Диско</string>
+    <string name="sending_morse_code">Отправка кода Морзе</string>
+    <string name="please_enter_text">Пожалуйста, введите текст</string>
+    <string name="sending_sos_signal">Отправка сигнала SOS</string>
+</resources> 

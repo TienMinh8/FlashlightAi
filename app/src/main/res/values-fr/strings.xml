@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    French Language Strings
+    Locale: fr
+    Country: France
+-->
+<resources>
+    <string name="app_name">Lampe de Poche IA</string>
+    <string name="settings">Paramètres</string>
+    <string name="about">À propos</string>
+    <string name="flash">Flash</string>
+    <string name="screen">Écran</string>
+    <string name="more">Plus</string>
+    <string name="home">Accueil</string>
+    <string name="sos">SOS</string>
+    <string name="normal">Normal</string>
+    <string name="strobe">Stroboscope</string>
+    <string name="blink">Clignotement</string>
+    <string name="disco">Disco</string>
+    <string name="on">Activé</string>
+    <string name="off">Désactivé</string>
+    <string name="title_activity_maps">Activité des cartes</string>
+    <string name="screen_light">Éclairage d\'écran</string>
+    <string name="map">Carte</string>
+    <string name="privacy_policy">Politique de confidentialité</string>
+    <string name="terms_of_use">Conditions d\'utilisation</string>
+    <string name="rate_this_app">Évaluer cette application</string>
+    <string name="share">Partager</string>
+    <string name="battery_level">Niveau de batterie</string>
+    <string name="warning">Avertissement</string>
+    <string name="ok">OK</string>
+    <string name="version">Version</string>
+    <string name="incoming_call">Appel entrant :</string>
+    <string name="incoming_sms">Vous avez un nouveau SMS :</string>
+    <string name="camera_permission_denied">L\'autorisation de la caméra est nécessaire pour la lampe de poche</string>
+    <string name="alert_battery_level">Votre niveau de batterie est de %d%%. L\'utilisation de la lampe de poche décharge la batterie plus rapidement.</string>
+    <string name="alert_device_heat">L\'utilisation prolongée de cette application peut chauffer votre appareil.</string>
+    <string name="warning_title">Avertissement !</string>
+    <string name="warning_message">Cette fonction utilise la luminosité maximale de l\'écran. Une utilisation prolongée peut fatiguer les yeux et décharger la batterie plus rapidement.</string>
+    <string name="solid_mode">Mode continu</string>
+    <string name="colorful_mode">Coloré</string>
+    <string name="pulse_mode">Pulsation</string>
+    <string name="dark_mode">Mode sombre</string>
+    <string name="language">Langue</string>
+    <string name="notification_settings">Paramètres de notification</string>
+    <string name="theme">Thème</string>
+    <string name="morse">Morse</string>
+    <string name="morse_code">Code Morse</string>
+    <string name="send">Envoyer</string>
+    <string name="morse_code_input_hint">Saisissez un message ici...</string>
+    <string name="toggle_morse">Morse</string>
+    <string name="sos_signal">Signal SOS</string>
+    <string name="text_message">Message texte</string>
+    <string name="compass">Boussole</string>
+    <string name="magnifier">Loupe</string>
+    <string name="ruler">Règle</string>
+    <string name="mirror">Miroir</string>
+    <string name="calculator">Calculatrice</string>
+    <string name="weather">Météo</string>
+    <string name="text_light">Lumière de texte</string>
+    <string name="colorblind">Daltonisme</string>
+    <string name="qr_code">Code QR</string>
+    <string name="sound_meter">Sonomètre</string>
+    <string name="level">Niveau à bulle</string>
+    <string name="stopwatch">Chronomètre</string>
+    <string name="timer">Minuteur</string>
+    <string name="uv_detector">Détecteur UV</string>
+    <string name="metal_detector">Détecteur de métal</string>
+    <string name="ghost_detector">Détecteur de fantômes</string>
+    <string name="heart_rate">Fréquence cardiaque</string>
+    <string name="sleep_sounds">Sons de sommeil</string>
+    <string name="white_noise">Bruit blanc</string>
+    <string name="night_mode">Mode nuit</string>
+    <string name="strobe_warning">Avertissement : La lumière stroboscopique peut provoquer des crises chez les personnes atteintes d\'épilepsie photosensible. À utiliser avec prudence.</string>
+    <string name="flashlight_not_available">La lampe de poche n\'est pas disponible sur cet appareil</string>
+    <string name="speed">Vitesse</string>
+    <string name="size">Taille</string>
+    <string name="text_color">Couleur du texte</string>
+    <string name="blink_mode">Mode clignotant</string>
+    <string name="scroll_direction">Direction de défilement</string>
+    <string name="start">Démarrer</string>
+    <string name="stop">Arrêter</string>
+    <string name="left">Gauche</string>
+    <string name="right">Droite</string>
+    <string name="up">Haut</string>
+    <string name="down">Bas</string>
+    <string name="default_text">Je t\'aime</string>
+    <string name="set_as_wallpaper">Définir comme fond d\'écran</string>
+    <string name="left_to_right">De gauche à droite</string>
+    <string name="right_to_left">De droite à gauche</string>
+    <string name="top_to_bottom">De haut en bas</string>
+    <string name="bottom_to_top">De bas en haut</string>
+    <string name="back">Retour</string>
+    <string name="scroll_speed">Vitesse de défilement</string>
+    <string name="app_selection">Sélection d\'applications</string>
+    <string name="flashing_speed">Vitesse de clignotement</string>
+    <string name="select">Sélectionner</string>
+    <string name="glow_effect">Effet lumineux</string>
+    <string name="power_button">Bouton d\'alimentation</string>
+    <string name="incoming_calls">Appels entrants</string>
+    <string name="sms">SMS</string>
+    <string name="text_size">Taille du texte</string>
+    <string name="ms">millisecondes</string>
+    <string name="enable">Activer</string>
+    <string name="flashing_pattern">Motif de clignotement</string>
+    <string name="call_notification">Notification d\'appel</string>
+    <string name="call_flash_notification">Notification flash pour les appels</string>
+    <string name="sms_flash_notification">Notification flash pour les SMS</string>
+    <string name="notification_permission_required">Autorisation de notification requise</string>
+    <string name="phone_permission_required">Autorisation téléphonique requise</string>
+    <string name="sms_permission_required">Autorisation SMS requise</string>
+    <string name="enable_notifications">Activer les notifications</string>
+    <string name="play">Lecture</string>
+    <string name="pause">Pause</string>
+    <string name="ready">Prêt</string>
+    <string name="flash_on">Flash activé</string>
+    <string name="flash_off">Flash désactivé</string>
+    <string name="permission_denied">Autorisation refusée. La lampe de poche ne fonctionnera pas.</string>
+    
+    <!-- Flash Status Messages -->
+    <string name="mode_set_to">Mode réglé sur</string>
+    <string name="flash_mode_hold_tip">Maintenez le bouton d\'alimentation pour changer de mode flash</string>
+    <string name="mode_normal_active">Mode normal actif : %d millisecondes</string>
+    <string name="mode_sos_active">Mode signal SOS actif</string>
+    <string name="mode_disco_active">Mode disco actif : %1$d-%2$d millisecondes</string>
+    
+    <!-- Text Light Activity -->
+    <string name="start_text">Démarrer le texte</string>
+    <string name="stop_text">Arrêter le texte</string>
+    <string name="set_text_wallpaper">Définir comme fond d\'écran</string>
+    <string name="full_background">Arrière-plan complet</string>
+    <string name="text_light_input_hint">Entrez le texte à afficher...</string>
+    <string name="text_font">Police</string>
+    <string name="font_normal">Normal</string>
+    <string name="font_bold">Gras</string>
+    <string name="font_italic">Italique</string>
+    <string name="reverse">Inverser</string>
+    <string name="no_scroll">Pas de défilement</string>
+    <string name="text_scroll_direction">Direction</string>
+    <string name="text_scroll_speed">Vitesse</string>
+    <string name="fullscreen">Plein écran</string>
+    <string name="exit_fullscreen">Quitter le plein écran</string>
+    <string name="slow">Lent</string>
+    <string name="fast">Rapide</string>
+    <string name="text_size_small">Petit</string>
+    <string name="text_size_large">Grand</string>
+    
+    <!-- Bottom Navigation Titles -->
+    <string name="nav_home">Accueil</string>
+    <string name="nav_flash">Flash</string>
+    <string name="nav_screen">Éclairage</string>
+    <string name="nav_text">Texte</string>
+    <string name="nav_settings">Réglages</string>
+
+    
+    <!-- Rate App Dialog -->
+    <string name="rate_dialog_title">Évaluer l\'application</string>
+    <string name="rate_dialog_message">Veuillez évaluer votre expérience avec l\'application !</string>
+    <string name="feedback_hint">Partagez vos commentaires...</string>
+    <string name="feedback_prompt">Aidez-nous à améliorer l\'application :</string>
+    <string name="rate_dialog_info">Les notes de 4 à 5 étoiles seront envoyées au Play Store</string>
+    <string name="rate_dialog_submit">Soumettre</string>
+    <string name="rate_dialog_cancel">Annuler</string>
+    <string name="rate_thanks_high">Merci beaucoup pour votre évaluation !</string>
+    <string name="rate_thanks_low">Merci pour vos commentaires ! Nous améliorerons l\'application.</string>
+    <string name="rate_no_rating">Veuillez évaluer l\'application</string>
+    
+    <!-- Language Settings -->
+    <string name="language_changed">Langue changée avec succès !</string>
+    <string name="language_changed_restart">Langue changée ! L\'application va redémarrer...</string>
+    <string name="confirm">Confirmer</string>
+    <string name="select_language">Sélectionner la langue</string>
+    <string name="language_cancel">Sélection de langue annulée</string>
+    <string name="continue_btn">Continuer</string>
+    <string name="select_your_language">Veuillez sélectionner votre langue préférée</string>
+    <string name="language_selected">Sélectionné : %s</string>
+    <string name="language_confirm_title">Confirmer la langue</string>
+    <string name="language_confirm_message">Êtes-vous sûr de vouloir changer la langue en %s ?</string>
+    <string name="language_confirm_yes">Oui, changer</string>
+    <string name="language_confirm_no">Annuler</string>
+    <string name="cancel">Annuler</string>
+    
+    <!-- New strings -->
+    <string name="coming_soon">Bientôt disponible !</string>
+    <string name="share_via">Partager via</string>
+    <string name="share_message">Découvrez cette superbe application de lampe de poche !</string>
+    <string name="notification">Notification</string>
+    <string name="flashlight">Lampe de poche</string>
+    <string name="title_activity_settings">Paramètres</string>
+    <string name="title_activity_language_selection">Sélection de la langue</string>
+    <string name="app_intro">Lampe de poche intelligente avec diverses fonctionnalités</string>
+    <string name="loading">Chargement...</string>
+    <string name="search">Rechercher</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="next">Suivant</string>
+    <string name="previous">Précédent</string>
+    <string name="finish">Terminer</string>
+    <string name="skip">Passer</string>
+    
+    <!-- Flash Fragment Sections -->
+    <string name="flash_modes">Modes flash</string>
+    <string name="flash_settings">Paramètres du flash</string>
+    <string name="normal_mode">Mode normal</string>
+    <string name="sos_mode">Mode SOS</string>
+    <string name="disco_mode">Mode disco</string>
+    <string name="sending_morse_code">Envoi du code morse</string>
+    <string name="please_enter_text">Veuillez entrer du texte</string>
+    <string name="sending_sos_signal">Envoi du signal SOS</string>
+    
+    <!-- Languages -->
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_portuguese">Português</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_indonesia">Bahasa Indonesia</string>
+    <string name="language_india">हिन्दी</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_bangladesh">বাংলা</string>
+    <string name="language_ukrainian">Українська</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_french">Français</string>
+    <string name="input_text">Saisir du texte</string>
+    <string name="request_permissions">Demander les autorisations</string>
+    <string name="request_permissions_desc">Accordez les autorisations de messagerie et d\'appel pour utiliser la fonction de notification de la lampe de poche.</string>
+    <string name="permissions">Autorisations</string>
+    <string name="camera_permission">Autorisation de la caméra (lampe de poche)</string>
+    <string name="phone_permission">Autorisation téléphonique (appels)</string>
+    <string name="sms_permission">Autorisation SMS (messages)</string>
+    <string name="permission_required">Autorisation requise</string>
+    <string name="permission_description">Ces autorisations sont nécessaires pour le fonctionnement de l\'application</string>
+    <string name="go_to_settings">Aller aux paramètres</string>
+    
+    <!-- Additional Strings -->
+    <string name="select_effect">Sélectionner un effet</string>
+    <string name="call_notification_enabled">Notification flash pour les appels activée</string>
+    <string name="call_notification_disabled">Notification flash pour les appels désactivée</string>
+    <string name="sms_permission_message">L\'autorisation SMS est nécessaire pour recevoir les notifications de messages</string>
+    <string name="camera_permission_message">L\'autorisation de la caméra est nécessaire pour utiliser la lampe de poche</string>
+    <string name="low_battery_brightness_reduced">Batterie faible ! Luminosité de l\'écran réduite pour économiser l\'énergie</string>
+    <string name="device_overheat_brightness_reduced">Appareil en surchauffe ! Luminosité de l\'écran réduite</string>
+    <string name="camera_permission_granted">Autorisation de la caméra accordée</string>
+    <string name="phone_permission_granted">Autorisation téléphonique accordée</string>
+    <string name="phone_permission_denied">Autorisation téléphonique refusée</string>
+    <string name="sms_permission_granted">Autorisation SMS accordée</string>
+    <string name="sms_permission_denied">Autorisation SMS refusée</string>
+    <string name="sms_flash_notification_enabled">Notification flash pour les SMS activée</string>
+    <string name="sms_flash_notification_disabled">Notification flash pour les SMS désactivée</string>
+</resources> 

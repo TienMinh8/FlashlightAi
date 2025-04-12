@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    Spanish Language Strings
+    Locale: es
+    Country: Spain/Latin America
+-->
 <resources>
     <string name="app_name">FlashLight AI</string>
     <string name="settings">Ajustes</string>
@@ -187,4 +192,34 @@
     <string name="language_india">हिन्दी</string>
     <string name="language_arabic">العربية</string>
     <string name="language_bangladesh">বাংলা</string>
+    <string name="language_ukrainian">Українська</string>
+    
+    <!-- Additional strings -->
+    <string name="slow">Lento</string>
+    <string name="fast">Rápido</string>
+    <string name="input_text">Ingresar texto</string>
+    <string name="request_permissions">Solicitar permisos</string>
+    <string name="request_permissions_desc">Concede permisos de mensajes y llamadas para usar las funciones de notificación de linterna.</string>
+    <string name="permissions">Permisos</string>
+    <string name="camera_permission">Permiso de cámara (linterna)</string>
+    <string name="phone_permission">Permiso de teléfono (llamadas)</string>
+    <string name="sms_permission">Permiso de SMS (mensajes)</string>
+    <string name="permission_required">Permiso requerido</string>
+    <string name="permission_description">La aplicación necesita estos permisos para funcionar</string>
+    <string name="go_to_settings">Ir a configuración</string>
+    
+    <!-- Flash Mode Messages -->
+    <string name="mode_set_to">Modo cambiado a</string>
+    <string name="flash_mode_hold_tip">Mantén pulsado el botón para cambiar el modo de linterna</string>
+    <string name="mode_normal_active">Modo normal activo: %d ms</string>
+    <string name="mode_sos_active">Modo de señal SOS activo</string>
+    <string name="mode_disco_active">Modo disco activo: %1$d-%2$d ms</string>
+    <string name="flash_modes">MODOS DE LINTERNA</string>
+    <string name="flash_settings">CONFIGURACIÓN DE LINTERNA</string>
+    <string name="normal_mode">Modo normal</string>
+    <string name="sos_mode">Modo SOS</string>
+    <string name="disco_mode">Modo Disco</string>
+    <string name="sending_morse_code">Enviando código Morse</string>
+    <string name="please_enter_text">Por favor ingresa texto</string>
+    <string name="sending_sos_signal">Enviando señal SOS</string>
 </resources> 

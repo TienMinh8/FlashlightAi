@@ -33,6 +33,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.example.flashlightai.FlashLightApp;
+import com.example.flashlightai.customviews.ColorSliderView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.example.flashlightai.R;
@@ -79,7 +82,7 @@ public class TextLightActivity extends BaseActivity {
     private int textSize = 100;
     private TextLightView.ScrollDirection scrollDirection = TextLightView.ScrollDirection.RIGHT_TO_LEFT;
     private TextView colorPreview;
-    private ColorSliderView colorSlider;
+    private com.example.flashlightai.customviews.ColorSliderView colorSlider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -441,7 +444,19 @@ public class TextLightActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Đảm bảo cài đặt full screen khi quay lại màn hình
+        
+        // Kiểm tra xem ngôn ngữ có thay đổi không và áp dụng lại
+        if (FlashLightApp.isLanguageChanged()) {
+            // Đặt lại cờ
+            FlashLightApp.resetLanguageChangedFlag();
+            // Lưu trạng thái hiện tại
+            boolean wasRunning = isRunning;
+            // Tạo lại Activity với ngôn ngữ mới
+            recreate();
+            return;
+        }
+        
+        // Kiểm tra xem đã thiết lập màn hình đầy đủ chưa
         if (isFullscreen) {
             setFullScreenMode();
         }
@@ -521,7 +536,7 @@ public class TextLightActivity extends BaseActivity {
             });
             
             // Thêm nút Settings vào top bar nếu có
-            ImageButton btnSettings = findViewById(R.id.btn_settings);
+            ImageButton btnSettings = findViewById(R.id.settings_button);
             if (btnSettings != null) {
                 btnSettings.setOnClickListener(v -> {
                     // Mở SettingsActivity

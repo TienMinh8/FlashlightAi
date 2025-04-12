@@ -1,5 +1,6 @@
 package com.example.flashlightai.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +9,11 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.example.flashlightai.R;
 
 /**
  * Lớp hỗ trợ xử lý quyền truy cập cho ứng dụng
@@ -30,9 +34,7 @@ public class PermissionHelper {
             
             // Kiểm tra xem có nên hiển thị lý do trước khi yêu cầu không
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, android.Manifest.permission.CAMERA)) {
-                Toast.makeText(activity, 
-                        "Cần quyền truy cập camera để sử dụng đèn flash", 
-                        Toast.LENGTH_LONG).show();
+                showPermissionExplanationDialog(activity, android.Manifest.permission.CAMERA, CAMERA_PERMISSION_REQUEST_CODE, null);
             }
             
             // Yêu cầu quyền
@@ -54,9 +56,7 @@ public class PermissionHelper {
             
             // Kiểm tra xem có nên hiển thị lý do trước khi yêu cầu không
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, android.Manifest.permission.READ_PHONE_STATE)) {
-                Toast.makeText(activity, 
-                        "Cần quyền đọc trạng thái điện thoại để nhận thông báo cuộc gọi", 
-                        Toast.LENGTH_LONG).show();
+                showPermissionExplanationDialog(activity, android.Manifest.permission.READ_PHONE_STATE, READ_PHONE_STATE_PERMISSION_REQUEST_CODE, null);
             }
             
             // Yêu cầu quyền
@@ -78,9 +78,7 @@ public class PermissionHelper {
             
             // Kiểm tra xem có nên hiển thị lý do trước khi yêu cầu không
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, android.Manifest.permission.RECEIVE_SMS)) {
-                Toast.makeText(activity, 
-                        "Cần quyền đọc tin nhắn SMS để nhận thông báo tin nhắn", 
-                        Toast.LENGTH_LONG).show();
+                showPermissionExplanationDialog(activity, android.Manifest.permission.RECEIVE_SMS, RECEIVE_SMS_PERMISSION_REQUEST_CODE, null);
             }
             
             // Yêu cầu quyền
@@ -117,5 +115,39 @@ public class PermissionHelper {
             return true;
         }
         return false;
+    }
+
+    // Helper method to show a dialog explaining why a permission is needed
+    private static void showPermissionExplanationDialog(Activity activity, String permission, int requestCode, Runnable deniedCallback) {
+        // Tạo dialog giải thích
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(activity.getString(R.string.permission_required))
+                .setMessage(activity.getString(getPermissionExplanationStringId(permission)))
+                .setPositiveButton(activity.getString(R.string.ok), (dialog, which) -> {
+                    // Yêu cầu quyền sau khi người dùng đã đọc lời giải thích
+                    ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
+                })
+                .setNegativeButton(activity.getString(R.string.cancel), (dialog, which) -> {
+                    // Người dùng từ chối cấp quyền
+                    if (deniedCallback != null) {
+                        deniedCallback.run();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    // Helper method to get the appropriate explanation string resource ID
+    private static int getPermissionExplanationStringId(String permission) {
+        switch (permission) {
+            case android.Manifest.permission.CAMERA:
+                return R.string.camera_permission_message;
+            case android.Manifest.permission.READ_PHONE_STATE:
+                return R.string.phone_permission_required;
+            case android.Manifest.permission.RECEIVE_SMS:
+                return R.string.sms_permission_message;
+            default:
+                return R.string.permission_description;
+        }
     }
 } 

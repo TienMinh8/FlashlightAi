@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    Arabic Language Strings
+    Locale: ar
+    Country: Arabic countries
+-->
+<resources>
+    <string name="app_name">FlashLight AI</string>
+    <string name="settings">الإعدادات</string>
+    <string name="about">حول</string>
+    <string name="flash">فلاش</string>
+    <string name="screen">الشاشة</string>
+    <string name="more">المزيد</string>
+    <string name="home">الرئيسية</string>
+    <string name="sos">SOS</string>
+    <string name="normal">عادي</string>
+    <string name="strobe">وميض سريع</string>
+    <string name="blink">وميض</string>
+    <string name="disco">ديسكو</string>
+    <string name="on">تشغيل</string>
+    <string name="off">إيقاف</string>
+    <string name="title_activity_maps">خرائط</string>
+    <string name="screen_light">ضوء الشاشة</string>
+    <string name="map">خريطة</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="terms_of_use">شروط الاستخدام</string>
+    <string name="rate_this_app">قيم هذا التطبيق</string>
+    <string name="share">مشاركة</string>
+    <string name="battery_level">مستوى البطارية</string>
+    <string name="warning">تحذير</string>
+    <string name="ok">موافق</string>
+    <string name="version">الإصدار</string>
+    <string name="incoming_call">مكالمة واردة من:</string>
+    <string name="incoming_sms">لديك رسالة SMS جديدة من:</string>
+    <string name="camera_permission_denied">إذن الكاميرا مطلوب لاستخدام الفلاش</string>
+    <string name="alert_battery_level">مستوى البطارية هو %d%%. استخدام الفلاش سيستنزف البطارية بشكل أسرع.</string>
+    <string name="alert_device_heat">قد يسخن جهازك إذا استخدمت هذا التطبيق لفترة طويلة.</string>
+    <string name="warning_title">تحذير!</string>
+    <string name="warning_message">تستخدم هذه الوظيفة سطوع الشاشة بأقصى مستوى. الاستخدام المطول قد يسبب إجهاد العين واستنزاف البطارية بشكل أسرع.</string>
+    <string name="solid_mode">ثابت</string>
+    <string name="colorful_mode">ملون</string>
+    <string name="pulse_mode">نبض</string>
+    <string name="dark_mode">الوضع الداكن</string>
+    <string name="language">اللغة</string>
+    <string name="notification_settings">إعدادات الإشعارات</string>
+    <string name="theme">السمة</string>
+    <string name="morse">مورس</string>
+    <string name="morse_code">شفرة مورس</string>
+    <string name="send">إرسال</string>
+    <string name="morse_code_input_hint">اكتب الرسالة هنا...</string>
+    <string name="toggle_morse">مورس</string>
+    <string name="sos_signal">إشارة SOS</string>
+    <string name="text_message">رسالة نصية</string>
+    <string name="compass">بوصلة</string>
+    <string name="magnifier">مكبر</string>
+    <string name="ruler">مسطرة</string>
+    <string name="mirror">مرآة</string>
+    <string name="calculator">آلة حاسبة</string>
+    <string name="weather">الطقس</string>
+    <string name="text_light">ضوء النص</string>
+    <string name="colorblind">عمى الألوان</string>
+    <string name="qr_code">رمز QR</string>
+    <string name="sound_meter">مقياس الصوت</string>
+    <string name="level">مستوى</string>
+    <string name="stopwatch">ساعة إيقاف</string>
+    <string name="timer">مؤقت</string>
+    <string name="uv_detector">كاشف الأشعة فوق البنفسجية</string>
+    <string name="metal_detector">كاشف المعادن</string>
+    <string name="ghost_detector">كاشف الأشباح</string>
+    <string name="heart_rate">معدل ضربات القلب</string>
+    <string name="sleep_sounds">أصوات النوم</string>
+    <string name="white_noise">ضوضاء بيضاء</string>
+    <string name="night_mode">وضع الليل</string>
+    <string name="strobe_warning">تحذير: يمكن أن تسبب أضواء الوميض السريع نوبات صرع للأشخاص المصابين بالصرع الحساس للضوء. استخدم بحذر.</string>
+    <string name="flashlight_not_available">الفلاش غير متوفر على هذا الجهاز</string>
+    <string name="speed">السرعة</string>
+    <string name="size">الحجم</string>
+    <string name="text_color">لون النص</string>
+    <string name="blink_mode">وضع الوميض</string>
+    <string name="scroll_direction">اتجاه التمرير</string>
+    <string name="start">بدء</string>
+    <string name="stop">إيقاف</string>
+    <string name="left">يسار</string>
+    <string name="right">يمين</string>
+    <string name="up">أعلى</string>
+    <string name="down">أسفل</string>
+    <string name="default_text">أنا أحبك</string>
+    <string name="set_as_wallpaper">تعيين كخلفية</string>
+    <string name="left_to_right">من اليسار إلى اليمين</string>
+    <string name="right_to_left">من اليمين إلى اليسار</string>
+    <string name="top_to_bottom">من الأعلى إلى الأسفل</string>
+    <string name="bottom_to_top">من الأسفل إلى الأعلى</string>
+    <string name="back">رجوع</string>
+    <string name="scroll_speed">سرعة التمرير</string>
+    <string name="app_selection">اختيار التطبيق</string>
+    <string name="flashing_speed">سرعة الوميض</string>
+    <string name="select">اختيار</string>
+    <string name="glow_effect">تأثير التوهج</string>
+    <string name="power_button">زر الطاقة</string>
+    <string name="incoming_calls">المكالمات الواردة</string>
+    <string name="sms">SMS</string>
+    <string name="text_size">حجم النص</string>
+    <string name="ms">م.ث</string>
+    <string name="enable">تفعيل</string>
+    <string name="flashing_pattern">نمط الوميض</string>
+    <string name="call_notification">إشعار المكالمات</string>
+    <string name="call_flash_notification">إشعار فلاش للمكالمات</string>
+    <string name="sms_flash_notification">إشعار فلاش للرسائل</string>
+    <string name="notification_permission_required">إذن الإشعارات مطلوب</string>
+    <string name="phone_permission_required">إذن الهاتف مطلوب</string>
+    <string name="sms_permission_required">إذن الرسائل مطلوب</string>
+    <string name="enable_notifications">تفعيل الإشعارات</string>
+    <string name="play">تشغيل</string>
+    <string name="pause">إيقاف مؤقت</string>
+    <string name="ready">جاهز</string>
+    <string name="flash_on">الفلاش مشغل</string>
+    <string name="flash_off">الفلاش متوقف</string>
+    <string name="permission_denied">تم رفض الإذن. لن يعمل الفلاش.</string>
+    
+    <!-- Flash Status Messages -->
+    <string name="mode_set_to">تم تعيين الوضع إلى</string>
+    <string name="flash_mode_hold_tip">اضغط مطولاً على زر الطاقة لتغيير وضع الفلاش</string>
+    <string name="mode_normal_active">الوضع العادي نشط: %d م.ث</string>
+    <string name="mode_sos_active">وضع إشارة SOS نشط</string>
+    <string name="mode_disco_active">وضع الديسكو نشط: %1$d-%2$d م.ث</string>
+    
+    <!-- Text Light Activity -->
+    <string name="start_text">بدء النص</string>
+    <string name="stop_text">إيقاف النص</string>
+    <string name="set_text_wallpaper">تعيين كخلفية</string>
+    <string name="full_background">خلفية كاملة</string>
+    <string name="text_light_input_hint">أدخل النص للعرض...</string>
+    <string name="text_font">الخط</string>
+    <string name="font_normal">عادي</string>
+    <string name="font_bold">غامق</string>
+    <string name="font_italic">مائل</string>
+    <string name="reverse">عكس</string>
+    <string name="no_scroll">بدون تمرير</string>
+    <string name="text_scroll_direction">الاتجاه</string>
+    <string name="text_scroll_speed">السرعة</string>
+    <string name="fullscreen">ملء الشاشة</string>
+    <string name="exit_fullscreen">الخروج من ملء الشاشة</string>
+    <string name="slow">بطيء</string>
+    <string name="fast">سريع</string>
+    <string name="text_size_small">صغير</string>
+    <string name="text_size_large">كبير</string>
+    
+    <!-- Bottom Navigation Titles -->
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_flash">فلاش</string>
+    <string name="nav_screen">ضوء الشاشة</string>
+    <string name="nav_text">ضوء النص</string>
+    <string name="nav_settings">الإعدادات</string>
+    
+    <!-- Rate App Dialog -->
+    <string name="rate_dialog_title">قيّم التطبيق</string>
+    <string name="rate_dialog_message">يرجى تقييم تجربتك مع التطبيق!</string>
+    <string name="feedback_hint">شارك ملاحظاتك...</string>
+    <string name="feedback_prompt">ساعدنا في تحسين التطبيق:</string>
+    <string name="rate_dialog_info">سيتم إرسال تقييمات 4-5 نجوم إلى متجر Play</string>
+    <string name="rate_dialog_submit">إرسال</string>
+    <string name="rate_dialog_cancel">إلغاء</string>
+    <string name="rate_thanks_high">شكراً على تقييمك!</string>
+    <string name="rate_thanks_low">شكراً على ملاحظاتك! سنعمل على تحسين التطبيق.</string>
+    <string name="rate_no_rating">يرجى تقييم التطبيق</string>
+    
+    <!-- Language Settings -->
+    <string name="language_changed">تم تغيير اللغة بنجاح!</string>
+    <string name="language_changed_restart">تم تغيير اللغة! جاري إعادة تشغيل التطبيق...</string>
+    <string name="confirm">تأكيد</string>
+    <string name="select_language">اختر اللغة</string>
+    <string name="language_cancel">تم إلغاء اختيار اللغة</string>
+    <string name="continue_btn">متابعة</string>
+    <string name="select_your_language">يرجى اختيار لغتك المفضلة</string>
+    <string name="language_selected">المحددة: %s</string>
+    <string name="language_confirm_title">تأكيد اللغة</string>
+    <string name="language_confirm_message">هل أنت متأكد أنك تريد تغيير اللغة إلى %s؟</string>
+    <string name="language_confirm_yes">نعم، تغيير</string>
+    <string name="language_confirm_no">إلغاء</string>
+    <string name="cancel">إلغاء</string>
+    
+    <!-- New strings -->
+    <string name="coming_soon">قريباً!</string>
+    <string name="share_via">مشاركة عبر</string>
+    <string name="share_message">تحقق من تطبيق الفلاش الرائع هذا!</string>
+    <string name="notification">إشعار</string>
+    <string name="flashlight">كشاف</string>
+    <string name="title_activity_settings">الإعدادات</string>
+    <string name="title_activity_language_selection">اختيار اللغة</string>
+    <string name="app_intro">كشاف ذكي بالعديد من الميزات</string>
+    <string name="loading">جاري التحميل...</string>
+    <string name="search">بحث</string>
+    <string name="welcome">مرحباً</string>
+    <string name="next">التالي</string>
+    <string name="previous">السابق</string>
+    <string name="finish">إنهاء</string>
+    <string name="skip">تخطي</string>
+    
+    <!-- Flash Fragment Sections -->
+    <string name="flash_modes">أوضاع الفلاش</string>
+    <string name="flash_settings">إعدادات الفلاش</string>
+    <string name="normal_mode">الوضع العادي</string>
+    <string name="sos_mode">وضع SOS</string>
+    <string name="disco_mode">وضع الديسكو</string>
+    <string name="sending_morse_code">إرسال شفرة مورس</string>
+    <string name="please_enter_text">يرجى إدخال النص</string>
+    <string name="sending_sos_signal">إرسال إشارة SOS</string>
+    
+    <!-- Languages -->
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_portuguese">Português</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_indonesia">Bahasa Indonesia</string>
+    <string name="language_india">हिन्दी</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_bangladesh">বাংলা</string>
+    <string name="language_ukrainian">Українська</string>
+    <string name="input_text">إدخال النص</string>
+    <string name="request_permissions">طلب الأذونات</string>
+    <string name="request_permissions_desc">امنح أذونات الرسائل والمكالمات لاستخدام ميزات إشعارات الفلاش.</string>
+    <string name="permissions">الأذونات</string>
+    <string name="camera_permission">إذن الكاميرا (الفلاش)</string>
+    <string name="phone_permission">إذن الهاتف (المكالمات)</string>
+    <string name="sms_permission">إذن الرسائل (SMS)</string>
+    <string name="permission_required">الإذن مطلوب</string>
+    <string name="permission_description">يحتاج التطبيق إلى هذه الأذونات للعمل</string>
+    <string name="go_to_settings">الذهاب إلى الإعدادات</string>
+    
+    <!-- Additional Strings -->
+    <string name="select_effect">اختر التأثير</string>
+    <string name="call_notification_enabled">تم تفعيل إشعار فلاش المكالمات</string>
+    <string name="call_notification_disabled">تم تعطيل إشعار فلاش المكالمات</string>
+    <string name="sms_permission_message">إذن الرسائل مطلوب لاستلام إشعارات الرسائل</string>
+    <string name="camera_permission_message">إذن الكاميرا مطلوب لاستخدام الفلاش</string>
+    <string name="low_battery_brightness_reduced">البطارية منخفضة! تم تقليل سطوع الشاشة لتوفير الطاقة</string>
+    <string name="device_overheat_brightness_reduced">درجة حرارة الجهاز مرتفعة! تم تقليل سطوع الشاشة</string>
+    <string name="camera_permission_granted">تم منح إذن الكاميرا</string>
+    <string name="phone_permission_granted">تم منح إذن الهاتف</string>
+    <string name="phone_permission_denied">تم رفض إذن الهاتف</string>
+    <string name="sms_permission_granted">تم منح إذن الرسائل</string>
+    <string name="sms_permission_denied">تم رفض إذن الرسائل</string>
+    <string name="sms_flash_notification_enabled">تم تفعيل إشعار فلاش الرسائل</string>
+    <string name="sms_flash_notification_disabled">تم تعطيل إشعار فلاش الرسائل</string>
+</resources> 

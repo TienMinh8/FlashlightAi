@@ -1,24 +1,25 @@
 package com.example.flashlightai;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
+import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.flashlightai.base.BaseActivity;
 import com.example.flashlightai.fragment.LanguageSelectionFragment;
 import com.example.flashlightai.fragment.SettingsFragment;
-import com.example.flashlightai.utils.LanguageManager;
+import com.example.flashlightai.utils.PreferenceManager;
 
 /**
- * Activity hiển thị giao diện cài đặt của ứng dụng
+ * Activity cài đặt ứng dụng
  */
-public class SettingsActivity extends AppCompatActivity implements LanguageSelectionFragment.OnLanguageSelectedListener {
+public class SettingsActivity extends BaseActivity implements LanguageSelectionFragment.OnLanguageSelectedListener {
     
-    private static final String TAG_LANGUAGE_FRAGMENT = "language_fragment";
+    private static final String TAG = "SettingsActivity";
     private boolean languageChanged = false;
     
     @Override
@@ -26,18 +27,88 @@ public class SettingsActivity extends AppCompatActivity implements LanguageSelec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         
-        // Không cần xử lý ActionBar vì đã có nút back trong layout
+        // Hiển thị nút back trên ActionBar
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         
-        // Kiểm tra xem đây có phải là tạo activity mới hay khôi phục trạng thái
+        // Xử lý nút back trong layout nếu có
+        ImageButton btnBack = findViewById(R.id.btn_back);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> onBackPressed());
+        }
+        
+        // Hiển thị Fragment cài đặt
         if (savedInstanceState == null) {
-            // Thêm SettingsFragment vào container
-            SettingsFragment fragment = new SettingsFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.settings_container, fragment);
+            transaction.replace(R.id.settings_container, new SettingsFragment());
             transaction.commit();
         }
     }
     
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    
+    /**
+     * Xử lý khi người dùng chọn một ngôn ngữ mới
+     */
+    @Override
+    public void onLanguageSelected(String languageCode) {
+        try {
+            // Đánh dấu là đã thay đổi ngôn ngữ
+            languageChanged = true;
+            
+            // Cập nhật ngôn ngữ trong Application
+            FlashLightApp app = (FlashLightApp) getApplication();
+            app.updateLanguage(languageCode);
+            
+            // Đóng fragment chọn ngôn ngữ
+            getSupportFragmentManager().popBackStack();
+            
+            // Hiển thị thông báo cho người dùng
+            Toast.makeText(this, R.string.language_changed, Toast.LENGTH_SHORT).show();
+            
+            // Khởi động lại ứng dụng để áp dụng ngôn ngữ mới
+            super.restartApp();
+        } catch (Exception e) {
+            // Xử lý lỗi an toàn
+            Toast.makeText(this, "Error applying language change", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+    
+    /**
+     * Xử lý khi người dùng hủy chọn ngôn ngữ
+     */
+    @Override
+    public void onLanguageSelectionCancelled() {
+        // Quay lại Fragment cài đặt
+        getSupportFragmentManager().popBackStack();
+    }
+    
+    @Override
+    public void onBackPressed() {
+        // Nếu đã thay đổi ngôn ngữ, khởi động lại MainActivity
+        if (languageChanged) {
+            super.restartApp();
+            return;
+        }
+        super.onBackPressed();
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Không cần xử lý logic khởi động lại ở đây nữa
+    }
+
     /**
      * Hiển thị Fragment chọn ngôn ngữ
      */
@@ -45,68 +116,7 @@ public class SettingsActivity extends AppCompatActivity implements LanguageSelec
         LanguageSelectionFragment fragment = LanguageSelectionFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.settings_container, fragment);
-        transaction.addToBackStack(TAG_LANGUAGE_FRAGMENT);
+        transaction.addToBackStack("language_selection");
         transaction.commit();
-    }
-    
-    /**
-     * Xử lý sự kiện click vào nút back trong layout
-     */
-    public void onBackButtonClick(View view) {
-        onBackPressed();
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            // Xử lý nút Back trên thanh tiêu đề
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    
-    @Override
-    public void onBackPressed() {
-        // Nếu có fragment trong stack, xử lý back bình thường
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStack();
-        } else {
-            // Nếu không có fragment nào trong stack, thoát activity
-            finish();
-        }
-    }
-    
-    @Override
-    public void onLanguageSelected(String languageCode) {
-        // Ngôn ngữ đã được thay đổi, quay lại Fragment cài đặt
-        getSupportFragmentManager().popBackStack();
-        
-        // Hiển thị thông báo về việc khởi động lại ứng dụng
-        Toast.makeText(this, R.string.language_changed_restart, Toast.LENGTH_LONG).show();
-        
-        // Đánh dấu đã thay đổi ngôn ngữ
-        languageChanged = true;
-        
-        // Khởi động lại Activity ngay để áp dụng ngôn ngữ mới
-        recreate();
-    }
-    
-    @Override
-    public void onLanguageSelectionCancelled() {
-        // Người dùng đã hủy chọn ngôn ngữ, quay lại Fragment cài đặt
-        getSupportFragmentManager().popBackStack();
-    }
-    
-    @Override
-    protected void onDestroy() {
-        // Khi thoát khỏi Activity, nếu đã thay đổi ngôn ngữ thì
-        // khởi động lại MainActivity để áp dụng ngôn ngữ mới
-        if (isFinishing() && languageChanged) {
-            // Khởi động lại MainActivity để áp dụng ngôn ngữ mới
-            FlashLightApp app = (FlashLightApp) getApplication();
-            app.restartApp();
-        }
-        super.onDestroy();
     }
 } 

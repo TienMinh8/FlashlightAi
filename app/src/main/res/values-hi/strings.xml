@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    Hindi Language Strings
+    Locale: hi
+    Country: India (IN)
+-->
+<resources>
+    <string name="app_name">FlashLight AI</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="about">जानकारी</string>
+    <string name="flash">फ्लैश</string>
+    <string name="screen">स्क्रीन</string>
+    <string name="more">और</string>
+    <string name="home">होम</string>
+    <string name="sos">SOS</string>
+    <string name="normal">सामान्य</string>
+    <string name="strobe">स्ट्रोब</string>
+    <string name="blink">ब्लिंक</string>
+    <string name="disco">डिस्को</string>
+    <string name="on">चालू</string>
+    <string name="off">बंद</string>
+    <string name="title_activity_maps">मैप्स</string>
+    <string name="screen_light">स्क्रीन लाइट</string>
+    <string name="map">नक्शा</string>
+    <string name="privacy_policy">गोपनीयता नीति</string>
+    <string name="terms_of_use">उपयोग की शर्तें</string>
+    <string name="rate_this_app">एप्प को रेट करें</string>
+    <string name="share">शेयर करें</string>
+    <string name="battery_level">बैटरी स्तर</string>
+    <string name="warning">चेतावनी</string>
+    <string name="ok">ठीक है</string>
+    <string name="version">वर्शन</string>
+    <string name="incoming_call">इनकमिंग कॉल:</string>
+    <string name="incoming_sms">आपको एक नया SMS मिला है:</string>
+    <string name="camera_permission_denied">फ्लैशलाइट का उपयोग करने के लिए कैमरा अनुमति आवश्यक है</string>
+    <string name="alert_battery_level">आपका बैटरी स्तर %d%% है। फ्लैशलाइट का उपयोग आपकी बैटरी को तेजी से खत्म करेगा।</string>
+    <string name="alert_device_heat">यदि आप इस ऐप का लंबे समय तक उपयोग करते हैं तो आपका डिवाइस गर्म हो सकता है।</string>
+    <string name="warning_title">चेतावनी!</string>
+    <string name="warning_message">यह फ़ंक्शन स्क्रीन की चमक को अधिकतम स्तर पर उपयोग करता है। अधिक उपयोग से आंखों में थकान और बैटरी तेजी से खत्म हो सकती है।</string>
+    <string name="solid_mode">सॉलिड</string>
+    <string name="colorful_mode">रंगीन</string>
+    <string name="pulse_mode">पल्स</string>
+    <string name="dark_mode">डार्क मोड</string>
+    <string name="language">भाषा</string>
+    <string name="notification_settings">नोटिफिकेशन सेटिंग्स</string>
+    <string name="theme">थीम</string>
+    <string name="morse">मोर्स</string>
+    <string name="morse_code">मोर्स कोड</string>
+    <string name="send">भेजें</string>
+    <string name="morse_code_input_hint">यहां संदेश लिखें...</string>
+    <string name="toggle_morse">मोर्स</string>
+    <string name="sos_signal">SOS सिग्नल</string>
+    <string name="text_message">टेक्स्ट मैसेज</string>
+    <string name="compass">कंपास</string>
+    <string name="magnifier">आवर्धक</string>
+    <string name="ruler">रूलर</string>
+    <string name="mirror">मिरर</string>
+    <string name="calculator">कैलकुलेटर</string>
+    <string name="weather">मौसम</string>
+    <string name="text_light">टेक्स्ट लाइट</string>
+    <string name="colorblind">कलरब्लाइंड</string>
+    <string name="qr_code">QR कोड</string>
+    <string name="sound_meter">साउंड मीटर</string>
+    <string name="level">लेवल</string>
+    <string name="stopwatch">स्टॉपवॉच</string>
+    <string name="timer">टाइमर</string>
+    <string name="uv_detector">UV डिटेक्टर</string>
+    <string name="metal_detector">मेटल डिटेक्टर</string>
+    <string name="ghost_detector">भूत डिटेक्टर</string>
+    <string name="heart_rate">हृदय गति</string>
+    <string name="sleep_sounds">नींद के लिए आवाज़</string>
+    <string name="white_noise">व्हाइट नॉइज़</string>
+    <string name="night_mode">नाइट मोड</string>
+    <string name="strobe_warning">चेतावनी: स्ट्रोब लाइट्स फोटोसेंसिटिव मिर्गी वाले लोगों में दौरे का कारण बन सकती हैं। सावधानी से उपयोग करें।</string>
+    <string name="flashlight_not_available">इस डिवाइस पर फ्लैशलाइट उपलब्ध नहीं है</string>
+    <string name="speed">गति</string>
+    <string name="size">आकार</string>
+    <string name="text_color">टेक्स्ट का रंग</string>
+    <string name="blink_mode">ब्लिंक मोड</string>
+    <string name="scroll_direction">स्क्रॉल दिशा</string>
+    <string name="start">शुरू</string>
+    <string name="stop">रोकें</string>
+    <string name="left">बाएं</string>
+    <string name="right">दाएं</string>
+    <string name="up">ऊपर</string>
+    <string name="down">नीचे</string>
+    <string name="default_text">मैं तुमसे प्यार करता हूं</string>
+    <string name="set_as_wallpaper">वॉलपेपर के रूप में सेट करें</string>
+    <string name="left_to_right">बाएं से दाएं</string>
+    <string name="right_to_left">दाएं से बाएं</string>
+    <string name="top_to_bottom">ऊपर से नीचे</string>
+    <string name="bottom_to_top">नीचे से ऊपर</string>
+    <string name="back">वापस</string>
+    <string name="scroll_speed">स्क्रॉल की गति</string>
+    <string name="app_selection">ऐप चयन</string>
+    <string name="flashing_speed">फ्लैशिंग स्पीड</string>
+    <string name="select">चुनें</string>
+    <string name="glow_effect">ग्लो इफेक्ट</string>
+    <string name="power_button">पावर बटन</string>
+    <string name="incoming_calls">इनकमिंग कॉल</string>
+    <string name="sms">SMS</string>
+    <string name="text_size">टेक्स्ट साइज़</string>
+    <string name="ms">ms</string>
+    <string name="enable">सक्षम करें</string>
+    <string name="flashing_pattern">फ्लैशिंग पैटर्न</string>
+    <string name="call_notification">कॉल नोटिफिकेशन</string>
+    <string name="call_flash_notification">कॉल के लिए फ्लैश नोटिफिकेशन</string>
+    <string name="sms_flash_notification">SMS के लिए फ्लैश नोटिफिकेशन</string>
+    <string name="notification_permission_required">नोटिफिकेशन अनुमति आवश्यक है</string>
+    <string name="phone_permission_required">फोन अनुमति आवश्यक है</string>
+    <string name="sms_permission_required">SMS अनुमति आवश्यक है</string>
+    <string name="enable_notifications">नोटिफिकेशन सक्षम करें</string>
+    <string name="play">प्ले</string>
+    <string name="pause">पॉज़</string>
+    <string name="ready">तैयार</string>
+    <string name="flash_on">फ्लैश चालू</string>
+    <string name="flash_off">फ्लैश बंद</string>
+    <string name="permission_denied">अनुमति अस्वीकृत। फ्लैशलाइट काम नहीं करेगी।</string>
+    
+    <!-- Flash Status Messages -->
+    <string name="mode_set_to">मोड सेट किया गया:</string>
+    <string name="flash_mode_hold_tip">फ्लैश मोड बदलने के लिए पावर बटन को लंबे समय तक दबाएं</string>
+    <string name="mode_normal_active">सामान्य मोड सक्रिय: %d ms</string>
+    <string name="mode_sos_active">SOS सिग्नल मोड सक्रिय</string>
+    <string name="mode_disco_active">डिस्को मोड सक्रिय: %1$d-%2$d ms</string>
+    
+    <!-- Text Light Activity -->
+    <string name="start_text">टेक्स्ट शुरू करें</string>
+    <string name="stop_text">टेक्स्ट रोकें</string>
+    <string name="set_text_wallpaper">वॉलपेपर के रूप में सेट करें</string>
+    <string name="full_background">फुल बैकग्राउंड</string>
+    <string name="text_light_input_hint">प्रदर्शित करने के लिए टेक्स्ट दर्ज करें...</string>
+    <string name="text_font">फ़ॉन्ट</string>
+    <string name="font_normal">नॉर्मल</string>
+    <string name="font_bold">बोल्ड</string>
+    <string name="font_italic">इटैलिक</string>
+    <string name="reverse">रिवर्स</string>
+    <string name="no_scroll">स्क्रॉल नहीं</string>
+    <string name="text_scroll_direction">दिशा</string>
+    <string name="text_scroll_speed">गति</string>
+    <string name="fullscreen">फुलस्क्रीन</string>
+    <string name="exit_fullscreen">फुलस्क्रीन से बाहर निकलें</string>
+    <string name="slow">धीमा</string>
+    <string name="fast">तेज</string>
+    <string name="text_size_small">छोटा</string>
+    <string name="text_size_large">बड़ा</string>
+    
+    <!-- Bottom Navigation Titles -->
+    <string name="nav_home">होम</string>
+    <string name="nav_flash">फ्लैश</string>
+    <string name="nav_screen">स्क्रीन लाइट</string>
+    <string name="nav_text">टेक्स्ट लाइट</string>
+    <string name="nav_settings">सेटिंग्स</string>
+    
+    <!-- Rate App Dialog -->
+    <string name="rate_dialog_title">ऐप को रेट करें</string>
+    <string name="rate_dialog_message">कृपया ऐप के साथ अपने अनुभव को रेट करें!</string>
+    <string name="feedback_hint">अपनी राय साझा करें...</string>
+    <string name="feedback_prompt">हमें ऐप को बेहतर बनाने में मदद करें:</string>
+    <string name="rate_dialog_info">4-5 स्टार रेटिंग प्ले स्टोर पर भेजी जाएगी</string>
+    <string name="rate_dialog_submit">सबमिट करें</string>
+    <string name="rate_dialog_cancel">रद्द करें</string>
+    <string name="rate_thanks_high">आपकी रेटिंग के लिए धन्यवाद!</string>
+    <string name="rate_thanks_low">आपके फीडबैक के लिए धन्यवाद! हम ऐप को बेहतर बनाएंगे।</string>
+    <string name="rate_no_rating">कृपया ऐप को रेट करें</string>
+    
+    <!-- Language Settings -->
+    <string name="language_changed">भाषा सफलतापूर्वक बदल गई!</string>
+    <string name="language_changed_restart">भाषा बदली गई! ऐप्लिकेशन पुनरारंभ हो रहा है...</string>
+    <string name="confirm">पुष्टि करें</string>
+    <string name="select_language">भाषा चुनें</string>
+    <string name="language_cancel">भाषा चयन रद्द किया गया</string>
+    <string name="continue_btn">जारी रखें</string>
+    <string name="select_your_language">कृपया अपनी पसंदीदा भाषा चुनें</string>
+    <string name="language_selected">चयनित: %s</string>
+    <string name="language_confirm_title">भाषा की पुष्टि करें</string>
+    <string name="language_confirm_message">क्या आप वाकई भाषा को %s में बदलना चाहते हैं?</string>
+    <string name="language_confirm_yes">हां, बदलें</string>
+    <string name="language_confirm_no">रद्द करें</string>
+    <string name="cancel">रद्द करें</string>
+    
+    <!-- New strings -->
+    <string name="coming_soon">जल्द आ रहा है!</string>
+    <string name="share_via">के माध्यम से शेयर करें</string>
+    <string name="share_message">इस अद्भुत फ्लैशलाइट ऐप को देखें!</string>
+    <string name="notification">नोटिफिकेशन</string>
+    <string name="flashlight">फ्लैशलाइट</string>
+    <string name="title_activity_settings">सेटिंग्स</string>
+    <string name="title_activity_language_selection">भाषा चुनें</string>
+    <string name="app_intro">कई सुविधाओं के साथ स्मार्ट फ्लैशलाइट</string>
+    <string name="loading">लोड हो रहा है...</string>
+    <string name="search">खोज</string>
+    <string name="welcome">स्वागत है</string>
+    <string name="next">अगला</string>
+    <string name="previous">पिछला</string>
+    <string name="finish">समाप्त</string>
+    <string name="skip">छोड़ें</string>
+    
+    <!-- Flash Fragment Sections -->
+    <string name="flash_modes">फ्लैश मोड</string>
+    <string name="flash_settings">फ्लैश सेटिंग्स</string>
+    <string name="normal_mode">सामान्य मोड</string>
+    <string name="sos_mode">SOS मोड</string>
+    <string name="disco_mode">डिस्को मोड</string>
+    <string name="sending_morse_code">मोर्स कोड भेज रहा है</string>
+    <string name="please_enter_text">कृपया टेक्स्ट दर्ज करें</string>
+    <string name="sending_sos_signal">SOS सिग्नल भेज रहा है</string>
+    
+    <!-- Languages -->
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_portuguese">Português</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_indonesia">Bahasa Indonesia</string>
+    <string name="language_india">हिन्दी</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_bangladesh">বাংলা</string>
+    <string name="language_ukrainian">Українська</string>
+    <string name="input_text">टेक्स्ट इनपुट</string>
+    <string name="request_permissions">अनुमतियां अनुरोध करें</string>
+    <string name="request_permissions_desc">फ्लैशलाइट नोटिफिकेशन सुविधाओं का उपयोग करने के लिए संदेश और कॉल अनुमतियां प्रदान करें।</string>
+    <string name="permissions">अनुमतियां</string>
+    <string name="camera_permission">कैमरा अनुमति (फ्लैशलाइट)</string>
+    <string name="phone_permission">फोन अनुमति (कॉल)</string>
+    <string name="sms_permission">SMS अनुमति (संदेश)</string>
+    <string name="permission_required">अनुमति आवश्यक है</string>
+    <string name="permission_description">ऐप को काम करने के लिए इन अनुमतियों की आवश्यकता है</string>
+    <string name="go_to_settings">सेटिंग्स पर जाएं</string>
+    
+    <!-- Additional Strings -->
+    <string name="select_effect">इफेक्ट चुनें</string>
+    <string name="call_notification_enabled">कॉल नोटिफिकेशन फ्लैश सक्षम</string>
+    <string name="call_notification_disabled">कॉल नोटिफिकेशन फ्लैश अक्षम</string>
+    <string name="sms_permission_message">संदेश नोटिफिकेशन प्राप्त करने के लिए SMS अनुमति आवश्यक है</string>
+    <string name="camera_permission_message">फ्लैशलाइट का उपयोग करने के लिए कैमरा अनुमति आवश्यक है</string>
+    <string name="low_battery_brightness_reduced">बैटरी कम है! बिजली बचाने के लिए स्क्रीन की चमक कम कर दी गई है</string>
+    <string name="device_overheat_brightness_reduced">डिवाइस का तापमान अधिक है! स्क्रीन की चमक कम कर दी गई है</string>
+    <string name="camera_permission_granted">कैमरा अनुमति प्रदान की गई</string>
+    <string name="phone_permission_granted">फोन अनुमति प्रदान की गई</string>
+    <string name="phone_permission_denied">फोन अनुमति अस्वीकृत</string>
+    <string name="sms_permission_granted">SMS अनुमति प्रदान की गई</string>
+    <string name="sms_permission_denied">SMS अनुमति अस्वीकृत</string>
+    <string name="sms_flash_notification_enabled">SMS फ्लैश नोटिफिकेशन सक्षम</string>
+    <string name="sms_flash_notification_disabled">SMS फ्लैश नोटिफिकेशन अक्षम</string>
+</resources> 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
+import android.util.Log;
 
 import com.example.flashlightai.R;
 import com.example.flashlightai.model.Language;
@@ -13,10 +14,11 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Lớp quản lý ngôn ngữ ứng dụng
+ * Language management class for the application
  */
 public class LanguageManager {
     
+    private static final String TAG = "LanguageManager";
     private static final String KEY_LANGUAGE = "app_language";
     private PreferenceManager preferenceManager;
     private Context context;
@@ -27,15 +29,15 @@ public class LanguageManager {
     }
     
     /**
-     * Lấy danh sách ngôn ngữ hỗ trợ
+     * Get list of supported languages
      */
     public List<Language> getLanguages() {
         List<Language> languages = new ArrayList<>();
         
-        // Lấy language code đang được chọn
+        // Get current language code
         String currentLanguageCode = getCurrentLanguageCode();
         
-        // Thêm các ngôn ngữ được hỗ trợ
+        // Add supported languages
         languages.add(new Language("en", context.getString(R.string.language_english), 
                 R.drawable.ic_flag_us, "en".equals(currentLanguageCode)));
         
@@ -45,14 +47,14 @@ public class LanguageManager {
         languages.add(new Language("es", context.getString(R.string.language_spanish), 
                 R.drawable.ic_flag_es, "es".equals(currentLanguageCode)));
         
-        languages.add(new Language("pt", context.getString(R.string.language_portuguese), 
-                R.drawable.ic_flag_portugal, "pt".equals(currentLanguageCode)));
-        
         languages.add(new Language("ru", context.getString(R.string.language_russian), 
                 R.drawable.ic_flag_russia, "ru".equals(currentLanguageCode)));
         
         languages.add(new Language("id", context.getString(R.string.language_indonesia), 
                 R.drawable.ic_flag_indo, "id".equals(currentLanguageCode)));
+        
+        languages.add(new Language("uk", context.getString(R.string.language_ukrainian), 
+                R.drawable.ic_flag_ukraine, "uk".equals(currentLanguageCode)));
         
         languages.add(new Language("hi", context.getString(R.string.language_india), 
                 R.drawable.ic_flag_india, "hi".equals(currentLanguageCode)));
@@ -67,36 +69,68 @@ public class LanguageManager {
     }
     
     /**
-     * Lấy mã ngôn ngữ hiện tại
+     * Get current language code
      */
     public String getCurrentLanguageCode() {
-        return preferenceManager.getString(KEY_LANGUAGE, Locale.getDefault().getLanguage());
+        String languageCode = preferenceManager.getString(KEY_LANGUAGE, null);
+        
+        // If no language is saved, use English as default
+        if (languageCode == null || languageCode.isEmpty()) {
+            languageCode = "en"; // Always default to English
+            
+            // Save for future use
+            preferenceManager.setString(KEY_LANGUAGE, languageCode);
+            Log.d(TAG, "Default language set to: " + languageCode);
+        }
+        
+        return languageCode;
     }
     
     /**
-     * Áp dụng ngôn ngữ cho ứng dụng
+     * Check if a language is supported
      */
-    public void setLanguage(String languageCode) {
+    private boolean isLanguageSupported(String languageCode) {
+        // List of fully supported languages
+        String[] supportedLanguages = {"en", "vi", "es", "ru", "id", "uk"};
+        
+        for (String supported : supportedLanguages) {
+            if (supported.equals(languageCode)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Save selected language code (does not apply immediately)
+     */
+    public void saveLanguageCode(String languageCode) {
+        // Save language code for future use
         preferenceManager.setString(KEY_LANGUAGE, languageCode);
-        updateResources(languageCode);
+        Log.d(TAG, "Language saved: " + languageCode);
     }
     
     /**
-     * Cập nhật tài nguyên theo ngôn ngữ
+     * Apply language to specific context
      */
-    private void updateResources(String languageCode) {
+    public Context applyLanguage(Context context, String languageCode) {
         Locale locale = new Locale(languageCode);
         Locale.setDefault(locale);
         
+        // Create configuration with new locale
         Resources resources = context.getResources();
-        Configuration configuration = resources.getConfiguration();
+        Configuration config = new Configuration(resources.getConfiguration());
         
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            configuration.setLocale(locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            // Android 7.0+
+            config.setLocale(locale);
+            return context.createConfigurationContext(config);
         } else {
-            configuration.locale = locale;
+            // Android 6.0 and below
+            config.locale = locale;
+            resources.updateConfiguration(config, resources.getDisplayMetrics());
+            return context;
         }
-        
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 } 
