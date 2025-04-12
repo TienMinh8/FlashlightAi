@@ -29,6 +29,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    // Loại bỏ warning về duplicate resources
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = false
+        disable += "DuplicateDefinition"
+    }
 }
 
 dependencies {

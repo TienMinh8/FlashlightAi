@@ -77,7 +77,7 @@
                         android:shadowDx="1"
                         android:shadowDy="1"
                         android:shadowRadius="3"
-                        android:text="FLASH"
+                        android:text="@string/flash"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp" />
                 </FrameLayout>
@@ -95,7 +95,7 @@
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="8dp"
-                android:text="Đèn tắt"
+                android:text="@string/flash_off"
                 android:textColor="#4FC3F7"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -111,7 +111,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="CHẾ ĐỘ ĐÈN FLASH"
+                android:text="@string/flash_modes"
                 android:textColor="#4FC3F7"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -160,7 +160,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Bình thường"
+                            android:text="@string/normal"
                             android:textColor="#FFFFFF"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -196,7 +196,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="SOS"
+                            android:text="@string/sos"
                             android:textColor="#FFFFFF"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -231,7 +231,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Disco"
+                            android:text="@string/disco"
                             android:textColor="#FFFFFF"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -247,7 +247,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="CÀI ĐẶT ĐÈN FLASH"
+                android:text="@string/flash_settings"
                 android:textColor="#4FC3F7"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -278,7 +278,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tốc độ nhấp nháy"
+                        android:text="@string/flashing_speed"
                         android:textColor="#FFFFFF"
                         android:textSize="16sp" />
 
@@ -292,7 +292,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Chậm"
+                            android:text="@string/slow"
                             android:textColor="#FFFFFF"
                             android:textSize="14sp" />
 
@@ -311,7 +311,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Nhanh"
+                            android:text="@string/fast"
                             android:textColor="#FFFFFF"
                             android:textSize="14sp" />
 
@@ -337,7 +337,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="MÃ MORSE"
+                android:text="@string/morse_code"
                 android:textColor="#4FC3F7"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -370,7 +370,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nhập văn bản"
+                        android:text="@string/input_text"
                         android:textColor="#FFFFFF"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -382,7 +382,7 @@
                         android:layout_marginTop="8dp"
                         android:background="#0D2854"
                         android:gravity="top|start"
-                        android:hint="Nhập văn bản để chuyển thành mã Morse"
+                        android:hint="@string/morse_code_input_hint"
                         android:inputType="textMultiLine"
                         android:padding="12dp"
                         android:textColor="#FFFFFF"
@@ -394,7 +394,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Mã Morse"
+                        android:text="@string/morse_code"
                         android:textColor="#FFFFFF"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -424,7 +424,7 @@
                             android:layout_marginEnd="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/action_button_bg"
-                            android:text="Phát"
+                            android:text="@string/play"
                             android:textColor="#FFFFFF" />
 
                         <Button
@@ -434,7 +434,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/action_button_bg"
-                            android:text="SOS"
+                            android:text="@string/sos"
                             android:textColor="#FFFFFF" />
                     </LinearLayout>
                 </LinearLayout>

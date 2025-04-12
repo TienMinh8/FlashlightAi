@@ -149,4 +149,42 @@
     <string name="language_changed">¡Idioma cambiado exitosamente!</string>
     <string name="confirm">Confirmar</string>
     <string name="select_language">Selecciona un idioma</string>
+    <string name="language_cancel">Selección de idioma cancelada</string>
+    <string name="continue_btn">Continuar</string>
+    <string name="select_your_language">Elige el idioma que mejor te convenga</string>
+    <string name="language_selected">Seleccionado: %s</string>
+    <string name="language_confirm_title">Confirmar idioma</string>
+    <string name="language_confirm_message">¿Estás seguro de que quieres cambiar el idioma a %s?</string>
+    <string name="language_confirm_yes">Sí, cambiar</string>
+    <string name="language_confirm_no">Cancelar</string>
+    <string name="cancel">Cancelar</string>
+    
+    <!-- New strings -->
+    <string name="coming_soon">¡Próximamente!</string>
+    <string name="share_via">Compartir a través de</string>
+    <string name="share_message">¡Mira esta increíble aplicación de linterna!</string>
+    <string name="notification">Notificación</string>
+    <string name="flashlight">Linterna</string>
+    <string name="title_activity_settings">Ajustes</string>
+    <string name="title_activity_language_selection">Seleccionar Idioma</string>
+    <string name="app_intro">Linterna inteligente con muchas funciones</string>
+    <string name="loading">Cargando...</string>
+    <string name="search">Buscar</string>
+    <string name="welcome">Bienvenido</string>
+    <string name="next">Siguiente</string>
+    <string name="previous">Anterior</string>
+    <string name="finish">Finalizar</string>
+    <string name="skip">Omitir</string>
+    
+    <!-- Idiomas -->
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_portuguese">Português</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_indonesia">Bahasa Indonesia</string>
+    <string name="language_india">हिन्दी</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_bangladesh">বাংলা</string>
 </resources> 

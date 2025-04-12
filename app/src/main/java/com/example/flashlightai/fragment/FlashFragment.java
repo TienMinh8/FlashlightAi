@@ -108,7 +108,7 @@ public class FlashFragment extends Fragment {
             updateModeSelection(modeNormal);
             Context context = getContext();
             if (context != null) {
-                Toast.makeText(context, "Chế độ thường", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.normal_mode, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -117,7 +117,7 @@ public class FlashFragment extends Fragment {
             updateModeSelection(modeSos);
             Context context = getContext();
             if (context != null) {
-                Toast.makeText(context, "Chế độ SOS", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.sos_mode, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -126,7 +126,7 @@ public class FlashFragment extends Fragment {
             updateModeSelection(modeDisco);
             Context context = getContext();
             if (context != null) {
-                Toast.makeText(context, "Chế độ Disco", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.disco_mode, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -158,13 +158,13 @@ public class FlashFragment extends Fragment {
                     if (morseCodeUtil != null) {
                         morseCodeUtil.playMorseCode(morseInput.getText().toString(), 1.0f);
                         if (context != null) {
-                            Toast.makeText(context, "Đang gửi mã Morse", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.sending_morse_code, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
             } else {
                 if (context != null) {
-                    Toast.makeText(context, "Vui lòng nhập văn bản", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.please_enter_text, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -177,7 +177,7 @@ public class FlashFragment extends Fragment {
                     morseCodeUtil.playSOS(1.0f);
                     Context context = getContext();
                     if (context != null) {
-                        Toast.makeText(context, "Đang gửi tín hiệu SOS", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.sending_sos_signal, Toast.LENGTH_SHORT).show();
                     }
                 }
             }

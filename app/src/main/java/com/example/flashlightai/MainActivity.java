@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Handler;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
@@ -99,7 +101,7 @@ public class MainActivity extends BaseActivity {
         // Initialize UI elements
         initUI();
         
-        // Check and request camera permission only
+        // Chỉ yêu cầu quyền camera khi khởi động
         checkCameraPermission();
         
         // Start and bind to the service
@@ -189,14 +191,32 @@ public class MainActivity extends BaseActivity {
                 // Kiểm tra quyền khi người dùng bật tính năng
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) 
                         != PackageManager.PERMISSION_GRANTED) {
+                    
+                    // Log thông tin để debug
+                    Log.d("MainActivity", "Đang yêu cầu quyền READ_PHONE_STATE");
+                    
+                    // Hiển thị lý do yêu cầu quyền nếu cần
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
+                        Toast.makeText(this, "Cần quyền đọc trạng thái điện thoại để nhận thông báo cuộc gọi", 
+                                Toast.LENGTH_LONG).show();
+                    }
+                    
+                    // Yêu cầu quyền
                     ActivityCompat.requestPermissions(
                             this,
                             new String[]{Manifest.permission.READ_PHONE_STATE},
                             READ_PHONE_STATE_PERMISSION_REQUEST_CODE);
+                    
+                    // Trả switch về trạng thái chưa bật
                     buttonView.setChecked(false);
                     return;
+                } else {
+                    Log.d("MainActivity", "Đã có quyền READ_PHONE_STATE");
                 }
             }
+            
+            // Lưu trạng thái cho lần khởi động sau
+            preferenceManager.setBoolean("call_flash_enabled", isChecked);
             
             if (notificationServiceBound) {
                 // Bật/tắt thông báo đèn flash cho cuộc gọi
@@ -213,14 +233,32 @@ public class MainActivity extends BaseActivity {
                 // Kiểm tra quyền khi người dùng bật tính năng
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) 
                         != PackageManager.PERMISSION_GRANTED) {
+                    
+                    // Log thông tin để debug
+                    Log.d("MainActivity", "Đang yêu cầu quyền RECEIVE_SMS");
+                    
+                    // Hiển thị lý do yêu cầu quyền nếu cần
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECEIVE_SMS)) {
+                        Toast.makeText(this, "Cần quyền đọc tin nhắn SMS để nhận thông báo tin nhắn", 
+                                Toast.LENGTH_LONG).show();
+                    }
+                    
+                    // Yêu cầu quyền
                     ActivityCompat.requestPermissions(
                             this,
                             new String[]{Manifest.permission.RECEIVE_SMS},
                             RECEIVE_SMS_PERMISSION_REQUEST_CODE);
+                    
+                    // Trả switch về trạng thái chưa bật
                     buttonView.setChecked(false);
                     return;
+                } else {
+                    Log.d("MainActivity", "Đã có quyền RECEIVE_SMS");
                 }
             }
+            
+            // Lưu trạng thái cho lần khởi động sau
+            preferenceManager.setBoolean("sms_flash_enabled", isChecked);
             
             if (notificationServiceBound) {
                 // Bật/tắt thông báo đèn flash cho SMS
@@ -273,6 +311,15 @@ public class MainActivity extends BaseActivity {
             }
         });
         
+        // Thêm nút yêu cầu quyền
+        Button btnRequestPermissions = findViewById(R.id.btn_request_permissions);
+        if (btnRequestPermissions != null) {
+            btnRequestPermissions.setOnClickListener(v -> {
+                // Mở trực tiếp cài đặt ứng dụng để người dùng cấp quyền thủ công
+                openAppSettings();
+            });
+        }
+        
         // Thiết lập BottomNavigationView
         setupBottomNavigation();
     }
@@ -315,15 +362,58 @@ public class MainActivity extends BaseActivity {
         updateSpeedValueDisplay();
     }
     
+    /**
+     * Chỉ kiểm tra và yêu cầu quyền camera
+     */
     private void checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) 
                 != PackageManager.PERMISSION_GRANTED) {
-            // Permission not granted, request it
+            // Hiển thị lý do yêu cầu quyền
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                Toast.makeText(this, "Cần quyền truy cập camera để sử dụng đèn flash", Toast.LENGTH_LONG).show();
+            }
+            
+            // Yêu cầu quyền camera
             ActivityCompat.requestPermissions(
                     this,
                     new String[]{Manifest.permission.CAMERA},
-                    CAMERA_PERMISSION_REQUEST_CODE
-            );
+                    CAMERA_PERMISSION_REQUEST_CODE);
+            
+            // Log thông tin cho debugging
+            Log.d("MainActivity", "Đang yêu cầu quyền Camera: CAMERA_PERMISSION_REQUEST_CODE = " + CAMERA_PERMISSION_REQUEST_CODE);
+        } else {
+            // Đã có quyền camera, bắt đầu dịch vụ
+            Log.d("MainActivity", "Đã có quyền Camera, bắt đầu dịch vụ");
+            startAndBindService();
+        }
+    }
+    
+    /**
+     * Yêu cầu quyền READ_PHONE_STATE và RECEIVE_SMS riêng lẻ
+     */
+    private void requestPhoneAndSmsPermissions() {
+        // Yêu cầu quyền READ_PHONE_STATE
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) 
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.READ_PHONE_STATE},
+                    READ_PHONE_STATE_PERMISSION_REQUEST_CODE);
+            
+            Toast.makeText(this, "Cần cấp quyền đọc trạng thái điện thoại để nhận thông báo cuộc gọi", 
+                    Toast.LENGTH_LONG).show();
+        }
+        
+        // Yêu cầu quyền RECEIVE_SMS
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) 
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.RECEIVE_SMS},
+                    RECEIVE_SMS_PERMISSION_REQUEST_CODE);
+            
+            Toast.makeText(this, "Cần cấp quyền đọc tin nhắn SMS để nhận thông báo tin nhắn", 
+                    Toast.LENGTH_LONG).show();
         }
     }
     
@@ -331,52 +421,81 @@ public class MainActivity extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         
-        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Quyền Camera được cấp
-                startAndBindService();
-            } else {
-                // Quyền bị từ chối
-                Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show();
-                statusText.setText(R.string.permission_denied);
-                
-                // Disable đèn flash
-                powerButton.setEnabled(false);
-            }
-        } else if (requestCode == READ_PHONE_STATE_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Quyền đọc trạng thái điện thoại được cấp
-                Toast.makeText(this, "Đã cấp quyền theo dõi cuộc gọi", Toast.LENGTH_SHORT).show();
-                
-                // Cập nhật lại trạng thái switch
-                switchCalls.setChecked(true);
-                if (notificationServiceBound) {
-                    notificationService.setCallFlashEnabled(true);
+        Log.d("MainActivity", "onRequestPermissionsResult called with code: " + requestCode);
+        
+        if (grantResults.length == 0) {
+            Log.d("MainActivity", "Permission request was cancelled");
+            return;
+        }
+        
+        switch (requestCode) {
+            case CAMERA_PERMISSION_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("MainActivity", "Camera permission granted");
+                    Toast.makeText(this, "Quyền camera đã được cấp", Toast.LENGTH_SHORT).show();
+                    
+                    // Khởi động camera service
+                    startAndBindService();
+                } else {
+                    Log.d("MainActivity", "Camera permission denied");
+                    Toast.makeText(this, "Bạn cần cấp quyền để sử dụng đèn flash", Toast.LENGTH_LONG).show();
+                    
+                    // Hiển thị dialog để giải thích và dẫn người dùng đến cài đặt ứng dụng
+                    new AlertDialog.Builder(this)
+                            .setTitle("Yêu cầu quyền")
+                            .setMessage("Ứng dụng cần quyền truy cập camera để sử dụng đèn flash. Vui lòng cấp quyền trong cài đặt ứng dụng.")
+                            .setPositiveButton("Đi đến Cài đặt", (dialog, which) -> openAppSettings())
+                            .setNegativeButton("Để sau", null)
+                            .create()
+                            .show();
                 }
-            } else {
-                // Quyền bị từ chối
-                Toast.makeText(this, 
-                        "Tính năng thông báo đèn flash cho cuộc gọi cần quyền này để hoạt động", 
-                        Toast.LENGTH_LONG).show();
-                switchCalls.setChecked(false);
-            }
-        } else if (requestCode == RECEIVE_SMS_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Quyền nhận SMS được cấp
-                Toast.makeText(this, "Đã cấp quyền đọc tin nhắn SMS", Toast.LENGTH_SHORT).show();
+                break;
                 
-                // Cập nhật lại trạng thái switch
-                switchSms.setChecked(true);
-                if (notificationServiceBound) {
-                    notificationService.setSmsFlashEnabled(true);
+            case READ_PHONE_STATE_PERMISSION_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("MainActivity", "Phone state permission granted");
+                    Toast.makeText(this, "Quyền theo dõi cuộc gọi đã được cấp", Toast.LENGTH_SHORT).show();
+                    
+                    // Bật switch và lưu trạng thái
+                    switchCalls.setChecked(true);
+                    preferenceManager.setBoolean("call_flash_enabled", true);
+                    
+                    // Báo cho service về thay đổi
+                    if (notificationServiceBound) {
+                        notificationService.setCallFlashEnabled(true);
+                    }
+                } else {
+                    Log.d("MainActivity", "Phone state permission denied");
+                    Toast.makeText(this, "Bạn cần cấp quyền để nhận thông báo cuộc gọi", Toast.LENGTH_LONG).show();
+                    
+                    // Đảm bảo switch ở trạng thái tắt
+                    switchCalls.setChecked(false);
+                    preferenceManager.setBoolean("call_flash_enabled", false);
                 }
-            } else {
-                // Quyền bị từ chối
-                Toast.makeText(this, 
-                        "Tính năng thông báo đèn flash cho SMS cần quyền này để hoạt động", 
-                        Toast.LENGTH_LONG).show();
-                switchSms.setChecked(false);
-            }
+                break;
+                
+            case RECEIVE_SMS_PERMISSION_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("MainActivity", "SMS permission granted");
+                    Toast.makeText(this, "Quyền đọc SMS đã được cấp", Toast.LENGTH_SHORT).show();
+                    
+                    // Bật switch và lưu trạng thái
+                    switchSms.setChecked(true);
+                    preferenceManager.setBoolean("sms_flash_enabled", true);
+                    
+                    // Báo cho service về thay đổi
+                    if (notificationServiceBound) {
+                        notificationService.setSmsFlashEnabled(true);
+                    }
+                } else {
+                    Log.d("MainActivity", "SMS permission denied");
+                    Toast.makeText(this, "Bạn cần cấp quyền để nhận thông báo SMS", Toast.LENGTH_LONG).show();
+                    
+                    // Đảm bảo switch ở trạng thái tắt
+                    switchSms.setChecked(false);
+                    preferenceManager.setBoolean("sms_flash_enabled", false);
+                }
+                break;
         }
     }
     
@@ -567,7 +686,13 @@ public class MainActivity extends BaseActivity {
      */
     private void updateNotificationSwitches() {
         if (notificationServiceBound) {
-            // TODO: Lấy trạng thái từ SharedPreferences và cập nhật các switch
+            // Cập nhật trạng thái của các switch dựa trên trạng thái trong service
+            switchCalls.setChecked(preferenceManager.getBoolean("call_flash_enabled", false));
+            switchSms.setChecked(preferenceManager.getBoolean("sms_flash_enabled", false));
+            
+            // Đồng bộ trạng thái với service
+            notificationService.setCallFlashEnabled(switchCalls.isChecked());
+            notificationService.setSmsFlashEnabled(switchSms.isChecked());
         }
     }
     
@@ -689,5 +814,19 @@ public class MainActivity extends BaseActivity {
                     .commit();
             bottomNavigationView.setSelectedItemId(R.id.navigation_flash);
         }
+    }
+
+    /**
+     * Mở cài đặt ứng dụng để người dùng cấp quyền thủ công
+     */
+    private void openAppSettings() {
+        Intent intent = new Intent();
+        intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
+        
+        Toast.makeText(this, "Hãy cấp quyền truy cập điện thoại và SMS trong cài đặt ứng dụng", 
+                Toast.LENGTH_LONG).show();
     }
 }

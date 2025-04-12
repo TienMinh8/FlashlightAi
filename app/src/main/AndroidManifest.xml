@@ -37,6 +37,13 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:launchMode="singleTop">
+        </activity>
+        
+        <!-- LanguageSelectionActivity -->
+        <activity
+            android:name=".LanguageSelectionActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -114,7 +121,7 @@
         </receiver>
         
         <receiver 
-            android:name=".receiver.SMSReceiver"
+            android:name=".receiver.SmsReceiver"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BROADCAST_SMS">

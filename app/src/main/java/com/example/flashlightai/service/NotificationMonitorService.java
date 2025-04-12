@@ -49,6 +49,9 @@ public class NotificationMonitorService extends Service {
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
     private static final String WAP_PUSH_RECEIVED = "android.provider.Telephony.WAP_PUSH_RECEIVED";
     
+    // Action cho cuộc gọi từ PhoneStateReceiver
+    private static final String ACTION_CALL_STATE_CHANGED = "com.example.flashlightai.CALL_STATE_CHANGED";
+    
     // Key cho SharedPreferences
     private static final String PREFS_NAME = "FlashlightPrefs";
     private static final String SELECTED_APPS_KEY = "selectedApps";
@@ -63,6 +66,7 @@ public class NotificationMonitorService extends Service {
     private TelephonyManager telephonyManager;
     private PhoneStateListener phoneStateListener;
     private BroadcastReceiver smsReceiver;
+    private BroadcastReceiver callReceiver;
     private NotificationReceiver notificationReceiver;
     
     // Để tránh lỗi khi có nhiều cuộc gọi liên tiếp
@@ -96,6 +100,9 @@ public class NotificationMonitorService extends Service {
         
         // Đăng ký SMS BroadcastReceiver
         setupSmsMonitoring();
+        
+        // Đăng ký Call BroadcastReceiver
+        setupCallReceiver();
         
         // Đăng ký NotificationReceiver để theo dõi thông báo từ các ứng dụng
         setupNotificationMonitoring();
@@ -185,6 +192,49 @@ public class NotificationMonitorService extends Service {
             registerReceiver(notificationReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
         } else {
             registerReceiver(notificationReceiver, filter);
+        }
+    }
+    
+    /**
+     * Thiết lập theo dõi cuộc gọi thông qua BroadcastReceiver
+     */
+    private void setupCallReceiver() {
+        callReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (!callFlashEnabled) {
+                    return;
+                }
+                
+                String callState = intent.getStringExtra("callState");
+                if (callState == null) {
+                    return;
+                }
+                
+                switch (callState) {
+                    case "RINGING":
+                        // Có cuộc gọi đến
+                        if (!isProcessingCall) {
+                            isProcessingCall = true;
+                            startCallFlash();
+                        }
+                        break;
+                    case "IDLE":
+                        // Kết thúc cuộc gọi
+                        stopFlash();
+                        // Đặt lại cờ sau 1 giây
+                        handler.postDelayed(() -> isProcessingCall = false, 1000);
+                        break;
+                }
+            }
+        };
+        
+        // Đăng ký receiver
+        IntentFilter filter = new IntentFilter(ACTION_CALL_STATE_CHANGED);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(callReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(callReceiver, filter);
         }
     }
     
@@ -611,22 +661,38 @@ public class NotificationMonitorService extends Service {
             flashController.cleanup();
         }
         
-        // Hủy đăng ký receiver và listener
+        // Hủy đăng ký PhoneStateListener
         if (telephonyManager != null && phoneStateListener != null) {
             telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
         }
         
-        try {
-            if (smsReceiver != null) {
+        // Hủy đăng ký các BroadcastReceiver
+        if (smsReceiver != null) {
+            try {
                 unregisterReceiver(smsReceiver);
+            } catch (Exception e) {
+                Log.e(TAG, "Lỗi khi hủy đăng ký smsReceiver: " + e.getMessage());
             }
-            
-            if (notificationReceiver != null) {
-                unregisterReceiver(notificationReceiver);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Lỗi khi hủy đăng ký receiver: " + e.getMessage());
         }
+        
+        if (callReceiver != null) {
+            try {
+                unregisterReceiver(callReceiver);
+            } catch (Exception e) {
+                Log.e(TAG, "Lỗi khi hủy đăng ký callReceiver: " + e.getMessage());
+            }
+        }
+        
+        if (notificationReceiver != null) {
+            try {
+                unregisterReceiver(notificationReceiver);
+            } catch (Exception e) {
+                Log.e(TAG, "Lỗi khi hủy đăng ký notificationReceiver: " + e.getMessage());
+            }
+        }
+        
+        // Dừng foreground service
+        stopForeground(true);
         
         Log.d(TAG, "NotificationMonitorService destroyed");
     }

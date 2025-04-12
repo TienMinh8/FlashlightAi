@@ -150,4 +150,51 @@
     <string name="confirm">Xác nhận</string>
     <string name="select_language">Chọn ngôn ngữ</string>
     <string name="language_cancel">Đã hủy chọn ngôn ngữ</string>
+    <string name="continue_btn">Tiếp tục</string>
+    <string name="select_your_language">Hãy chọn ngôn ngữ phù hợp với bạn</string>
+    <string name="language_selected">Đã chọn: %s</string>
+    <string name="language_confirm_title">Xác nhận ngôn ngữ</string>
+    <string name="language_confirm_message">Bạn có chắc muốn thay đổi ngôn ngữ thành %s không?</string>
+    <string name="language_confirm_yes">Có, thay đổi</string>
+    <string name="language_confirm_no">Hủy</string>
+    <string name="cancel">Hủy</string>
+    
+    <!-- New strings -->
+    <string name="coming_soon">Sắp ra mắt!</string>
+    <string name="share_via">Chia sẻ qua</string>
+    <string name="share_message">Hãy xem ứng dụng đèn pin tuyệt vời này!</string>
+    <string name="notification">Thông báo</string>
+    <string name="flashlight">Đèn Pin</string>
+    <string name="title_activity_settings">Cài đặt</string>
+    <string name="title_activity_language_selection">Chọn ngôn ngữ</string>
+    <string name="app_intro">Đèn Pin Thông Minh với nhiều tính năng</string>
+    <string name="loading">Đang tải...</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="welcome">Chào mừng</string>
+    <string name="next">Tiếp</string>
+    <string name="previous">Trước</string>
+    <string name="finish">Hoàn tất</string>
+    <string name="skip">Bỏ qua</string>
+    
+    <!-- Flash Fragment Sections -->
+    <string name="flash_modes">CHẾ ĐỘ ĐÈN FLASH</string>
+    <string name="flash_settings">CÀI ĐẶT ĐÈN FLASH</string>
+    <string name="normal_mode">Chế độ thường</string>
+    <string name="sos_mode">Chế độ SOS</string>
+    <string name="disco_mode">Chế độ Disco</string>
+    <string name="sending_morse_code">Đang gửi mã Morse</string>
+    <string name="please_enter_text">Vui lòng nhập văn bản</string>
+    <string name="sending_sos_signal">Đang gửi tín hiệu SOS</string>
+    
+    <!-- Ngôn ngữ -->
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_portuguese">Português</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_indonesia">Bahasa Indonesia</string>
+    <string name="language_india">हिन्दी</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_bangladesh">বাংলা</string>
 </resources> 
