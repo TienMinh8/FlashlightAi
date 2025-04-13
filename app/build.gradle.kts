@@ -45,12 +45,24 @@ dependencies {
     implementation("androidx.activity:activity:1.8.2")
     implementation("androidx.core:core:1.12.0")
     
+    // ViewPager2 for intro slides
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    
+    // Animations
+    implementation("androidx.dynamicanimation:dynamicanimation:1.0.0")
+    
     // Navigation Component
     implementation("androidx.navigation:navigation-fragment:2.7.6")
     implementation("androidx.navigation:navigation-ui:2.7.6")
     
     // Preferences
     implementation("androidx.preference:preference:1.2.1")
+    
+    // Google AdMob for monetization
+    implementation("com.google.android.gms:play-services-ads:22.6.0")
+    implementation("com.google.android.gms:play-services-ads-lite:22.6.0")
+    implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
+    implementation("com.google.android.gms:play-services-base:18.3.0")
     
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

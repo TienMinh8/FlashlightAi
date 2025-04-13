@@ -21,6 +21,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +36,7 @@ import com.example.flashlightai.SettingsActivity;
 import com.example.flashlightai.base.BaseActivity;
 import com.google.android.material.slider.Slider;
 import com.example.flashlightai.FlashLightApp;
+import com.example.flashlightai.utils.AdManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,6 +57,8 @@ public class ScreenLightActivity extends BaseActivity {
     private SeekBar brightnessSeekBar;
     private TextView colorPreview;
     private com.example.flashlightai.customviews.ColorSliderView colorSlider;
+    private FrameLayout adContainer; // Container cho quảng cáo
+    private com.example.flashlightai.utils.AdManager adManager; // AdManager để hiển thị quảng cáo
 
     // Trạng thái
     private boolean controlsVisible = true;
@@ -116,6 +120,11 @@ public class ScreenLightActivity extends BaseActivity {
         brightnessSeekBar = findViewById(R.id.brightness_seekbar);
         colorPreview = findViewById(R.id.color_preview);
         colorSlider = findViewById(R.id.color_slider);
+        adContainer = findViewById(R.id.ad_container);
+        
+        // Khởi tạo AdManager và hiển thị quảng cáo banner
+        adManager = com.example.flashlightai.utils.AdManager.getInstance(this);
+        adManager.showBannerAd(adContainer);
         
         // Cài đặt giá trị ban đầu cho brightness seekbar
         brightnessSeekBar.setProgress(100); // 100%

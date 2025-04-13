@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +30,7 @@ import com.example.flashlightai.R;
 import com.example.flashlightai.controller.FlashController;
 import com.example.flashlightai.service.FlashlightService;
 import com.example.flashlightai.utils.MorseCodeUtil;
+import com.example.flashlightai.utils.AdManager;
 
 public class FlashFragment extends Fragment {
 
@@ -45,6 +47,7 @@ public class FlashFragment extends Fragment {
     private TextView tvSpeedValue;
     private TextView flashStatus;
     private CardView modeNormal, modeSos, modeDisco;
+    private FrameLayout flashAdContainer;
 
     // Morse code components
     private LinearLayout morseContainer;
@@ -62,10 +65,28 @@ public class FlashFragment extends Fragment {
     private int currentMode = MODE_NORMAL;
     private MorseCodeUtil morseCodeUtil;
 
+    // Ad Manager
+    private AdManager adManager;
+
+    /**
+     * Thiết lập chế độ full screen, ẩn thanh điều hướng
+     */
+    private void setFullScreenMode() {
+        if (getActivity() != null) {
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_flash, container, false);
+        
+        // Ẩn thanh điều hướng của thiết bị
+        setFullScreenMode();
+        
         initViews(rootView);
         startAndBindService();
         return rootView;
@@ -100,6 +121,15 @@ public class FlashFragment extends Fragment {
             morseOutput = view.findViewById(R.id.tv_morse_output);
             sendMorseButton = view.findViewById(R.id.btn_send_morse);
             sosButton = view.findViewById(R.id.btn_sos);
+            
+            // Ad container
+            flashAdContainer = view.findViewById(R.id.flash_ad_container);
+            
+            // Khởi tạo Ad Manager
+            adManager = AdManager.getInstance(requireContext());
+            
+            // Hiển thị quảng cáo banner
+            loadBannerAd();
             
             // Thiết lập listeners
             setupListeners();
@@ -464,85 +494,78 @@ public class FlashFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            // Kết nối lại với service nếu cần
-            if (!serviceBound && flashlightService == null) {
-                startAndBindService();
-            }
-            
-            // Lấy trạng thái hiện tại
-            if (serviceBound && flashlightService != null) {
-                isFlashOn = flashlightService.isFlashOn();
-                FlashController.FlashMode mode = flashlightService.getCurrentMode();
-                
-                // Đồng bộ chế độ
-                if (mode != null) {
-                    switch (mode) {
-                        case SOS:
-                            currentMode = MODE_SOS;
-                            break;
-                        case DISCO:
-                            currentMode = MODE_DISCO;
-                            break;
-                        case NORMAL:
-                        default:
-                            currentMode = MODE_NORMAL;
-                            break;
-                    }
-                }
-                
-                // Cập nhật UI
-                updateModeSelection();
-                updateFlashUI();
-                updateSpeedDisplayForCurrentMode();
-            }
-        } catch (Exception e) {
-            showToast("Lỗi khi khôi phục trạng thái: " + e.getMessage());
+        
+        // Set fullscreen mode
+        setFullScreenMode();
+        
+        // Bind to service if not already bound
+        if (!serviceBound) {
+            startAndBindService();
         }
+        
+        // Reload ad if needed
+        if (adManager != null && flashAdContainer != null) {
+            loadBannerAd();
+        }
+        
+        // Update UI with current state
+        updateFlashUI();
     }
     
     @Override
     public void onPause() {
         super.onPause();
-        try {
-            // Không cần tắt đèn flash khi chuyển qua fragment khác
-            // Chỉ giải phóng tài nguyên nếu cần
-            
-            // Giữ flashlightService và serviceBound không thay đổi
-            // để khi quay lại có thể sử dụng lại trạng thái
-        } catch (Exception e) {
-            // Ghi log nếu cần
+        
+        // Cleanup logic if needed
+        if (isFlashOn && serviceBound && flashlightService != null) {
+            // Tắt đèn pin khi thoát khỏi app
+            flashlightService.turnOffFlash();
+            isFlashOn = false;
+        }
+        
+        // Stop any ongoing morse code playback
+        if (morseCodeUtil != null) {
+            morseCodeUtil.stopMorseCode();
         }
     }
     
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        try {
-            // Hủy kết nối đến service nếu đang kết nối
-            Context context = getContext();
-            if (serviceBound && context != null) {
-                context.unbindService(serviceConnection);
-                serviceBound = false;
-            }
-            
-            // Xóa tham chiếu đến các view
-            rootView = null;
-            powerButton = null;
-            glowEffect = null;
-            speedSlider = null;
-            tvSpeedValue = null;
-            flashStatus = null;
-            modeNormal = null;
-            modeSos = null;
-            modeDisco = null;
-            morseContainer = null;
-            morseInput = null;
-            morseOutput = null;
-            sendMorseButton = null;
-            sosButton = null;
-        } catch (Exception e) {
-            // Ghi log nếu cần
+        
+        // Unbind service
+        if (serviceBound && getActivity() != null) {
+            getActivity().unbindService(serviceConnection);
+            serviceBound = false;
+        }
+        
+        // Clear the ad container
+        if (flashAdContainer != null) {
+            flashAdContainer.removeAllViews();
+        }
+        
+        // Reset UI references
+        powerButton = null;
+        glowEffect = null;
+        speedSlider = null;
+        tvSpeedValue = null;
+        flashStatus = null;
+        modeNormal = null;
+        modeSos = null;
+        modeDisco = null;
+        morseContainer = null;
+        morseInput = null;
+        morseOutput = null;
+        sendMorseButton = null;
+        sosButton = null;
+        flashAdContainer = null;
+        
+        // Disconnect service
+        flashlightService = null;
+        // Stop MorseCodeUtil if needed
+        if (morseCodeUtil != null) {
+            morseCodeUtil.stopMorseCode();
+            morseCodeUtil = null;
         }
     }
     
@@ -584,6 +607,16 @@ public class FlashFragment extends Fragment {
                 int speed = calculateSpeedValue(progress);
                 tvSpeedValue.setText(speed + "ms");
             }
+        }
+    }
+
+    /**
+     * Tải và hiển thị quảng cáo banner trong Flash Fragment
+     * Sử dụng kích thước Medium Rectangle (320x250)
+     */
+    private void loadBannerAd() {
+        if (flashAdContainer != null && adManager != null) {
+            adManager.showLargeBannerAd(flashAdContainer);
         }
     }
 } 

@@ -140,6 +140,7 @@
     <string name="text_scroll_speed">Speed</string>
     <string name="fullscreen">Fullscreen</string>
     <string name="exit_fullscreen">Exit Fullscreen</string>
+    <string name="fullscreen_suggestion">Nhấn nút fullscreen để có trải nghiệm tốt hơn</string>
     <string name="slow">Slow</string>
     <string name="fast">Fast</string>
     <string name="text_size_small">Small</string>
@@ -245,4 +246,20 @@
     <string name="sms_permission_denied">SMS permission denied</string>
     <string name="sms_flash_notification_enabled">SMS flash notification enabled</string>
     <string name="sms_flash_notification_disabled">SMS flash notification disabled</string>
+    
+    <!-- Intro Screen -->
+    <string name="intro_welcome_title">Welcome to Flashlight AI</string>
+    <string name="intro_welcome_desc">A powerful flashlight app with AI features</string>
+    
+    <string name="intro_modes_title">Multiple Light Modes</string>
+    <string name="intro_modes_desc">Choose from various light modes: normal, SOS, strobe, and more</string>
+    
+    <string name="intro_scanning_title">Text Scanning</string>
+    <string name="intro_scanning_desc">Use your flashlight to scan and recognize text</string>
+    
+    <string name="intro_config_title">Easy Configuration</string>
+    <string name="intro_config_desc">Customize your flashlight with easy-to-use settings</string>
+    
+    <string name="intro_next">Next</string>
+    <string name="intro_finish">Finish</string>
 </resources>

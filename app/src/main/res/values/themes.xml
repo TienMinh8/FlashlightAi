@@ -16,4 +16,11 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
     </style>
+    
+    <!-- Splash Screen Theme -->
+    <style name="Theme.FlashLightAi.SplashScreen" parent="Theme.FlashLightAi">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 </resources>

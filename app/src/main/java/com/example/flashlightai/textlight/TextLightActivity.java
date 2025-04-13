@@ -83,6 +83,8 @@ public class TextLightActivity extends BaseActivity {
     private TextLightView.ScrollDirection scrollDirection = TextLightView.ScrollDirection.RIGHT_TO_LEFT;
     private TextView colorPreview;
     private com.example.flashlightai.customviews.ColorSliderView colorSlider;
+    private FrameLayout adContainer;
+    private com.example.flashlightai.utils.AdManager adManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,7 @@ public class TextLightActivity extends BaseActivity {
         
         // Giữ màn hình luôn sáng và thiết lập chế độ full screen giống với ScreenLightActivity
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        // Luôn thiết lập chế độ fullscreen khi mở ứng dụng
         setFullScreenMode();
         
         setContentView(R.layout.activity_text_light);
@@ -114,6 +117,9 @@ public class TextLightActivity extends BaseActivity {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                
+        // Đảm bảo rằng cờ được đặt thành true
+        isFullscreen = true;
     }
 
     /**
@@ -123,6 +129,9 @@ public class TextLightActivity extends BaseActivity {
         // Hiện lại thanh trạng thái và thanh điều hướng
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        
+        // Đảm bảo isFullscreen được đặt thành false
+        isFullscreen = false;
     }
 
     private void initViews() {
@@ -145,6 +154,11 @@ public class TextLightActivity extends BaseActivity {
         // Thay thế các nút màu bằng ColorSliderView
         colorPreview = findViewById(R.id.color_preview);
         colorSlider = findViewById(R.id.color_slider);
+        
+        // Khởi tạo container quảng cáo và hiển thị quảng cáo
+        adContainer = findViewById(R.id.ad_container);
+        adManager = com.example.flashlightai.utils.AdManager.getInstance(this);
+        adManager.showBannerAd(adContainer);
 
         // Thiết lập giá trị mặc định
         speedSeekBar.setProgress(10);
@@ -376,6 +390,9 @@ public class TextLightActivity extends BaseActivity {
         scrollDirection = TextLightView.ScrollDirection.RIGHT_TO_LEFT;
     }
 
+    /**
+     * Chuyển đổi giữa chế độ toàn màn hình và bình thường
+     */
     private void toggleFullscreen() {
         isFullscreen = !isFullscreen;
         
@@ -383,7 +400,7 @@ public class TextLightActivity extends BaseActivity {
             // Ẩn settings panel
             settingsPanel.setVisibility(View.GONE);
             
-            // Thiết lập chế độ full screen với API tương tự như ScreenLightActivity
+            // Ẩn thanh navigation và status bar
             setFullScreenMode();
             
             // Cập nhật nút
@@ -391,6 +408,9 @@ public class TextLightActivity extends BaseActivity {
             
             // Thêm listener để bắt touch event và thoát full screen
             textLightView.setOnClickListener(v -> toggleFullscreen());
+            
+            // Thông báo cho người dùng cách thoát fullscreen
+            Toast.makeText(this, "Nhấn vào màn hình để thoát chế độ toàn màn hình", Toast.LENGTH_SHORT).show();
         } else {
             // Hiện settings panel
             settingsPanel.setVisibility(View.VISIBLE);
@@ -409,8 +429,8 @@ public class TextLightActivity extends BaseActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        // Khi cửa sổ có focus, đảm bảo trạng thái full screen được duy trì
-        if (hasFocus && isFullscreen) {
+        if (hasFocus) {
+            // Luôn đảm bảo chế độ fullscreen khi cửa sổ có focus
             setFullScreenMode();
         }
     }
@@ -434,36 +454,36 @@ public class TextLightActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         // Không cần dừng animation khi thoát ứng dụng vì chữ luôn chạy
-        // Chỉ cần xử lý trường hợp đang ở chế độ landscape
+        
+        // KHÔNG tự động quay về portrait mode khi ứng dụng đi vào background
+        // Việc này có thể gây ra màn hình không duy trì chế độ landscape
+        /*
         if (getRequestedOrientation() == android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             // Đảm bảo quay về portrait mode khi ứng dụng đi vào background
             setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+        */
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         
-        // Kiểm tra xem ngôn ngữ có thay đổi không và áp dụng lại
-        if (FlashLightApp.isLanguageChanged()) {
-            // Đặt lại cờ
-            FlashLightApp.resetLanguageChangedFlag();
-            // Lưu trạng thái hiện tại
-            boolean wasRunning = isRunning;
-            // Tạo lại Activity với ngôn ngữ mới
-            recreate();
-            return;
-        }
+        // Đảm bảo thanh điều hướng vẫn bị ẩn khi quay lại
+        setFullScreenMode();
         
-        // Kiểm tra xem đã thiết lập màn hình đầy đủ chưa
-        if (isFullscreen) {
-            setFullScreenMode();
-        }
-        
-        // Đảm bảo text vẫn chạy khi quay lại ứng dụng
-        if (!textLightView.isRunning()) {
+        // Cập nhật trạng thái của ứng dụng
+        if (isRunning && textLightView != null) {
             textLightView.startScrolling();
+        }
+        
+        // Nhắc nhở người dùng nhấn nút fullscreen nếu chưa
+        if (!isFullscreen) {
+            try {
+                Toast.makeText(this, R.string.fullscreen_suggestion, Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Log.e(TAG, "Error showing fullscreen suggestion toast", e);
+            }
         }
     }
 
@@ -549,7 +569,7 @@ public class TextLightActivity extends BaseActivity {
     }
 
     /**
-     * Bật/tắt chế độ toàn màn hình và tự động quay ngang
+     * Chuyển đổi giữa chế độ landscape fullscreen và portrait
      */
     private void toggleFullScreenLandscape() {
         // Nếu đã đang ở chế độ landscape, chuyển về portrait
@@ -583,8 +603,10 @@ public class TextLightActivity extends BaseActivity {
             
             // Cập nhật văn bản nút
             btnStart.setText(R.string.fullscreen);
+            
+            // Đảm bảo isFullscreen = false
+            isFullscreen = false;
         } else {
-            // Chuyển sang chế độ fullscreen landscape
             
             // Ẩn bàn phím nếu đang hiển thị
             android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -612,13 +634,7 @@ public class TextLightActivity extends BaseActivity {
             etInputText.setVisibility(View.GONE);
             
             // Thiết lập chế độ full screen
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN);
+            setFullScreenMode();
             
             // Đặt orientation thành landscape (quay ngang)
             setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -628,6 +644,9 @@ public class TextLightActivity extends BaseActivity {
             
             // Cập nhật văn bản nút (mặc dù nó không hiển thị ở chế độ này)
             btnStart.setText(R.string.exit_fullscreen);
+            
+            // Đảm bảo isFullscreen = true
+            isFullscreen = true;
             
             Toast.makeText(this, "Nhấn vào màn hình để thoát chế độ toàn màn hình", Toast.LENGTH_SHORT).show();
         }
@@ -702,5 +721,33 @@ public class TextLightActivity extends BaseActivity {
         
         // Lưu lại cài đặt hiện tại
         saveCurrentSettings(text, scrollSpeed, textSize, currentTextColor);
+    }
+
+    @Override
+    public void onConfigurationChanged(android.content.res.Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        
+        // Kiểm tra xem thay đổi cấu hình có phải là thay đổi hướng màn hình không
+        if (newConfig.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE) {
+            // Nếu đang ở chế độ landscape và isFullscreen là true
+            // duy trì trạng thái fullscreen
+            if (isFullscreen) {
+                getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN);
+            }
+        } else if (newConfig.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT) {
+            // Nếu trở về portrait nhưng vẫn duy trì trạng thái fullscreen
+            if (isFullscreen) {
+                // Continue with fullscreen code
+                getWindow().getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            }
+        }
     }
 } 

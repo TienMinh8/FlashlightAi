@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.util.Log;
 
+import com.example.flashlightai.utils.AdManager;
 import com.example.flashlightai.utils.PreferenceManager;
 
 import java.util.Locale;
@@ -120,6 +121,23 @@ public class FlashLightApp extends Application {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "FlashLight App started");
+        
+        // Khởi tạo AdMob
+        initializeAdMob();
+    }
+    
+    /**
+     * Khởi tạo AdMob và tải các quảng cáo
+     */
+    private void initializeAdMob() {
+        try {
+            // Khởi tạo AdManager
+            AdManager adManager = AdManager.getInstance(this);
+            adManager.initialize();
+            Log.d(TAG, "AdMob initialized successfully");
+        } catch (Exception e) {
+            Log.e(TAG, "Error initializing AdMob: " + e.getMessage());
+        }
     }
     
     /**

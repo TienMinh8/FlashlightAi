@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.example.flashlightai.FlashLightApp;
 import com.example.flashlightai.R;
 import com.example.flashlightai.adapter.LanguageAdapter;
 import com.example.flashlightai.model.Language;
+import com.example.flashlightai.utils.AdManager;
 import com.example.flashlightai.utils.LanguageManager;
 
 import java.util.List;
@@ -32,6 +34,7 @@ public class LanguageSelectionFragment extends Fragment {
     private LanguageAdapter adapter;
     private Language selectedLanguage = null;
     private LanguageManager languageManager;
+    private AdManager adManager;
     private OnLanguageSelectedListener listener;
 
     /**
@@ -58,8 +61,10 @@ public class LanguageSelectionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_language_selection, container, false);
         
-        // Khởi tạo LanguageManager
+        // Khởi tạo LanguageManager và AdManager
         languageManager = new LanguageManager(requireContext());
+        adManager = AdManager.getInstance(requireContext());
+        
         Log.d(TAG, "Creating language selection fragment");
         
         // Lấy danh sách ngôn ngữ
@@ -120,7 +125,22 @@ public class LanguageSelectionFragment extends Fragment {
             }
         });
         
+        // Tải quảng cáo banner lớn
+        loadLargeBannerAd(view);
+        
         return view;
+    }
+    
+    /**
+     * Tải và hiển thị quảng cáo banner lớn
+     */
+    private void loadLargeBannerAd(View view) {
+        if (adManager != null && isAdded()) {
+            FrameLayout adContainer = view.findViewById(R.id.language_ad_container);
+            if (adContainer != null) {
+                adManager.showLargeBannerAd(adContainer);
+            }
+        }
     }
     
     @Override

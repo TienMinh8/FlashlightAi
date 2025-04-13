@@ -134,6 +134,7 @@
     <string name="text_scroll_speed">Tốc độ</string>
     <string name="fullscreen">Toàn màn hình</string>
     <string name="exit_fullscreen">Thoát toàn màn hình</string>
+    <string name="fullscreen_suggestion">Nhấn nút toàn màn hình để có trải nghiệm tốt hơn</string>
     
     <!-- Bottom Navigation Titles -->
     <string name="nav_home">Trang chủ</string>
